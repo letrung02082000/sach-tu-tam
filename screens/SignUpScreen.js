@@ -107,6 +107,10 @@ function SignUpScreen({ navigation }) {
         }
     };
 
+    const navigateToHomeTabs = () => {
+        navigation.navigate('HomeTabScreen');
+    };
+
     return (
         <SafeAreaView>
             <ScrollView>
@@ -116,6 +120,12 @@ function SignUpScreen({ navigation }) {
                         barStyle='light-content'
                     />
                     <View style={styles.header}>
+                        <TouchableOpacity
+                            onPress={navigateToHomeTabs}
+                            style={styles.xButton}
+                        >
+                            <Feather name='x' color='#fff' size={25} />
+                        </TouchableOpacity>
                         <Text style={styles.text_header}>Xin chào!</Text>
                     </View>
                     <Animatable.View
@@ -370,12 +380,16 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#009387',
     },
+
     header: {
+        flexDirection: 'row',
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         paddingHorizontal: 20,
         paddingBottom: 50,
     },
+
     footer: {
         flex: Platform.OS === 'ios' ? 3 : 5,
         backgroundColor: '#fff',
@@ -384,19 +398,23 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 30,
     },
+
     text_header: {
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 30,
     },
+
     text_footer: {
         color: '#05375a',
         fontSize: 18,
     },
+
     errorMsg: {
         color: '#FF0000',
         fontSize: 14,
     },
+
     action: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -405,16 +423,19 @@ const styles = StyleSheet.create({
         borderBottomColor: '#f2f2f2',
         paddingBottom: 5,
     },
+
     textInput: {
         flex: 1,
         marginTop: Platform.OS === 'ios' ? 0 : 5,
         padding: 10,
         color: '#05375a',
     },
+
     button: {
         alignItems: 'center',
         marginTop: 50,
     },
+
     signIn: {
         width: '100%',
         height: 50,
@@ -422,20 +443,28 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10,
     },
+
     textSign: {
         fontSize: 18,
         fontWeight: 'bold',
     },
+
     textPrivate: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         marginTop: 20,
     },
+
     color_textPrivate: {
         color: 'grey',
     },
+
     successMsg: {
         color: 'green',
         fontSize: 14,
+    },
+
+    xButton: {
+        width: 30,
     },
 });

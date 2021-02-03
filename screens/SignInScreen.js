@@ -83,6 +83,10 @@ function SignInScreen({ navigation }) {
         }
     };
 
+    const navigateToHomeTabs = () => {
+        navigation.navigate('HomeTabScreen');
+    };
+
     return (
         <SafeAreaView>
             <ScrollView>
@@ -92,6 +96,12 @@ function SignInScreen({ navigation }) {
                         barStyle='light-content'
                     />
                     <View style={styles.header}>
+                        <TouchableOpacity
+                            onPress={navigateToHomeTabs}
+                            style={styles.xButton}
+                        >
+                            <Feather name='x' color='#fff' size={25} />
+                        </TouchableOpacity>
                         <Text style={styles.text_header}>Xin chào!</Text>
                     </View>
                     <Animatable.View
@@ -281,12 +291,16 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#009387',
     },
+
     header: {
+        flexDirection: 'row',
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         paddingHorizontal: 20,
         paddingBottom: 50,
     },
+
     footer: {
         flex: 3,
         backgroundColor: '#fff',
@@ -295,15 +309,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 30,
     },
+
     text_header: {
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 30,
     },
+
     text_footer: {
         color: '#05375a',
         fontSize: 18,
     },
+
     action: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -312,6 +329,7 @@ const styles = StyleSheet.create({
         borderBottomColor: '#f2f2f2',
         paddingBottom: 5,
     },
+
     actionError: {
         flexDirection: 'row',
         marginTop: 10,
@@ -319,20 +337,24 @@ const styles = StyleSheet.create({
         borderBottomColor: '#FF0000',
         paddingBottom: 5,
     },
+
     textInput: {
         flex: 1,
         marginTop: Platform.OS === 'ios' ? 0 : 5,
         padding: 10,
         color: '#05375a',
     },
+
     errorMsg: {
         color: '#FF0000',
         fontSize: 14,
     },
+
     button: {
         alignItems: 'center',
         marginTop: 50,
     },
+
     signIn: {
         width: '100%',
         height: 50,
@@ -340,8 +362,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10,
     },
+
     textSign: {
         fontSize: 18,
         fontWeight: 'bold',
+    },
+
+    xButton: {
+        width: 30,
+        zIndex: 99,
     },
 });
