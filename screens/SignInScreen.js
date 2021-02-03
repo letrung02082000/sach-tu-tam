@@ -17,8 +17,13 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { useTheme } from '@react-navigation/native';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoginState } from '../redux/actions';
+
 function SignInScreen({ navigation }) {
     const { colors } = useTheme();
+
+    const dispatch = useDispatch();
 
     const [data, setData] = React.useState({
         username: '',
@@ -78,6 +83,9 @@ function SignInScreen({ navigation }) {
     const handleLogin = (username, password) => {
         if (validateEmail(username) && password.length >= 8) {
             console.log('Hợp lệ');
+            dispatch(setLoginState({ username, password }));
+            // const result = useSelector((state) => state);
+            // console.log(result);
         } else {
             Alert.alert('Vui lòng điền đầy đủ thông tin.');
         }
