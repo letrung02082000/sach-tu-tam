@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-
-import HomeScreen from './screens/HomeScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import ScanScreen from './screens/ScanScreen';
-import CustomTabBar from './components/CustomTabBar';
-import SignInScreen from './screens/SignInScreen';
-import SignUpScreen from './screens/SignUpScreen';
-
-const Tab = createBottomTabNavigator();
-const RootStack = createStackNavigator();
+import RootStack from './navigation/RootStack';
 
 export default function App() {
     const [isLoading, setIsLoading] = useState(false);
@@ -29,38 +18,10 @@ export default function App() {
 
     return (
         <NavigationContainer>
-            <RootStack.Navigator>
-                <RootStack.Screen
-                    name='HomeTabScreen'
-                    component={HomeTabsScreen}
-                />
-                <RootStack.Screen
-                    name='SignInScreen'
-                    component={SignInScreen}
-                    options={{ headerShown: false }}
-                />
-                <RootStack.Screen
-                    name='SignUpScreen'
-                    component={SignUpScreen}
-                    options={{ headerShown: false }}
-                />
-            </RootStack.Navigator>
+            <RootStack />
         </NavigationContainer>
     );
 }
-
-const HomeTabsScreen = () => {
-    return (
-        <Tab.Navigator
-            initialRouteName='HomeScreen'
-            tabBar={(props) => <CustomTabBar {...props} />}
-        >
-            <Tab.Screen name='HomeScreen' component={HomeScreen} />
-            <Tab.Screen name='ScanScreen' component={ScanScreen} />
-            <Tab.Screen name='ProfileScreen' component={ProfileScreen} />
-        </Tab.Navigator>
-    );
-};
 
 const styles = StyleSheet.create({
     container: {
