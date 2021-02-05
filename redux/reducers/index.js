@@ -1,10 +1,7 @@
 import { combineReducers } from 'redux';
-import signInReducer from './user.reducer';
+import { authReducer } from './auth.reducer';
+import { registerReducer } from './register.reducer';
 
-const appReducers = combineReducers({ signInReducer });
-
-const rootReducer = (state, action) => {
-    return appReducers(state, action);
-};
+const rootReducer = combineReducers({ authReducer, registerReducer });
 
 export default rootReducer;

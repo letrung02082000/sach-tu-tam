@@ -18,7 +18,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { useTheme } from '@react-navigation/native';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoginState } from '../redux/actions';
+import { userActions } from '../redux/actions';
 
 function SignInScreen({ navigation }) {
     const { colors } = useTheme();
@@ -80,12 +80,10 @@ function SignInScreen({ navigation }) {
         });
     };
 
-    const handleLogin = (username, password) => {
-        if (validateEmail(username) && password.length >= 8) {
-            console.log('Hợp lệ');
-            dispatch(setLoginState({ username, password }));
-            // const result = useSelector((state) => state);
-            // console.log(result);
+    const handleLogin = (email, password) => {
+        if (validateEmail(email) && password.length >= 8) {
+            console.log('hợp lệ');
+            dispatch(userActions.loginAction(email, password));
         } else {
             Alert.alert('Vui lòng điền đầy đủ thông tin.');
         }
