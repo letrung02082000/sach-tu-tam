@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { userConstants } from '../constants';
 
 const initialState = {
@@ -8,6 +9,12 @@ const initialState = {
     password: '',
     token: '',
 };
+
+AsyncStorage.getItem('user').then((userData) => {
+    if (userData.isLoggedIn) {
+        initialState.isLoggedIn = true;
+    }
+});
 
 export const authReducer = (state = initialState, action) => {
     switch (action.type) {

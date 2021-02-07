@@ -5,7 +5,7 @@ export const userApi = {
     register,
 };
 
-const apiUrl = 'localhost:3000/api';
+const apiUrl = 'http://192.168.115.1:3000/api';
 
 async function login(email, password) {
     return new Promise((resolve, reject) => {
@@ -16,7 +16,6 @@ async function login(email, password) {
 
         axios.post(`${apiUrl}/user/login`, user).then(
             (response) => {
-                console.log(response.data);
                 return resolve(response.data);
             },
             (error) => {

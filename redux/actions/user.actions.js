@@ -9,23 +9,29 @@ export const userActions = {
 };
 
 function loginAction(email, password) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(requestLogin({ email }));
 
         userApi.login(email, password).then(
-            (result) => {
+            async (result) => {
                 if (result.type == 'Invalid') {
-                    console.log(result);
                     dispatch(failureLogin({ error: 'login invalid' }));
                     return;
                 } else {
-                    if (result.status == 'Failure') {
-                        console.log(result);
+                    if (result.status == 'Fail') {
                         dispatch(failureLogin({ error: 'login failure' }));
                         return;
                     } else if (result.status == 'Success') {
-                        console.log(result);
-                        dispatch(successLogin(result.data));
+                        try {
+                            await AsyncStorage.setItem(
+                                'user',
+                                JSON.stringify(result.data)
+                            );
+                            console.log(result.data);
+                            dispatch(successLogin(result.data));
+                        } catch (error) {
+                            dispatch(failureLogin({ error }));
+                        }
                         return;
                     }
                 }
@@ -73,7 +79,7 @@ function registerAction(email, password) {
                     if (result.status == 'Success') {
                         dispatch(successRegister(result.data));
                         return;
-                    } else if (result.status == 'Failure') {
+                    } else if (result.status == 'Fail') {
                         dispatch(failureRegister('Register error'));
                         return;
                     }

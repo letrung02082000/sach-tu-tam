@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Text,
@@ -19,13 +19,14 @@ import { useTheme } from '@react-navigation/native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '../redux/actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function SignInScreen({ navigation }) {
     const { colors } = useTheme();
 
     const dispatch = useDispatch();
 
-    const [data, setData] = React.useState({
+    const [data, setData] = useState({
         username: '',
         password: '',
         secureTextEntry: true,
@@ -33,6 +34,12 @@ function SignInScreen({ navigation }) {
         isValidPassword: true,
         isValidUser: false,
     });
+
+    const user = useSelector((state) => state.authReducer);
+
+    if (user.isLoggedIn) {
+        navigation.navigate('ProfileScreen');
+    }
 
     const validateEmail = (email) => {
         var ret = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -82,7 +89,6 @@ function SignInScreen({ navigation }) {
 
     const handleLogin = (email, password) => {
         if (validateEmail(email) && password.length >= 8) {
-            console.log('hợp lệ');
             dispatch(userActions.loginAction(email, password));
         } else {
             Alert.alert('Vui lòng điền đầy đủ thông tin.');

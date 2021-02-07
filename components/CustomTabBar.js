@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSelector } from 'react-redux';
 // import Modal from 'react-native-modal';
 
 export default function CustomTabBar(props) {
     const { state, descriptors, navigation } = props;
 
-    const selectedIndex = state.index;
+    const user = useSelector((state) => state.authReducer);
 
-    const [isSignedIn, setIsSignedIn] = useState(false);
+    const selectedIndex = state.index;
 
     const navigateToHomeScreen = () => {
         navigation.navigate('HomeScreen');
     };
 
     const navigateToProfileScreen = () => {
-        if (isSignedIn) {
+        if (user.isLoggedIn) {
             navigation.navigate('ProfileScreen');
         } else {
             navigation.navigate('SignInScreen');
