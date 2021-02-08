@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -17,8 +17,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { userActions } from '../redux/actions';
+
 function SignUpScreen({ navigation }) {
-    const [data, setData] = React.useState({
+    const [data, setData] = useState({
         username: '',
         password: '',
         confirm_password: '',
@@ -28,6 +31,31 @@ function SignUpScreen({ navigation }) {
         isMatchPassword: true,
         secureTextEntry: true,
         confirm_secureTextEntry: true,
+    });
+
+    const dispatch = useDispatch();
+
+    const user = useSelector((state) => state.registerReducer);
+
+    useEffect(() => {
+        if (user.isFetching) {
+            console.log('isFetching');
+        } else {
+            if (user.type == 'Valid') {
+                if (user.status == 'Success') {
+                    dispatch(userActions.registerRefresh());
+                    setTimeout(() => {
+                        navigation.navigate('SignInScreen');
+                    }, 3000);
+                } else if (user.status == 'Fail') {
+                    console.log('dang ky that bai');
+                } else if (user.status == 'NA') {
+                    console.log('chua dang ky');
+                }
+            } else {
+                console.log('thong tin khong hop le');
+            }
+        }
     });
 
     const validateEmail = (email) => {
@@ -99,9 +127,9 @@ function SignUpScreen({ navigation }) {
         });
     };
 
-    const handleSignupBtn = (username, password) => {
+    const handleSignupBtn = (email, password) => {
         if (data.isMatchPassword && password.length >= 8 && data.isValidUser) {
-            navigation.navigate('AuthEmailScreen');
+            dispatch(userActions.registerAction(email, password));
         } else {
             Alert.alert('Thông tin không hợp lệ. Vui lòng kiểm tra lại.');
         }

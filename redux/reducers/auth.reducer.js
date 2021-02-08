@@ -10,11 +10,22 @@ const initialState = {
     token: '',
 };
 
-AsyncStorage.getItem('user').then((userData) => {
-    if (userData.isLoggedIn) {
-        initialState.isLoggedIn = true;
-    }
-});
+AsyncStorage.getItem('user')
+    .then(
+        (userData) => {
+            if (userData.isLoggedIn == true) {
+                initialState.isLoggedIn = true;
+            } else {
+                initialState.isLoggedIn = false;
+            }
+        },
+        (error) => {
+            initialState.isLoggedIn = false;
+        }
+    )
+    .catch((error) => {
+        initialState.isLoggedIn = false;
+    });
 
 export const authReducer = (state = initialState, action) => {
     switch (action.type) {

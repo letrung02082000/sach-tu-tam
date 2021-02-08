@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const userActions = {
     loginAction,
     registerAction,
+    registerRefresh,
 };
 
 function loginAction(email, password) {
@@ -27,7 +28,7 @@ function loginAction(email, password) {
                                 'user',
                                 JSON.stringify(result.data)
                             );
-                            console.log(result.data);
+
                             dispatch(successLogin(result.data));
                         } catch (error) {
                             dispatch(failureLogin({ error }));
@@ -73,14 +74,31 @@ function registerAction(email, password) {
         userApi.register(email, password).then(
             (result) => {
                 if (result.type == 'Invalid') {
-                    dispatch(failureRegister('Invalid register'));
+                    dispatch(
+                        failureRegister({
+                            ...result,
+                            type: 'Invalid',
+                        })
+                    );
                     return;
                 } else {
                     if (result.status == 'Success') {
-                        dispatch(successRegister(result.data));
+                        dispatch(
+                            successRegister({
+                                ...result.data,
+                                type: 'Valid',
+                                status: 'Success',
+                            })
+                        );
                         return;
                     } else if (result.status == 'Fail') {
-                        dispatch(failureRegister('Register error'));
+                        dispatch(
+                            failureRegister({
+                                ...result,
+                                type: 'Valid',
+                                status: 'Fail',
+                            })
+                        );
                         return;
                     }
                 }
@@ -112,4 +130,10 @@ function registerAction(email, password) {
             payload: error,
         };
     }
+}
+
+function registerRefresh() {
+    return {
+        type: userConstants.REGISTER_REFRESH,
+    };
 }

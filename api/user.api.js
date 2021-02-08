@@ -5,7 +5,7 @@ export const userApi = {
     register,
 };
 
-const apiUrl = 'http://192.168.115.1:3000/api';
+const apiUrl = 'http://192.168.43.212:3000/api';
 
 async function login(email, password) {
     return new Promise((resolve, reject) => {
@@ -19,7 +19,6 @@ async function login(email, password) {
                 return resolve(response.data);
             },
             (error) => {
-                console.log(error);
                 return reject(error);
             }
         );
@@ -33,14 +32,13 @@ async function register(email, password) {
             password,
         };
 
-        axios.post(`${apiUrl}/user/register`, user).then(
+        axios.post(`${apiUrl}/user/signup`, user).then(
             (response) => {
-                console.log(response.data);
-                resolve(response.data);
+                return resolve(response.data);
             },
             (error) => {
-                console.log(error);
-                reject(error);
+                console.log('loi');
+                return reject(error);
             }
         );
     });

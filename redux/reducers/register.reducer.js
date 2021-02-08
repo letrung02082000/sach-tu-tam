@@ -2,7 +2,8 @@ import { userConstants } from '../constants';
 
 const initialState = {
     isFetching: false,
-    isLoggedIn: false,
+    type: 'Valid',
+    status: 'NA',
     _id: '',
     email: '',
     password: '',
@@ -15,22 +16,30 @@ export function registerReducer(state = initialState, action) {
             return {
                 ...state,
                 isFetching: true,
-                isLoggedIn: false,
                 ...action.payload,
             };
         case userConstants.REGISTER_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
-                isLoggedIn: true,
                 ...action.payload,
             };
         case userConstants.REGISTER_FAILURE:
             return {
                 ...state,
                 isFetching: false,
-                isLoggedIn: false,
                 ...action.payload,
+            };
+        case userConstants.REGISTER_REFRESH:
+            return {
+                ...state,
+                isFetching: false,
+                type: 'Valid',
+                status: 'NA',
+                _id: '',
+                email: '',
+                password: '',
+                token: '',
             };
         default:
             return state;

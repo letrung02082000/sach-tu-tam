@@ -19,7 +19,6 @@ import { useTheme } from '@react-navigation/native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '../redux/actions';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function SignInScreen({ navigation }) {
     const { colors } = useTheme();
