@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
@@ -20,10 +21,22 @@ export default function ScanScreen({ navigation }) {
     };
 
     if (hasPermission === null) {
-        return <Text>Requesting for camera permission</Text>;
+        return (
+            <SafeAreaView>
+                <View>
+                    <Text>Requesting for camera permission</Text>
+                </View>
+            </SafeAreaView>
+        );
     }
     if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
+        return (
+            <SafeAreaView>
+                <View>
+                    <Text>No access to camera</Text>
+                </View>
+            </SafeAreaView>
+        );
     }
 
     return (

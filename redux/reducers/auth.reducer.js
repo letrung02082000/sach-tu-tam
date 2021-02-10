@@ -50,6 +50,15 @@ export const authReducer = (state = initialState, action) => {
                 isFetching: false,
                 ...action.payload,
             };
+        case userConstants.LOGOUT:
+            return {
+                isFetching: false,
+                isLoggedIn: false,
+                _id: '',
+                email: '',
+                password: '',
+                token: '',
+            };
         default:
             return state;
     }

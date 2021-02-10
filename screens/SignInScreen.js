@@ -8,17 +8,23 @@ import {
     StyleSheet,
     StatusBar,
     Alert,
-    SafeAreaView,
     ScrollView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+//import for theme
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { useTheme } from '@react-navigation/native';
 
+//import redux
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '../redux/actions';
+
+//import screen
+import LoadingScreen from './LoadingScreen';
 
 function SignInScreen({ navigation }) {
     const { colors } = useTheme();
@@ -36,8 +42,24 @@ function SignInScreen({ navigation }) {
 
     const user = useSelector((state) => state.authReducer);
 
+    useEffect(() => {
+        if (user.isLoggedIn) {
+            setTimeout(() => {
+                navigation.navigate('ProfileScreen');
+            }, 3000);
+        }
+    });
+
+    if (user.isFetching) {
+        return <LoadingScreen />;
+    }
+
     if (user.isLoggedIn) {
-        navigation.navigate('ProfileScreen');
+        return (
+            <View>
+                <Text>Đăng nhập thành công</Text>
+            </View>
+        );
     }
 
     const validateEmail = (email) => {

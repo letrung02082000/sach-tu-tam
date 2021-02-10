@@ -7,8 +7,6 @@ import { useSelector } from 'react-redux';
 export default function CustomTabBar(props) {
     const { state, descriptors, navigation } = props;
 
-    const user = useSelector((state) => state.authReducer);
-
     const selectedIndex = state.index;
 
     const navigateToHomeScreen = () => {
@@ -16,11 +14,7 @@ export default function CustomTabBar(props) {
     };
 
     const navigateToProfileScreen = () => {
-        if (user.isLoggedIn) {
-            navigation.navigate('ProfileScreen');
-        } else {
-            navigation.navigate('SignInScreen');
-        }
+        navigation.navigate('ProfileScreen');
     };
 
     const navigateToScanScreen = () => {
