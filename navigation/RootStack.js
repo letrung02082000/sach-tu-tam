@@ -5,6 +5,7 @@ import HomeTabs from './HomeTabs';
 
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
+import CustomTabHeader from '../components/CustomTabHeader';
 
 const Stack = createStackNavigator();
 

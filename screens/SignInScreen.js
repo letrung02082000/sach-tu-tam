@@ -45,7 +45,7 @@ function SignInScreen({ navigation }) {
     useEffect(() => {
         if (user.isLoggedIn) {
             setTimeout(() => {
-                navigation.navigate('ProfileScreen');
+                navigation.navigate('ProfileStackScreen');
             }, 3000);
         }
     });
@@ -122,7 +122,7 @@ function SignInScreen({ navigation }) {
 
     return (
         <SafeAreaView>
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps={'handled'}>
                 <View style={styles.container}>
                     <StatusBar
                         backgroundColor='#009387'

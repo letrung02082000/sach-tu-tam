@@ -10,11 +10,11 @@ export default function CustomTabBar(props) {
     const selectedIndex = state.index;
 
     const navigateToHomeScreen = () => {
-        navigation.navigate('HomeScreen');
+        navigation.navigate('HomeStackScreen');
     };
 
     const navigateToProfileScreen = () => {
-        navigation.navigate('ProfileScreen');
+        navigation.navigate('ProfileStackScreen');
     };
 
     const navigateToScanScreen = () => {

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '../redux/actions';
 
 export default function ProfileScreen({ navigation }) {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const user = useSelector((state) => state.authReducer);
 
     const dispatch = useDispatch();
 
@@ -21,23 +21,22 @@ export default function ProfileScreen({ navigation }) {
         }, 3000);
     };
 
-    if (!isLoggedIn) {
+    if (user.isLoggedIn) {
         return (
-            <SafeAreaView>
-                <ScrollView>
-                    <Text style={styles.headerTitle}>Cá nhân</Text>
-                    <Text>Chào mừng bạn đến với Sách Từ Tâm</Text>
-                    <Button title='Đăng nhập/Đăng ký' onPress={handleLogin} />
-                </ScrollView>
-            </SafeAreaView>
+            <View>
+                <Text>Đăng nhập thành công</Text>
+                <Button title='Đăng xuất' onPress={handleLogout} />
+            </View>
         );
     }
 
     return (
-        <View>
-            <Text>Đăng nhập thành công</Text>
-            <Button title='Đăng xuất' onPress={handleLogout} />
-        </View>
+        <SafeAreaView>
+            <ScrollView>
+                <Text>Chào mừng bạn đến với Sách Từ Tâm</Text>
+                <Button title='Đăng nhập/Đăng ký' onPress={handleLogin} />
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 

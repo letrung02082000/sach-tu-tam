@@ -5,7 +5,7 @@ export const userApi = {
     register,
 };
 
-const apiUrl = 'http://192.168.43.212:3000/api';
+const apiUrl = 'https://sach-tu-tam.herokuapp.com/api';
 
 async function login(email, password) {
     return new Promise((resolve, reject) => {

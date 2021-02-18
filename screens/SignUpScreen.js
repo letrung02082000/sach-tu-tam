@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
-    Button,
     TouchableOpacity,
     TextInput,
     Platform,
@@ -142,7 +141,7 @@ function SignUpScreen({ navigation }) {
 
     return (
         <SafeAreaView>
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps={'handled'}>
                 <View style={styles.container}>
                     <StatusBar
                         backgroundColor='#009387'
