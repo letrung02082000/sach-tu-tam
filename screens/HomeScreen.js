@@ -27,7 +27,9 @@ export default function HomeScreen({ navigation }) {
         return (
             <Item
                 item={item}
-                onPress={() => setSelectedId(item.id)}
+                onPress={() =>
+                    navigation.navigate('DetailScreen', { book: item })
+                }
                 style={{ backgroundColor }}
             />
         );

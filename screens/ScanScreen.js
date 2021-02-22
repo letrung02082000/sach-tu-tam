@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import {
+    View,
+    Text,
+    Button,
+    StyleSheet,
+    ActivityIndicator,
+    Alert,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { bookApi } from '../api';
 
 export default function ScanScreen({ navigation }) {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
+    const [isFetching, setIsFetching] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -17,7 +26,25 @@ export default function ScanScreen({ navigation }) {
 
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
-        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+        setIsFetching(true);
+        bookApi
+            .getBookBySku(data.toString())
+            .then((response) => {
+                setIsFetching(false);
+                //console.log(response);
+                if (response.type == 'Valid') {
+                    navigation.navigate('DetailScreen', {
+                        book: response.data[0],
+                    });
+                } else {
+                    Alert.alert('Không tìm thấy sách trong kho!');
+                }
+            })
+            .catch((error) => {
+                setIsFetching(false);
+                console.log(error);
+                Alert.alert(`${error}`);
+            });
     };
 
     if (hasPermission === null) {
@@ -29,11 +56,22 @@ export default function ScanScreen({ navigation }) {
             </SafeAreaView>
         );
     }
+
     if (hasPermission === false) {
         return (
             <SafeAreaView>
                 <View>
                     <Text>No access to camera</Text>
+                </View>
+            </SafeAreaView>
+        );
+    }
+
+    if (isFetching) {
+        return (
+            <SafeAreaView>
+                <View>
+                    <Text>Scan successfully. Waiting for fetching data...</Text>
                 </View>
             </SafeAreaView>
         );

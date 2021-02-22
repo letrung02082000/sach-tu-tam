@@ -5,7 +5,7 @@ import HomeTabs from './HomeTabs';
 
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
-import CustomTabHeader from '../components/CustomTabHeader';
+import DetailScreen from '../screens/DetailScreen';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +26,11 @@ export default function RootStack() {
                 name='SignUpScreen'
                 component={SignUpScreen}
                 options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name='DetailScreen'
+                component={DetailScreen}
+                options={{ headerShown: true }}
             />
         </Stack.Navigator>
     );
