@@ -6,6 +6,8 @@ import {
     StyleSheet,
     StatusBar,
     ActivityIndicator,
+    Dimensions,
+    Image,
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,59 +15,66 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { bookActions } from '../redux/actions/book.actions';
 
-const Item = ({ item, onPress, style }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-        <Text style={styles.title}>{item.name}</Text>
-    </TouchableOpacity>
-);
+const domainUrl = 'https://sach-tu-tam.herokuapp.com';
 
-const renderFooter = (loadingMore) => {
-    if (!loadingMore) return null;
-
+const Item = ({ item, onPress, style }) => {
+    const imgUrl = `${domainUrl}/${item.imageurl}`;
     return (
-        <View
-            style={{
-                position: 'relative',
-                width: 150,
-                height: 50,
-                paddingVertical: 20,
-                borderTopWidth: 1,
-                marginTop: 10,
-                marginBottom: 10,
-                borderColor: '#000',
-            }}
-        >
-            <ActivityIndicator animating size='large' />
-        </View>
+        <TouchableOpacity onPress={onPress}>
+            <View style={[styles.item, style]}>
+                <Image
+                    style={{
+                        width: '100%',
+                        height: 210,
+                        resizeMode: 'cover',
+                    }}
+                    source={{
+                        uri: imgUrl,
+                    }}
+                />
+                <Text style={styles.title}>{item.name}</Text>
+            </View>
+        </TouchableOpacity>
     );
 };
 
 export default function HomeScreen({ navigation }) {
-    const [selectedId, setSelectedId] = useState(null);
+    const window = Dimensions.get('window');
 
     const dispatch = useDispatch();
+
     const allBooks = useSelector((state) => state.bookReducer);
     const currentPage = useSelector((state) => state.bookReducer.currentPage);
-    //const loadingMore = useSelector((state) => state.bookReducer.loadingMore);
-    //const endOfList = useSelector((state) => state.bookReducer.endOfList);
+    const endOfList = useSelector((state) => state.bookReducer.endOfList);
+
+    const renderFooter = () => {
+        if (endOfList) return null;
+        return (
+            <View
+                style={{
+                    height: 150,
+                    width: window.width,
+                }}
+            >
+                <ActivityIndicator size='small' color='#0000ff' />
+            </View>
+        );
+    };
+
     const bookPerPage = 10;
 
     const handleLoadMore = () => {
-        //if (endOfList) return;
-
         dispatch(bookActions.loadMoreAction(currentPage + 1, bookPerPage));
     };
 
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
-
         return (
             <Item
                 item={item}
                 onPress={() =>
                     navigation.navigate('DetailScreen', { book: item })
                 }
-                style={{ backgroundColor }}
+                style={{ backgroundColor: '#ccc', width: window.width / 2 }}
             />
         );
     };
@@ -93,10 +102,10 @@ export default function HomeScreen({ navigation }) {
                     data={allBooks.data}
                     renderItem={renderItem}
                     keyExtractor={(item) => item._id}
-                    extraData={selectedId}
                     onEndReachedThreshold={0.5}
                     onEndReached={handleLoadMore}
-                    //ListFooterComponent={() => renderFooter(loadingMore)}
+                    ListFooterComponent={() => renderFooter()}
+                    numColumns={2}
                 />
             )}
         </SafeAreaView>
@@ -114,11 +123,11 @@ const styles = StyleSheet.create({
         marginTop: StatusBar.currentHeight || 0,
     },
     item: {
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
+        padding: 5,
+        //marginVertical: 8,
+        //marginHorizontal: 16,
     },
     title: {
-        fontSize: 32,
+        fontSize: 16,
     },
 });

@@ -52,8 +52,6 @@ export function bookReducer(state = initalState, action) {
         case bookConstants.LOAD_MORE_END:
             return {
                 ...state,
-                loadingMore: false,
-                hasError: false,
                 endOfList: true,
             };
         default:

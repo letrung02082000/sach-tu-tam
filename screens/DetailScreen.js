@@ -31,7 +31,6 @@ export default function DetailScreen({ route, navigation }) {
         <SafeAreaView>
             <View style={styles.container}>
                 <ScrollView>
-                    <Text>{book.name}</Text>
                     <Image
                         style={{
                             width: imgWidth,
@@ -42,7 +41,7 @@ export default function DetailScreen({ route, navigation }) {
                             uri: imgUrl,
                         }}
                     />
-
+                    <Text>{book.name}</Text>
                     <Text>{book.description}</Text>
                 </ScrollView>
                 <TouchableOpacity style={styles.positionInBottom}>
