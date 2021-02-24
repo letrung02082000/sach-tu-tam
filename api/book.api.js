@@ -7,9 +7,9 @@ export const bookApi = {
 
 const apiUrl = 'https://sach-tu-tam.herokuapp.com/api';
 
-async function getAllBooks() {
+async function getAllBooks(page, limit) {
     return new Promise((resolve, reject) => {
-        axios.get(`${apiUrl}/book/getAll`).then(
+        axios.get(`${apiUrl}/book/query?page=${page}&limit=${limit}`).then(
             (response) => {
                 return resolve(response.data);
             },

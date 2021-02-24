@@ -3,13 +3,14 @@ import { bookApi } from '../../api';
 
 export const bookActions = {
     getAllBooksAction,
+    loadMoreAction,
 };
 
-function getAllBooksAction() {
+function getAllBooksAction(page, limit) {
     return async (dispatch) => {
         dispatch(getAllBooksRequest());
         bookApi
-            .getAllBooks()
+            .getAllBooks(page, limit)
             .then((response) => {
                 if (response.type == 'Valid') {
                     dispatch(getAllBooksSuccess(response.data));
@@ -23,24 +24,71 @@ function getAllBooksAction() {
                 dispatch(getAllBooksFailure({ error: 'getAllBooks api fail' }));
             });
     };
+
+    function getAllBooksRequest() {
+        return {
+            type: bookConstants.GET_ALL_BOOKS_REQUEST,
+        };
+    }
+
+    function getAllBooksSuccess(data) {
+        return {
+            type: bookConstants.GET_ALL_BOOKS_SUCCESS,
+            payload: data,
+        };
+    }
+
+    function getAllBooksFailure(error) {
+        return {
+            type: bookConstants.GET_ALL_BOOKS_FAILURE,
+            payload: error,
+        };
+    }
 }
 
-function getAllBooksRequest() {
-    return {
-        type: bookConstants.GET_ALL_BOOKS_REQUEST,
+function loadMoreAction(page, limit) {
+    return async (dispatch) => {
+        dispatch(loadMoreRequest());
+        bookApi
+            .getAllBooks(page, limit)
+            .then((response) => {
+                if (response.type == 'Valid') {
+                    console.log(page);
+                    dispatch(loadMoreSuccess(response.data));
+                } else {
+                    console.log('invalid');
+                    //dispatch(loadMoreEnd());
+                    //dispatch(loadMoreSuccess(response.data));
+                }
+            })
+            .catch((error) => {
+                dispatch(loadMoreFailure({ error: 'loadMoreBooks api fail' }));
+            });
     };
-}
 
-function getAllBooksSuccess(data) {
-    return {
-        type: bookConstants.GET_ALL_BOOKS_SUCCESS,
-        payload: data,
-    };
-}
+    function loadMoreRequest() {
+        return {
+            type: bookConstants.LOAD_MORE_REQUEST,
+        };
+    }
 
-function getAllBooksFailure(error) {
-    return {
-        type: bookConstants.GET_ALL_BOOKS_FAILURE,
-        payload: error,
-    };
+    function loadMoreSuccess(data) {
+        return {
+            type: bookConstants.LOAD_MORE_SUCCESS,
+            payload: data,
+        };
+    }
+
+    function loadMoreFailure(error) {
+        return {
+            type: bookConstants.LOAD_MORE_FAILURE,
+            payload: error,
+        };
+    }
+
+    function loadMoreEnd() {
+        return {
+            type: bookConstants.LOAD_MORE_END,
+        };
+    }
 }
