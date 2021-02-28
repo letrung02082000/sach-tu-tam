@@ -11,7 +11,7 @@ export default function HomeStack() {
             <Stack.Screen
                 name='HomeScreen'
                 component={HomeScreen}
-                options={{ title: 'Trang chủ' }}
+                options={{ headerShown: false }}
             />
             <Stack.Screen name='AllBooksScreen' component={AllBooksScreen} />
         </Stack.Navigator>

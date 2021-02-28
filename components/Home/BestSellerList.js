@@ -25,18 +25,19 @@ function BestSellerList() {
                 onPress={() =>
                     navigation.navigate('DetailScreen', { book: item })
                 }
-                style={{ width: window.width / 2 }}
+                style={{ width: (window.width * 7) / 16 }}
             />
         );
     };
 
     return (
-        <View style={{ height: 250 }}>
+        <View>
             <FlatList
                 data={data}
                 horizontal={true}
                 keyExtractor={(item) => item._id.toString()}
                 renderItem={renderItem}
+                showsHorizontalScrollIndicator={false}
             />
         </View>
     );

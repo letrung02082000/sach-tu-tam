@@ -12,6 +12,9 @@ import {
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { SearchBar } from 'react-native-elements';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { bookActions } from '../redux/actions/book.actions';
@@ -91,15 +94,51 @@ export default function HomeScreen({ navigation }) {
 
     if (allBooks.isFetching) {
         return (
-            <View>
-                <Text>is fetching...</Text>
-            </View>
+            <SafeAreaView>
+                <View>
+                    <Text>is fetching...</Text>
+                </View>
+            </SafeAreaView>
         );
     }
 
     return (
         <SafeAreaView>
             <View>
+                <View style={styles.headerContainer}>
+                    <TouchableOpacity>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                backgroundColor: '#fff',
+                                color: '#ccc',
+                                height: 39,
+                                width: 250,
+                                borderRadius: 3,
+                                justifyContent: 'flex-start',
+                                alignItems: 'center',
+                                paddingHorizontal: 5,
+                                marginHorizontal: 7,
+                            }}
+                        >
+                            <FontAwesome name='search' />
+                            <Text>Bạn cần tìm sách gì?</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity>
+                            <FontAwesome5 name='bell' color='#fff' size={25} />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <FontAwesome
+                                name='shopping-cart'
+                                color='#fff'
+                                size={25}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
                 {allBooks.hasError ? (
                     <Text>Some errors occured</Text>
                 ) : (
@@ -112,6 +151,7 @@ export default function HomeScreen({ navigation }) {
                         ListFooterComponent={() => renderFooter()}
                         numColumns={2}
                         ListHeaderComponent={Header}
+                        showsVerticalScrollIndicator={false}
                     />
                 )}
             </View>
@@ -120,10 +160,13 @@ export default function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    headerTitle: {
+    headerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         backgroundColor: 'blue',
-        color: '#fff',
         textAlign: 'center',
+        height: 55,
     },
     container: {
         flex: 1,
@@ -137,4 +180,5 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 16,
     },
+    searchContainer: {},
 });
