@@ -8,7 +8,11 @@ const Stack = createStackNavigator();
 export default function HomeStack() {
     return (
         <Stack.Navigator>
-            <Stack.Screen name='HomeScreen' component={HomeScreen} />
+            <Stack.Screen
+                name='HomeScreen'
+                component={HomeScreen}
+                options={{ title: 'Trang chủ' }}
+            />
             <Stack.Screen name='AllBooksScreen' component={AllBooksScreen} />
         </Stack.Navigator>
     );

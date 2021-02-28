@@ -9,24 +9,20 @@ export const bookActions = {
 function getAllBooksAction(page, limit) {
     return async (dispatch) => {
         dispatch(getAllBooksRequest());
-        setTimeout(() => {
-            bookApi
-                .getAllBooks(page, limit)
-                .then((response) => {
-                    if (response.type == 'Valid') {
-                        dispatch(getAllBooksSuccess(response.data));
-                    } else {
-                        dispatch(
-                            getAllBooksFailure({ error: 'Invalid getAllBooks' })
-                        );
-                    }
-                })
-                .catch((error) => {
+        bookApi
+            .getAllBooks(page, limit)
+            .then((response) => {
+                if (response.type == 'Valid') {
+                    dispatch(getAllBooksSuccess(response.data));
+                } else {
                     dispatch(
-                        getAllBooksFailure({ error: 'getAllBooks api fail' })
+                        getAllBooksFailure({ error: 'Invalid getAllBooks' })
                     );
-                });
-        }, 1500);
+                }
+            })
+            .catch((error) => {
+                dispatch(getAllBooksFailure({ error: 'getAllBooks api fail' }));
+            });
     };
 
     function getAllBooksRequest() {

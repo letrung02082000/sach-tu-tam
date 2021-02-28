@@ -8,35 +8,40 @@ import {
     ActivityIndicator,
     Dimensions,
     Image,
+    ScrollView,
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { bookActions } from '../redux/actions/book.actions';
+import { bestsellerActions } from '../redux/actions/bestseller.actions';
 
-const domainUrl = 'https://sach-tu-tam.herokuapp.com';
+import Header from '../components/Home/Header';
+import BookItem from '../components/Home/BookItem';
 
-const Item = ({ item, onPress, style }) => {
-    const imgUrl = `${domainUrl}/${item.imageurl}`;
-    return (
-        <TouchableOpacity onPress={onPress}>
-            <View style={[styles.item, style]}>
-                <Image
-                    style={{
-                        width: '100%',
-                        height: 210,
-                        resizeMode: 'cover',
-                    }}
-                    source={{
-                        uri: imgUrl,
-                    }}
-                />
-                <Text style={styles.title}>{item.name}</Text>
-            </View>
-        </TouchableOpacity>
-    );
-};
+// const domainUrl = 'https://sach-tu-tam.herokuapp.com';
+
+// const Item = ({ item, onPress, style }) => {
+//     const imgUrl = `${domainUrl}/${item.imageurl}`;
+//     return (
+//         <TouchableOpacity onPress={onPress}>
+//             <View style={[styles.item, style]}>
+//                 <Image
+//                     style={{
+//                         width: '100%',
+//                         height: 210,
+//                         resizeMode: 'cover',
+//                     }}
+//                     source={{
+//                         uri: imgUrl,
+//                     }}
+//                 />
+//                 <Text style={styles.title}>{item.name}</Text>
+//             </View>
+//         </TouchableOpacity>
+//     );
+// };
 
 export default function HomeScreen({ navigation }) {
     const window = Dimensions.get('window');
@@ -69,18 +74,19 @@ export default function HomeScreen({ navigation }) {
 
     const renderItem = ({ item }) => {
         return (
-            <Item
+            <BookItem
                 item={item}
                 onPress={() =>
                     navigation.navigate('DetailScreen', { book: item })
                 }
-                style={{ backgroundColor: '#ccc', width: window.width / 2 }}
+                style={{ width: window.width / 2 }}
             />
         );
     };
 
     useEffect(() => {
         dispatch(bookActions.getAllBooksAction(currentPage, bookPerPage));
+        dispatch(bestsellerActions.getBestseller());
     }, []);
 
     if (allBooks.isFetching) {
@@ -93,21 +99,22 @@ export default function HomeScreen({ navigation }) {
 
     return (
         <SafeAreaView>
-            <Text style={styles.headerTitle}>Sách Từ Tâm</Text>
-            <Text>Tất cả sách</Text>
-            {allBooks.hasError ? (
-                <Text>Some errors occured</Text>
-            ) : (
-                <FlatList
-                    data={allBooks.data}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item._id}
-                    onEndReachedThreshold={0.5}
-                    onEndReached={handleLoadMore}
-                    ListFooterComponent={() => renderFooter()}
-                    numColumns={2}
-                />
-            )}
+            <View>
+                {allBooks.hasError ? (
+                    <Text>Some errors occured</Text>
+                ) : (
+                    <FlatList
+                        data={allBooks.data}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item._id}
+                        onEndReachedThreshold={0.5}
+                        onEndReached={handleLoadMore}
+                        ListFooterComponent={() => renderFooter()}
+                        numColumns={2}
+                        ListHeaderComponent={Header}
+                    />
+                )}
+            </View>
         </SafeAreaView>
     );
 }
