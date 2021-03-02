@@ -10,6 +10,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { cartActions } from '../redux/actions';
+
 const domainUrl = 'https://sach-tu-tam.herokuapp.com';
 
 export default function DetailScreen({ route, navigation }) {
@@ -26,6 +29,18 @@ export default function DetailScreen({ route, navigation }) {
         setImgHeight(imageHeight);
         setImgWidth(screenWidth);
     });
+
+    const dispatch = useDispatch();
+    const cart = useSelector((state) => state.cartReducer);
+
+    const handleBuyBook = () => {
+        for (var item of cart) {
+            if (item._id.toString() == book._id.toString()) {
+                return;
+            }
+        }
+        dispatch(cartActions.addToCartAction(book));
+    };
 
     return (
         <SafeAreaView>
@@ -44,7 +59,10 @@ export default function DetailScreen({ route, navigation }) {
                     <Text>{book.name}</Text>
                     <Text>{book.description}</Text>
                 </ScrollView>
-                <TouchableOpacity style={styles.positionInBottom}>
+                <TouchableOpacity
+                    style={styles.positionInBottom}
+                    onPress={handleBuyBook}
+                >
                     <Text>Mua sách</Text>
                 </TouchableOpacity>
             </View>

@@ -4,42 +4,43 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import RootStack from './navigation/RootStack';
-import store from './redux/store';
+import { store, persistor } from './redux/store';
+
+import { PersistGate } from 'redux-persist/integration/react';
 
 export default function App() {
-    const [isLoading, setIsLoading] = useState(false);
-    const [userToken, setUserToken] = useState(null);
-
     const navigationRef = useRef();
     const routeNameRef = useRef();
 
-    if (isLoading) {
+    const LoadingView = () => {
         return (
             <View>
                 <ActivityIndicator size='small' />
             </View>
         );
-    }
+    };
 
     return (
         <Provider store={store}>
-            <SafeAreaProvider>
-                <NavigationContainer
-                    ref={navigationRef}
-                    onReady={() =>
-                        (routeNameRef.current = navigationRef.current.getCurrentRoute().name)
-                    }
-                    onStateChange={async () => {
-                        const previousRouteName = routeNameRef.current;
-                        const currentRouteName = navigationRef.current.getCurrentRoute()
-                            .name;
+            <PersistGate loading={<LoadingView />} persistor={persistor}>
+                <SafeAreaProvider>
+                    <NavigationContainer
+                        ref={navigationRef}
+                        onReady={() =>
+                            (routeNameRef.current = navigationRef.current.getCurrentRoute().name)
+                        }
+                        onStateChange={async () => {
+                            const previousRouteName = routeNameRef.current;
+                            const currentRouteName = navigationRef.current.getCurrentRoute()
+                                .name;
 
-                        routeNameRef.current = currentRouteName;
-                    }}
-                >
-                    <RootStack />
-                </NavigationContainer>
-            </SafeAreaProvider>
+                            routeNameRef.current = currentRouteName;
+                        }}
+                    >
+                        <RootStack />
+                    </NavigationContainer>
+                </SafeAreaProvider>
+            </PersistGate>
         </Provider>
     );
 }

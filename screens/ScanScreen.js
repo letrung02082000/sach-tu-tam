@@ -78,22 +78,18 @@ export default function ScanScreen({ navigation }) {
     }
 
     return (
-        <SafeAreaView>
-            <View style={styles.container}>
-                <BarCodeScanner
-                    onBarCodeScanned={
-                        scanned ? undefined : handleBarCodeScanned
-                    }
-                    style={StyleSheet.absoluteFillObject}
+        <View style={styles.container}>
+            <BarCodeScanner
+                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                style={StyleSheet.absoluteFillObject}
+            />
+            {scanned && (
+                <Button
+                    title={'Tap to Scan Again'}
+                    onPress={() => setScanned(false)}
                 />
-                {scanned && (
-                    <Button
-                        title={'Tap to Scan Again'}
-                        onPress={() => setScanned(false)}
-                    />
-                )}
-            </View>
-        </SafeAreaView>
+            )}
+        </View>
     );
 }
 

@@ -7,10 +7,9 @@ import {
     StatusBar,
     ActivityIndicator,
     Dimensions,
-    Image,
-    ScrollView,
+    TouchableWithoutFeedback,
+    FlatList,
 } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SearchBar } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -102,11 +101,17 @@ export default function HomeScreen({ navigation }) {
         );
     }
 
+    const navigateToSearchScreen = () => navigation.navigate('SearchScreen');
+    const navigateToCartScreen = () => navigation.navigate('CartScreen');
+
     return (
         <SafeAreaView>
             <View>
                 <View style={styles.headerContainer}>
-                    <TouchableOpacity>
+                    <TouchableWithoutFeedback
+                        delayPressIn={0}
+                        onPress={navigateToSearchScreen}
+                    >
                         <View
                             style={{
                                 flexDirection: 'row',
@@ -124,12 +129,12 @@ export default function HomeScreen({ navigation }) {
                             <FontAwesome name='search' />
                             <Text>Bạn cần tìm sách gì?</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableWithoutFeedback>
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity>
                             <FontAwesome5 name='bell' color='#fff' size={25} />
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={navigateToCartScreen}>
                             <FontAwesome
                                 name='shopping-cart'
                                 color='#fff'
@@ -164,7 +169,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'blue',
+        backgroundColor: '#009387',
         textAlign: 'center',
         height: 55,
     },

@@ -6,6 +6,8 @@ import HomeTabs from './HomeTabs';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import DetailScreen from '../screens/DetailScreen';
+import SearchScreen from '../screens/SearchScreen';
+import CartScreen from '../screens/CartScreen';
 
 const Stack = createStackNavigator();
 
@@ -31,6 +33,16 @@ export default function RootStack() {
                 name='DetailScreen'
                 component={DetailScreen}
                 options={{ headerShown: true }}
+            />
+            <Stack.Screen
+                name='SearchScreen'
+                component={SearchScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name='CartScreen'
+                component={CartScreen}
+                options={{ headerShown: true, title: 'Giỏ hàng' }}
             />
         </Stack.Navigator>
     );
