@@ -16,16 +16,39 @@ const CartItem = ({ book }) => {
     const dispatch = useDispatch();
 
     const [quantity, setQuantity] = useState(1);
+    const [msg, setMsg] = useState('');
+
+    useEffect(() => {
+        if (book.quantity <= 0) {
+            setQuantity(0);
+            setMsg('Sản phẩm hiện đã hết hàng.');
+        }
+    });
 
     const decreaseQuantity = () => {
         if (quantity <= 1) return;
 
-        if (quantity >= 5) return;
+        if (quantity <= 5) {
+            setMsg('');
+        }
 
         setQuantity(quantity - 1);
     };
 
     const increaseQuantity = () => {
+        if (quantity == 0) return;
+
+        if (quantity >= 5) {
+            setMsg('Số lượng không được vượt quá 5.');
+            setQuantity(5);
+            return;
+        }
+
+        if (quantity >= book.quantity) {
+            setMsg('Đã đạt số lượng còn lại trong kho.');
+            setQuantity(book.quantity);
+            return;
+        }
         setQuantity(quantity + 1);
     };
 
@@ -60,6 +83,7 @@ const CartItem = ({ book }) => {
                         <Feather name='plus' size={25} />
                     </TouchableOpacity>
                 </View>
+                <Text>{msg}</Text>
             </View>
             <View
                 style={{
