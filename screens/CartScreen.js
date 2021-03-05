@@ -11,7 +11,6 @@ import { cartConstants } from '../redux/constants';
 
 const CartItem = ({ book }) => {
     const imageUrl = `https://sach-tu-tam.herokuapp.com/${book.imageurl}`;
-    const window = Dimensions.get('window');
 
     const dispatch = useDispatch();
 
@@ -19,9 +18,9 @@ const CartItem = ({ book }) => {
     const [msg, setMsg] = useState('');
 
     useEffect(() => {
-        if (book.quantity <= 0) {
-            setQuantity(0);
+        if (book.quantity == 0) {
             setMsg('Sản phẩm hiện đã hết hàng.');
+            setQuantity(0);
         }
     });
 
@@ -102,18 +101,17 @@ const CartItem = ({ book }) => {
 
 function CartScreen() {
     const cart = useSelector((state) => state.cartReducer);
+    const dispatch = useDispatch();
 
-    const renderItem = ({ item }) => {
-        return <CartItem book={item} />;
-    };
+    useEffect(() => {
+        dispatch(cartActions.refreshCartAction(cart));
+    }, []);
 
     return (
         <View>
-            <FlatList
-                data={cart}
-                renderItem={renderItem}
-                keyExtractor={(item) => item._id.toString()}
-            />
+            {cart.map((item) => (
+                <CartItem key={item._id} book={item} />
+            ))}
         </View>
     );
 }

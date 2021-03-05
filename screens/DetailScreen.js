@@ -50,7 +50,7 @@ export default function DetailScreen({ route, navigation }) {
         }
         for (var item of cart) {
             if (item._id.toString() == book._id.toString()) {
-                setMsg('Bạn đã thêm quyển sách này vào giỏ hàng rồi');
+                setMsg('Sách đã có trong giỏ hàng');
                 setModalVisible(true);
                 return;
             }
@@ -76,18 +76,70 @@ export default function DetailScreen({ route, navigation }) {
                     style={styles.modalContainer}
                 >
                     <View style={styles.modalViewContainer}>
-                        <TouchableOpacity
-                            style={styles.closeModal}
-                            onPress={() => setModalVisible(false)}
-                        >
-                            <Feather
-                                name='x'
-                                size={21}
-                                color='#000'
-                                style={{ padding: 5 }}
+                        <View style={styles.modalHeader}>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    marginLeft: 10,
+                                }}
+                            >
+                                <Feather
+                                    name='check-circle'
+                                    color='#006600'
+                                    size={15}
+                                />
+                                <Text style={styles.modalMsg}>{msg}</Text>
+                            </View>
+                            <TouchableOpacity
+                                style={styles.closeModal}
+                                onPress={() => setModalVisible(false)}
+                            >
+                                <Feather
+                                    name='x'
+                                    size={17}
+                                    color='#000'
+                                    style={{ padding: 5 }}
+                                />
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={{ flexDirection: 'row' }}>
+                            <Image
+                                style={{
+                                    height: 100,
+                                    width: 70,
+                                    resizeMode: 'contain',
+                                }}
+                                source={{ uri: imgUrl }}
                             />
-                        </TouchableOpacity>
-                        <Text style={styles.modalMsg}>{msg}</Text>
+                            <View
+                                style={{
+                                    justifyContent: 'flex-start',
+                                    flex: 1,
+                                    padding: 5,
+                                }}
+                            >
+                                <Text numberOfLines={2} fontSize={15}>
+                                    {book.name}
+                                </Text>
+                                <Text
+                                    style={{
+                                        fontSize: 17,
+                                        fontWeight: 'bold',
+                                    }}
+                                >
+                                    {book.price}&nbsp;
+                                    <Text
+                                        style={{
+                                            textDecorationLine: 'underline',
+                                        }}
+                                    >
+                                        đ
+                                    </Text>
+                                </Text>
+                            </View>
+                        </View>
 
                         <TouchableOpacity
                             style={styles.goToCartBtn}
@@ -146,7 +198,7 @@ const styles = StyleSheet.create({
     },
 
     modalViewContainer: {
-        height: 210,
+        height: 270,
         backgroundColor: '#fff',
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
@@ -159,6 +211,7 @@ const styles = StyleSheet.create({
         height: 30,
         flexDirection: 'row',
         justifyContent: 'flex-end',
+        alignItems: 'center',
     },
 
     goToCartBtn: {
@@ -168,15 +221,23 @@ const styles = StyleSheet.create({
     goToCartText: {
         fontWeight: '500',
         color: '#fff',
-        backgroundColor: 'red',
-        fontSize: 21,
-        padding: 7,
+        backgroundColor: '#f33f3f',
+        fontSize: 17,
+        padding: 10,
         textAlign: 'center',
-        //borderRadius: 5,
+        borderRadius: 5,
     },
 
     modalMsg: {
         textAlign: 'center',
         fontSize: 15,
+        marginLeft: 7,
+        color: '#006600',
+    },
+
+    modalHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
 });
