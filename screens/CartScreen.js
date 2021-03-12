@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, FlatList, Text, Dimensions } from 'react-native';
+import {
+    View,
+    Image,
+    Text,
+    StyleSheet,
+    Dimensions,
+    Alert,
+    ActivityIndicator,
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,7 +15,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { cartActions } from '../redux/actions/cart.actions';
-import { cartConstants } from '../redux/constants';
+import { bookApi } from '../api';
 
 const CartItem = ({ book }) => {
     const imageUrl = `https://sach-tu-tam.herokuapp.com/${book.imageurl}`;
@@ -99,21 +107,94 @@ const CartItem = ({ book }) => {
     );
 };
 
-function CartScreen() {
-    const cart = useSelector((state) => state.cartReducer);
+function CartScreen({ navigation }) {
+    const [loading, setLoading] = useState(false);
+    const cart = useSelector((state) => state.cartReducer.data);
+    const quantity = useSelector((state) => state.cartReducer.quantity);
     const dispatch = useDispatch();
+
+    const window = Dimensions.get('window');
 
     useEffect(() => {
         dispatch(cartActions.refreshCartAction(cart));
     }, []);
 
+    const orderBooks = async () => {
+        setLoading(true);
+        for (let book of cart) {
+            const response = await bookApi.getBookById(book._id);
+            const newBook = response.data;
+
+            if (!newBook.quantity || newBook.quantity <= 0) {
+                Alert.alert(
+                    `Quyển sách ${newBook.name} hiện đã hết. Vui lòng loại bỏ khỏi giỏ hàng!`
+                );
+                setLoading(false);
+                return;
+            }
+        }
+
+        setLoading(false);
+        navigation.navigate('OrderScreen');
+    };
+
+    const navigateToHomeScreen = () => {
+        navigation.navigate('HomeScreen');
+    };
+
     return (
-        <View>
-            {cart.map((item) => (
-                <CartItem key={item._id} book={item} />
-            ))}
+        <View style={{ flex: 1 }}>
+            {quantity == 0 ? (
+                <View>
+                    <Text>Giỏ hàng trống</Text>
+                    <TouchableOpacity onPress={navigateToHomeScreen}>
+                        <Text>Quay lại trang chủ</Text>
+                    </TouchableOpacity>
+                </View>
+            ) : (
+                <View style={{ flex: 1 }}>
+                    <View>
+                        {cart.map((item) => (
+                            <CartItem key={item._id} book={item} />
+                        ))}
+                    </View>
+                    {loading ? (
+                        <View
+                            style={[
+                                styles.orderButtonContainer,
+                                { width: '100%' },
+                            ]}
+                        >
+                            <ActivityIndicator size='small' color='white' />
+                        </View>
+                    ) : (
+                        <View
+                            style={[
+                                styles.orderButtonContainer,
+                                { width: '100%' },
+                            ]}
+                        >
+                            <TouchableOpacity
+                                onPress={orderBooks}
+                                style={{ width: '100%', height: '100%' }}
+                            >
+                                <Text>Tiến Hành Đặt Sách</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                </View>
+            )}
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    orderButtonContainer: {
+        position: 'absolute',
+        backgroundColor: 'red',
+        bottom: 0,
+        height: 50,
+    },
+});
 
 export default CartScreen;

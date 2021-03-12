@@ -40,7 +40,7 @@ export default function DetailScreen({ route, navigation }) {
     });
 
     const dispatch = useDispatch();
-    const cart = useSelector((state) => state.cartReducer);
+    const cart = useSelector((state) => state.cartReducer.data);
 
     const handleBuyBook = () => {
         if (book.quantity <= 0) {

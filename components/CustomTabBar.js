@@ -17,8 +17,8 @@ export default function CustomTabBar(props) {
         navigation.navigate('ProfileStackScreen');
     };
 
-    const navigateToScanScreen = () => {
-        navigation.navigate('ScanScreen');
+    const navigateToQrCodeScreen = () => {
+        navigation.navigate('QrCodeScreen');
     };
 
     return (
@@ -45,7 +45,7 @@ export default function CustomTabBar(props) {
             </TouchableOpacity>
 
             <TouchableOpacity
-                onPress={navigateToScanScreen}
+                onPress={navigateToQrCodeScreen}
                 activeOpacity={0.6}
                 style={styles.scanButton}
             >

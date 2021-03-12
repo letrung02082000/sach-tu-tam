@@ -25,6 +25,7 @@ export default function ScanScreen({ navigation }) {
     }, []);
 
     const handleBarCodeScanned = ({ type, data }) => {
+        console.log(data);
         setScanned(true);
         setIsFetching(true);
         bookApi

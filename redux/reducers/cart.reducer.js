@@ -1,20 +1,36 @@
 import { cartConstants } from '../constants';
 
-const initialState = [];
+const initialState = {
+    quantity: 0,
+    data: [],
+};
 
 export function cartReducer(state = initialState, action) {
     switch (action.type) {
         case cartConstants.ADD_TO_CART:
-            return [...state, action.payload];
+            const newData = [...state.data, action.payload];
+            return {
+                data: newData,
+                quantity: state.quantity + 1,
+            };
         case cartConstants.REMOVE_FROM_CART: {
-            const newState = state.filter(
+            const newState = state.data.filter(
                 (value) =>
                     value._id.toString() !== action.payload._id.toString()
             );
-            return newState;
+            console.log(state);
+            console.log(newState);
+            return {
+                data: newState,
+                quantity: newState.length,
+            };
         }
         case cartConstants.REFRESH_CART: {
-            return [...action.payload];
+            console.log(state);
+            return {
+                data: [...action.payload],
+                quantity: action.payload.length,
+            };
         }
         default:
             return state;
