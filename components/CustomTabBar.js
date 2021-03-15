@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 // import Modal from 'react-native-modal';
 
@@ -19,6 +21,14 @@ export default function CustomTabBar(props) {
 
     const navigateToQrCodeScreen = () => {
         navigation.navigate('QrCodeScreen');
+    };
+
+    const navigateToEventScreen = () => {
+        navigation.navigate('EventStackScreen');
+    };
+
+    const navigateToReaderScreen = () => {
+        navigation.navigate('ReaderStackScreen');
     };
 
     return (
@@ -45,16 +55,58 @@ export default function CustomTabBar(props) {
             </TouchableOpacity>
 
             <TouchableOpacity
+                onPress={navigateToEventScreen}
+                activeOpacity={0.6}
+                style={styles.button}
+            >
+                <MaterialCommunityIcons
+                    name='newspaper-variant'
+                    color={selectedIndex == 1 ? '#4287f5' : '#5c5555'}
+                    size={25}
+                />
+                <Text
+                    style={
+                        selectedIndex == 1
+                            ? styles.profileText
+                            : styles.defaultText
+                    }
+                >
+                    Sự kiện
+                </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
                 onPress={navigateToQrCodeScreen}
                 activeOpacity={0.6}
                 style={styles.scanButton}
             >
                 <MaterialCommunityIcons
                     name='barcode-scan'
-                    color={selectedIndex == 1 ? '#4287f5' : '#5c5555'}
+                    color={selectedIndex == 2 ? '#4287f5' : '#5c5555'}
                     size={35}
                     style={styles.scanIcon}
                 />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={navigateToReaderScreen}
+                activeOpacity={0.6}
+                style={styles.button}
+            >
+                <MaterialCommunityIcons
+                    name='heart-circle'
+                    color={selectedIndex == 3 ? '#4287f5' : '#5c5555'}
+                    size={25}
+                />
+                <Text
+                    style={
+                        selectedIndex == 3
+                            ? styles.profileText
+                            : styles.defaultText
+                    }
+                >
+                    Bạn đọc
+                </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -64,12 +116,12 @@ export default function CustomTabBar(props) {
             >
                 <MaterialCommunityIcons
                     name='account-circle'
-                    color={selectedIndex == 2 ? '#4287f5' : '#5c5555'}
+                    color={selectedIndex == 4 ? '#4287f5' : '#5c5555'}
                     size={25}
                 />
                 <Text
                     style={
-                        selectedIndex == 2
+                        selectedIndex == 4
                             ? styles.profileText
                             : styles.defaultText
                     }
@@ -88,6 +140,7 @@ const styles = StyleSheet.create({
         height: 50,
         flexDirection: 'row',
         width: '100%',
+        backgroundColor: '#fff',
     },
 
     button: {
@@ -115,6 +168,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 21,
+        marginHorizontal: 10,
     },
 
     homeText: {

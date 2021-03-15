@@ -91,15 +91,15 @@ export default function HomeScreen({ navigation }) {
         dispatch(bestsellerActions.getBestseller());
     }, []);
 
-    if (allBooks.isFetching) {
-        return (
-            <SafeAreaView>
-                <View>
-                    <Text>is fetching...</Text>
-                </View>
-            </SafeAreaView>
-        );
-    }
+    // if (allBooks.isFetching) {
+    //     return (
+    //         <SafeAreaView>
+    //             <View>
+    //                 <Text>is fetching...</Text>
+    //             </View>
+    //         </SafeAreaView>
+    //     );
+    // }
 
     const navigateToSearchScreen = () => navigation.navigate('SearchScreen');
     const navigateToCartScreen = () => navigation.navigate('CartScreen');

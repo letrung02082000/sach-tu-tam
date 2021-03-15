@@ -13,7 +13,6 @@ export default function HomeStack() {
                 component={HomeScreen}
                 options={{ headerShown: false }}
             />
-            <Stack.Screen name='AllBooksScreen' component={AllBooksScreen} />
         </Stack.Navigator>
     );
 }

@@ -10,6 +10,7 @@ import SearchScreen from '../screens/SearchScreen';
 import CartScreen from '../screens/CartScreen';
 import OrderScreen from '../screens/OrderScreen';
 import ScanScreen from '../screens/ScanScreen';
+import AllCategoriesScreen from '../screens/AllCategoriesScreen';
 
 const Stack = createStackNavigator();
 
@@ -55,6 +56,11 @@ export default function RootStack() {
                 name='ScanScreen'
                 component={ScanScreen}
                 options={{ headerShown: true, title: 'Quét sách' }}
+            />
+            <Stack.Screen
+                name='AllCategoriesScreen'
+                component={AllCategoriesScreen}
+                options={{ headerShown: true, title: 'Tất cả danh mục' }}
             />
         </Stack.Navigator>
     );

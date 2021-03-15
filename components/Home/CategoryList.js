@@ -7,11 +7,16 @@ import {
     Text,
     StyleSheet,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const SeeMoreButton = () => {
+    const navigation = useNavigation();
+    const navigateToAllCategoriesScreen = () =>
+        navigation.navigate('AllCategoriesScreen');
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={navigateToAllCategoriesScreen}>
             <View
                 style={{
                     flex: 1,
@@ -45,36 +50,36 @@ const DATA = [
         id: 1,
         title: 'Kinh tế',
         image:
-            'https://cf.shopee.co.id/file/65164c330fe5dcd4b549c26ba132b082_mdpi',
+            'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_181505.jpg',
         title2: 'Kỹ năng sống',
         image2:
-            'https://cf.shopee.co.id/file/c5b56ff42e59c067f6ff42b7f8bf8ebb_mdpi',
+            'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/u/n/untitled-2_67.jpg',
     },
     {
         id: 2,
         title: 'Văn học',
         title2: 'Học ngoại ngữ',
         image:
-            'https://cf.shopee.co.id/file/28af3bde68e263fbb22cf7e721995aca_mdpi',
+            'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_180771.jpg',
         image2:
-            'https://cf.shopee.co.id/file/45d56e0479139407d21058ebf0db2c18_mdpi',
+            'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_216419.jpg',
     },
     {
         id: 3,
         image:
-            'https://cf.shopee.co.id/file/67f3e3f21980f16e56708f90ac824677_mdpi',
+            'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_222872.jpg',
         title: 'Giáo khoa - giáo trình',
         image2:
-            'https://cf.shopee.co.id/file/1adc3f8eb48e266fbb2c7a6f96b07632_mdpi',
+            'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_195509_1_45299.jpg',
         title2: 'Văn hoá - địa lý',
     },
     {
         id: 4,
         image:
-            'https://cf.shopee.co.id/file/2141bfac013f0ddec9edcead24c5dd3a_mdpi',
+            'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_195509_1_32556.jpg',
         title: 'Khoa học - kỹ thuật',
         image2:
-            'https://cf.shopee.co.id/file/73cd5727e938469f3a76e75063b38651_mdpi',
+            'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/8/9/8936071674074_1_1.jpg',
         title2: 'Lịch sử',
     },
     // {
@@ -141,11 +146,11 @@ export default function CategoryList() {
                     style={{
                         flexDirection: 'row',
                         marginHorizontal: 10,
-                        marginTop: 15,
+                        marginTop: 10,
                         marginBottom: 15,
                         justifyContent: 'center',
-                        width: 85,
-                        height: 85,
+                        width: 100,
+                        height: 100,
                     }}
                 >
                     <View
@@ -157,12 +162,12 @@ export default function CategoryList() {
                     >
                         <Image
                             source={{ uri: item.image }}
-                            style={{ width: 50, height: 50 }}
+                            style={{ width: 75, height: 75 }}
                         />
                         <Text
                             numberOfLines={2}
                             style={{
-                                fontSize: 13,
+                                fontSize: 15,
                                 textAlign: 'center',
                                 color: '#000',
                             }}
@@ -177,8 +182,8 @@ export default function CategoryList() {
                         marginHorizontal: 10,
                         marginBottom: 15,
                         justifyContent: 'center',
-                        width: 85,
-                        height: 85,
+                        width: 100,
+                        height: 100,
                     }}
                 >
                     <View
@@ -190,11 +195,11 @@ export default function CategoryList() {
                     >
                         <Image
                             source={{ uri: item.image2 }}
-                            style={{ width: 50, height: 50 }}
+                            style={{ width: 75, height: 75 }}
                         />
                         <Text
                             style={{
-                                fontSize: 13,
+                                fontSize: 15,
                                 textAlign: 'center',
                                 color: '#000',
                             }}
