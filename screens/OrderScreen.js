@@ -52,15 +52,17 @@ export default function OrderScreen() {
                 <View
                     style={{
                         flex: 1,
-                        marginVertical: 15,
-                        marginHorizontal: 10,
+                        backgroundColor: '#fff',
+                        paddingVertical: 15,
+                        paddingHorizontal: 15,
                     }}
                 >
                     <Text
                         style={{
-                            fontSize: 21,
+                            fontSize: 15,
                             fontWeight: 'bold',
                             marginBottom: 15,
+                            color: '#333333',
                         }}
                     >
                         Số điện thoại liên hệ
@@ -76,59 +78,94 @@ export default function OrderScreen() {
                             height: 50,
                             borderWidth: 1,
                             borderColor: '#ccc',
-                            borderRadius: 10,
+                            borderRadius: 5,
+                            paddingHorizontal: 10,
+                            fontSize: 15,
                         }}
                     />
                 </View>
                 <View
                     style={{
                         flex: 1,
-                        marginVertical: 15,
-                        marginHorizontal: 10,
+                        marginVertical: 10,
+                        paddingVertical: 15,
+                        paddingHorizontal: 15,
+                        backgroundColor: '#fff',
                     }}
                 >
                     <Text
                         style={{
-                            fontSize: 21,
+                            fontSize: 15,
                             fontWeight: 'bold',
                             marginBottom: 15,
+                            color: '#333333',
                         }}
                     >
                         Hình thức nhận sách
                     </Text>
-                </View>
-                <View>
-                    <TouchableOpacity
-                        style={{ flex: 1, flexDirection: 'row' }}
-                        onPress={() => setDeliveryChecked('first')}
-                    >
-                        <RadioButton
-                            value='first'
-                            status={
-                                deliveryChecked === 'first'
-                                    ? 'checked'
-                                    : 'unchecked'
-                            }
+                    <View>
+                        <TouchableOpacity
+                            style={{
+                                flex: 1,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                paddingVertical: 9,
+                                borderRadius: 5,
+                                marginBottom: 5,
+                                backgroundColor:
+                                    deliveryChecked == 'first'
+                                        ? '#e6e6e6'
+                                        : '#fff',
+                            }}
                             onPress={() => setDeliveryChecked('first')}
-                        />
-                        <Text>Nhận sách tại tủ sách</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{ flex: 1, flexDirection: 'row' }}
-                        onPress={() => setDeliveryChecked('second')}
-                    >
-                        <RadioButton
-                            value='second'
-                            status={
-                                deliveryChecked === 'second'
-                                    ? 'checked'
-                                    : 'unchecked'
-                            }
+                        >
+                            <RadioButton
+                                value='first'
+                                status={
+                                    deliveryChecked === 'first'
+                                        ? 'checked'
+                                        : 'unchecked'
+                                }
+                                onPress={() => setDeliveryChecked('first')}
+                            />
+                            <Text
+                                style={{ fontSize: 15, paddingHorizontal: 5 }}
+                            >
+                                Nhận sách tại tủ sách
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                flex: 1,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                paddingVertical: 9,
+                                borderRadius: 5,
+                                backgroundColor:
+                                    deliveryChecked == 'second'
+                                        ? '#e6e6e6'
+                                        : '#fff',
+                            }}
                             onPress={() => setDeliveryChecked('second')}
-                        />
-                        <Text>Giao sách tận nơi</Text>
-                    </TouchableOpacity>
+                        >
+                            <RadioButton
+                                value='second'
+                                status={
+                                    deliveryChecked === 'second'
+                                        ? 'checked'
+                                        : 'unchecked'
+                                }
+                                onPress={() => setDeliveryChecked('second')}
+                            />
+                            <Text
+                                style={{ fontSize: 15, paddingHorizontal: 5 }}
+                            >
+                                Giao sách tận nơi
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
+
                 <View
                     style={{
                         flex: 1,

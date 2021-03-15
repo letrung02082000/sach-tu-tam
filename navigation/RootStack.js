@@ -50,7 +50,17 @@ export default function RootStack() {
             <Stack.Screen
                 name='OrderScreen'
                 component={OrderScreen}
-                options={{ headerShown: true, title: 'Đặt sách' }}
+                options={{
+                    headerShown: true,
+                    title: 'Đặt sách',
+                    headerStyle: { backgroundColor: '#4287f5' },
+                    headerTitleStyle: {},
+                    headerTitleAlign: 'center',
+                    headerStyle: {
+                        backgroundColor: '#66c2ff',
+                    },
+                    headerTintColor: '#fff',
+                }}
             />
             <Stack.Screen
                 name='ScanScreen'
