@@ -4,7 +4,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 const domainUrl = 'https://sach-tu-tam.herokuapp.com';
 
 const BookItem = ({ item, onPress, style }) => {
-    const imgUrl = `${domainUrl}/${item.imageurl}`;
+    const imgUrl = item.imageurl;
     return (
         <TouchableOpacity onPress={onPress}>
             <View style={[styles.item, style]}>
@@ -12,13 +12,15 @@ const BookItem = ({ item, onPress, style }) => {
                     style={{
                         width: '100%',
                         height: 210,
-                        resizeMode: 'cover',
+                        resizeMode: 'contain',
                     }}
                     source={{
                         uri: imgUrl,
                     }}
                 />
-                <Text style={styles.title}>{item.name}</Text>
+                <Text numberOfLines={2} style={styles.title}>
+                    {item.name}
+                </Text>
             </View>
         </TouchableOpacity>
     );
@@ -34,5 +36,6 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 16,
+        textAlign: 'center',
     },
 });

@@ -25,7 +25,9 @@ export default function DetailScreen({ route, navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
 
     const book = route.params.book;
-    const imgUrl = `${domainUrl}/${book.imageurl}`;
+    const imgUrl = book.imageurl;
+
+    console.log(book);
 
     if (!book.quantity) {
         book.quantity = 0;
@@ -129,7 +131,7 @@ export default function DetailScreen({ route, navigation }) {
                                         fontWeight: 'bold',
                                     }}
                                 >
-                                    {book.price}&nbsp;
+                                    {book.newprice}&nbsp;
                                     <Text
                                         style={{
                                             textDecorationLine: 'underline',

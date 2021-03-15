@@ -26,7 +26,7 @@ const CartItem = ({ book }) => {
     const [msg, setMsg] = useState('');
 
     useEffect(() => {
-        if (book.quantity == 0) {
+        if (book.quantity <= 0) {
             setMsg('Sản phẩm hiện đã hết hàng.');
             setQuantity(0);
         }
@@ -112,6 +112,8 @@ function CartScreen({ navigation }) {
     const cart = useSelector((state) => state.cartReducer.data);
     const quantity = useSelector((state) => state.cartReducer.quantity);
     const dispatch = useDispatch();
+
+    console.log(cart);
 
     const window = Dimensions.get('window');
 
