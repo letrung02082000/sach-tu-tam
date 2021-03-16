@@ -21,6 +21,7 @@ import { bestsellerActions } from '../redux/actions/bestseller.actions';
 
 import Header from '../components/Home/Header';
 import BookItem from '../components/Home/BookItem';
+import { favoriteActions } from '../redux/actions/favorite.actions';
 
 // const domainUrl = 'https://sach-tu-tam.herokuapp.com';
 
@@ -89,6 +90,7 @@ export default function HomeScreen({ navigation }) {
     useEffect(() => {
         dispatch(bookActions.getAllBooksAction(currentPage, bookPerPage));
         dispatch(bestsellerActions.getBestseller());
+        dispatch(favoriteActions.getFavorite());
     }, []);
 
     // if (allBooks.isFetching) {
@@ -108,33 +110,46 @@ export default function HomeScreen({ navigation }) {
         <SafeAreaView>
             <View>
                 <View style={styles.headerContainer}>
-                    <TouchableWithoutFeedback
-                        delayPressIn={0}
-                        onPress={navigateToSearchScreen}
-                    >
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                backgroundColor: '#fff',
-                                color: '#ccc',
-                                height: 39,
-                                width: 250,
-                                borderRadius: 3,
-                                justifyContent: 'flex-start',
-                                alignItems: 'center',
-                                paddingHorizontal: 5,
-                                marginHorizontal: 7,
-                            }}
+                    <View style={{ flex: 2 }}>
+                        <TouchableWithoutFeedback
+                            delayPressIn={0}
+                            onPress={navigateToSearchScreen}
                         >
-                            <FontAwesome name='search' />
-                            <Text>Bạn cần tìm sách gì?</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                    <View style={{ flexDirection: 'row' }}>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    backgroundColor: '#fff',
+                                    color: '#ccc',
+                                    height: 39,
+                                    borderRadius: 3,
+                                    justifyContent: 'flex-start',
+                                    alignItems: 'center',
+                                    paddingHorizontal: 15,
+                                    marginHorizontal: 7,
+                                }}
+                            >
+                                <FontAwesome name='search' size={15} />
+                                <Text style={{ marginLeft: 10, fontSize: 15 }}>
+                                    Bạn cần tìm sách gì?
+                                </Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            flex: 1,
+                            justifyContent: 'flex-end',
+                            width: 100,
+                        }}
+                    >
                         <TouchableOpacity>
                             <FontAwesome5 name='bell' color='#fff' size={25} />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={navigateToCartScreen}>
+                        <TouchableOpacity
+                            style={{ marginHorizontal: 25 }}
+                            onPress={navigateToCartScreen}
+                        >
                             <FontAwesome
                                 name='shopping-cart'
                                 color='#fff'
@@ -157,6 +172,10 @@ export default function HomeScreen({ navigation }) {
                         numColumns={2}
                         ListHeaderComponent={Header}
                         showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{
+                            paddingBottom: 150,
+                            backgroundColor: '#fff',
+                        }}
                     />
                 )}
             </View>
@@ -173,17 +192,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         height: 55,
     },
-    container: {
-        flex: 1,
-        marginTop: StatusBar.currentHeight || 0,
-    },
+
     item: {
         padding: 5,
         //marginVertical: 8,
         //marginHorizontal: 16,
     },
+
     title: {
         fontSize: 16,
     },
+
     searchContainer: {},
 });

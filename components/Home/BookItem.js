@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
     item: {
         padding: 5,
         //marginVertical: 8,
-        //marginHorizontal: 16,
+        backgroundColor: '#fff',
+        flex: 1,
     },
     title: {
         fontSize: 16,

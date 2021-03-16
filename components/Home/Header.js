@@ -1,24 +1,10 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import CategoryList from './CategoryList';
 import BestSellerList from './BestSellerList';
-
-// const DATA = [
-//     {
-//         id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-//         title: 'First Item',
-//     },
-//     {
-//         id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-//         title: 'Second Item',
-//     },
-//     {
-//         id: '58694a0f-3da1-471f-bd96-145571e29d72',
-//         title: 'Third Item',
-//     },
-// ];
+import FavoriteList from './FavoriteList';
 
 export default function Header() {
     const navigation = useNavigation();
@@ -42,23 +28,109 @@ export default function Header() {
     };
     return (
         <View>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                }}
-            >
-                <Text>Danh mục nổi bật</Text>
-                <TouchableOpacity onPress={navigateToAllCategoriesScreen}>
-                    <Text>Xem tất cả</Text>
-                </TouchableOpacity>
+            <View style={styles.categoryContainer}>
+                <View
+                    style={{
+                        backgroundColor: '#fff',
+                        borderRadius: 5,
+                        marginTop: 7,
+                        marginHorizontal: 5,
+                        paddingBottom: 10,
+                    }}
+                >
+                    <View style={styles.categoryHeader}>
+                        <Text style={styles.headerText}>Danh mục nổi bật</Text>
+                        <TouchableOpacity
+                            onPress={navigateToAllCategoriesScreen}
+                        >
+                            <Text
+                                style={{
+                                    textTransform: 'uppercase',
+                                    color: '#003399',
+                                    fontWeight: 'bold',
+                                    marginRight: 5,
+                                }}
+                            >
+                                Tất cả
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <CategoryList />
+                </View>
             </View>
-            <CategoryList />
-            <Text>Được yêu thích</Text>
-            <BestSellerList />
-            <Text>Được đọc nhiều</Text>
-            <BestSellerList />
-            <Text>Tất cả sách</Text>
+            <View style={styles.categoryContainer}>
+                <View
+                    style={{
+                        backgroundColor: '#fff',
+                        borderRadius: 5,
+                        marginTop: 7,
+                        marginHorizontal: 5,
+                        paddingBottom: 10,
+                    }}
+                >
+                    <Text
+                        style={[
+                            styles.headerText,
+                            { paddingVertical: 15, paddingHorizontal: 10 },
+                        ]}
+                    >
+                        Được Yêu Thích
+                    </Text>
+                    <FavoriteList />
+                </View>
+            </View>
+            <View style={styles.categoryContainer}>
+                <View
+                    style={{
+                        backgroundColor: '#fff',
+                        borderRadius: 5,
+                        marginVertical: 7,
+                        marginHorizontal: 5,
+                        paddingBottom: 10,
+                    }}
+                >
+                    <Text
+                        style={[
+                            styles.headerText,
+                            { paddingVertical: 15, paddingHorizontal: 10 },
+                        ]}
+                    >
+                        Được Đọc Nhiều
+                    </Text>
+                    <BestSellerList />
+                </View>
+            </View>
+            <View style={styles.allBookHeader}>
+                <Text
+                    style={[
+                        styles.headerText,
+                        { paddingVertical: 15, paddingHorizontal: 10 },
+                    ]}
+                >
+                    Tất Cả Sách
+                </Text>
+            </View>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    categoryContainer: {
+        backgroundColor: '#ccc',
+    },
+
+    categoryHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 9,
+        paddingVertical: 15,
+    },
+
+    headerText: { fontSize: 17, fontWeight: 'bold' },
+
+    allBookHeader: {
+        marginHorizontal: 10,
+        marginTop: 10,
+        backgroundColor: '#fff',
+    },
+});

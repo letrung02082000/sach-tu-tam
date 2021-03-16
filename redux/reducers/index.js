@@ -4,6 +4,7 @@ import { registerReducer } from './register.reducer';
 import { bookReducer } from './book.reducer';
 import { bestsellerReducer } from './bestseller.reducer';
 import { cartReducer } from './cart.reducer';
+import { favoriteReducer } from './favorite.reducer';
 
 const rootReducer = combineReducers({
     authReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
     bookReducer,
     bestsellerReducer,
     cartReducer,
+    favoriteReducer,
 });
 
 export default rootReducer;

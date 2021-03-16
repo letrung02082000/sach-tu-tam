@@ -14,19 +14,40 @@ function QrCodeScreen({ navigation }) {
     return (
         <SafeAreaView>
             {user.isLoggedIn ? (
-                <View>
-                    <Text>Mã QR của bạn</Text>
-                    <View>
+                <View
+                    style={{
+                        height: 500,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Text style={{ marginBottom: 15 }}>Mã QR của bạn</Text>
+                    <View
+                        style={{
+                            width: 300,
+                            height: 300,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
                         <QRCode
+                            size={200}
                             value={JSON.stringify(user)}
                             logoBackgroundColor='transparent'
                         />
                     </View>
                 </View>
             ) : (
-                <View>
-                    <Text>Bạn chưa đăng nhập.</Text>
-                    <Text>Đăng nhập ngay để nhận mã tại đây</Text>
+                <View
+                    style={{
+                        height: 500,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Text style={{ marginBottom: 15 }}>
+                        Đăng nhập ngay để nhận mã QR tại đây
+                    </Text>
                     <Button
                         title='Đăng nhập'
                         onPress={() => navigation.navigate('SignInScreen')}
@@ -34,10 +55,17 @@ function QrCodeScreen({ navigation }) {
                 </View>
             )}
 
-            <Button
-                onPress={() => navigation.navigate('ScanScreen')}
-                title='Scan'
-            />
+            <View
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <Button
+                    onPress={() => navigation.navigate('ScanScreen')}
+                    title='Quét sách'
+                />
+            </View>
         </SafeAreaView>
     );
 }

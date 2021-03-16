@@ -141,7 +141,13 @@ const DATA = [
 export default function CategoryList() {
     const renderItem = ({ item }) => {
         return (
-            <View style={{ flex: 1, backgroundColor: '#fff', paddingTop: 5 }}>
+            <View
+                style={{
+                    flex: 1,
+                    backgroundColor: '#fff',
+                    paddingVertical: 5,
+                }}
+            >
                 <TouchableOpacity
                     style={{
                         flexDirection: 'row',
