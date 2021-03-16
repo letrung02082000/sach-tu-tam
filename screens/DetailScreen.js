@@ -27,8 +27,6 @@ export default function DetailScreen({ route, navigation }) {
     const book = route.params.book;
     const imgUrl = book.imageurl;
 
-    console.log(book);
-
     if (!book.quantity) {
         book.quantity = 0;
     }

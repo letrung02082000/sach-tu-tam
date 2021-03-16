@@ -18,19 +18,20 @@ import { cartActions } from '../redux/actions/cart.actions';
 import { bookApi } from '../api';
 
 const CartItem = ({ book }) => {
-    const imageUrl = `https://sach-tu-tam.herokuapp.com/${book.imageurl}`;
+    const imageUrl = book.imageurl;
+    const quantity = parseInt(book.orderQuantity);
 
     const dispatch = useDispatch();
 
-    const [quantity, setQuantity] = useState(1);
     const [msg, setMsg] = useState('');
 
     useEffect(() => {
+        console.log(book.quantity);
         if (book.quantity <= 0) {
             setMsg('Sản phẩm hiện đã hết hàng.');
-            setQuantity(0);
         }
-    });
+        dispatch(cartActions.updateCartAction(book._id, 0));
+    }, []);
 
     const decreaseQuantity = () => {
         if (quantity <= 1) return;
@@ -39,7 +40,7 @@ const CartItem = ({ book }) => {
             setMsg('');
         }
 
-        setQuantity(quantity - 1);
+        dispatch(cartActions.updateCartAction(book._id, quantity - 1));
     };
 
     const increaseQuantity = () => {
@@ -47,16 +48,15 @@ const CartItem = ({ book }) => {
 
         if (quantity >= 5) {
             setMsg('Số lượng không được vượt quá 5.');
-            setQuantity(5);
             return;
         }
 
         if (quantity >= book.quantity) {
             setMsg('Đã đạt số lượng còn lại trong kho.');
-            setQuantity(book.quantity);
             return;
         }
-        setQuantity(quantity + 1);
+
+        dispatch(cartActions.updateCartAction(book._id, quantity + 1));
     };
 
     const removeItem = () => {
@@ -69,7 +69,7 @@ const CartItem = ({ book }) => {
                 source={{ uri: imageUrl }}
                 style={{
                     flex: 2,
-                    resizeMode: 'cover',
+                    resizeMode: 'contain',
                 }}
             />
             <View
@@ -113,9 +113,8 @@ function CartScreen({ navigation }) {
     const quantity = useSelector((state) => state.cartReducer.quantity);
     const dispatch = useDispatch();
 
-    console.log(cart);
-
     const window = Dimensions.get('window');
+    console.log('a');
 
     useEffect(() => {
         dispatch(cartActions.refreshCartAction(cart));
@@ -156,9 +155,9 @@ function CartScreen({ navigation }) {
             ) : (
                 <View style={{ flex: 1 }}>
                     <View>
-                        {cart.map((item) => (
-                            <CartItem key={item._id} book={item} />
-                        ))}
+                        {cart.map((item) => {
+                            return <CartItem key={item._id} book={item} />;
+                        })}
                     </View>
                     {loading ? (
                         <View

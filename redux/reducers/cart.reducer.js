@@ -8,30 +8,48 @@ const initialState = {
 export function cartReducer(state = initialState, action) {
     switch (action.type) {
         case cartConstants.ADD_TO_CART:
-            const newData = [...state.data, action.payload];
+            const newBook = action.payload;
+            newBook.orderQuantity = 1;
+            const newData = [...state.data, newBook];
+
             return {
                 data: newData,
                 quantity: state.quantity + 1,
             };
+
         case cartConstants.REMOVE_FROM_CART: {
             const newState = state.data.filter(
                 (value) =>
                     value._id.toString() !== action.payload._id.toString()
             );
-            console.log(state);
-            console.log(newState);
+
             return {
                 data: newState,
                 quantity: newState.length,
             };
         }
+
         case cartConstants.REFRESH_CART: {
-            console.log(state);
             return {
                 data: [...action.payload],
                 quantity: action.payload.length,
             };
         }
+
+        case cartConstants.UPDATE_CART: {
+            let newData = state.data.map((child) => {
+                if (child._id == action.payload.bookId) {
+                    child.orderQuantity = action.payload.quantity;
+                }
+                return child;
+            });
+
+            return {
+                data: newData,
+                quantity: newData.length,
+            };
+        }
+
         default:
             return state;
     }

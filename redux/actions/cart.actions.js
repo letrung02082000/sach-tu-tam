@@ -5,6 +5,7 @@ export const cartActions = {
     addToCartAction,
     removeFromCartAction,
     refreshCartAction,
+    updateCartAction,
 };
 
 function addToCartAction(book) {
@@ -21,12 +22,22 @@ function removeFromCartAction(book) {
     };
 }
 
+function updateCartAction(bookId, quantity) {
+    return {
+        type: cartConstants.UPDATE_CART,
+        payload: { bookId, quantity },
+    };
+}
+
 function refreshCartAction(cart) {
     return async (dispatch) => {
         let newCart = [];
         for (let book of cart) {
-            const newBook = await bookApi.getBookById(book._id);
-            if (newBook.type == 'Valid') newCart.push(newBook.data);
+            const res = await bookApi.getBookById(book._id);
+            if (res.type == 'Valid') {
+                res.data.orderQuantity = book.orderQuantity;
+                newCart.push(res.data);
+            }
         }
 
         dispatch({
