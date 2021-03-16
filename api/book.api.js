@@ -5,20 +5,23 @@ export const bookApi = {
     getBookBySku,
     getBestseller,
     getBookById,
+    postOrder,
 };
 
 const apiUrl = 'https://sach-tu-tam.herokuapp.com/api';
 
 async function getAllBooks(page, limit) {
     return new Promise((resolve, reject) => {
-        axios.get(`${apiUrl}/book/query?page=${page}&limit=${limit}`).then(
-            (response) => {
-                return resolve(response.data);
-            },
-            (error) => {
-                return reject(error);
-            }
-        );
+        axios
+            .get(`${apiUrl}/book/query?page=${page}&limit=${limit}&quantity=0`)
+            .then(
+                (response) => {
+                    return resolve(response.data);
+                },
+                (error) => {
+                    return reject(error);
+                }
+            );
     });
 }
 
@@ -52,6 +55,19 @@ async function getBookById(bookId) {
 async function getBestseller(page, limit) {
     return new Promise((resolve, reject) => {
         axios.get(`${apiUrl}/book/bestseller?page=${page}&limit=${limit}`).then(
+            (response) => {
+                return resolve(response.data);
+            },
+            (error) => {
+                return reject(error);
+            }
+        );
+    });
+}
+
+async function postOrder(orderInfo) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${apiUrl}/order/create`, orderInfo).then(
             (response) => {
                 return resolve(response.data);
             },

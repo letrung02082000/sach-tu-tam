@@ -29,8 +29,8 @@ const CartItem = ({ book }) => {
         console.log(book.quantity);
         if (book.quantity <= 0) {
             setMsg('Sản phẩm hiện đã hết hàng.');
+            dispatch(cartActions.updateCartAction(book._id, 0));
         }
-        dispatch(cartActions.updateCartAction(book._id, 0));
     }, []);
 
     const decreaseQuantity = () => {

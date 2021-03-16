@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Alert } from 'react-native';
 import {
     View,
     Text,
@@ -10,17 +11,26 @@ import {
 } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import { useSelector } from 'react-redux';
+import { bookApi } from '../api';
 
-export default function OrderScreen() {
+export default function OrderScreen({ navigation }) {
     const [phoneNumber, setPhoneNumber] = useState(false);
     const [deliveryChecked, setDeliveryChecked] = useState('first');
     const [payChecked, setPayChecked] = useState('first');
-    const [openedMomo, setOpenedMomo] = useState(null);
+    const [total, setTotal] = useState(null);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [address, setAddress] = useState(null);
 
     const userInfo = useSelector((state) => state.authReducer);
-    const cart = useSelector((state) => state.cartReducer);
+    const cart = useSelector((state) => state.cartReducer.data);
+
+    useEffect(() => {
+        let sum = 0;
+        for (let book of cart) {
+            sum += book.newprice * book.orderQuantity;
+        }
+        setTotal(sum);
+    }, []);
 
     const handlePhoneNumber = (val) => {
         const cleanNumber = val.replace(/[^0-9]/g, '');
@@ -33,21 +43,41 @@ export default function OrderScreen() {
 
     const confirmOrder = () => {
         setConfirmLoading(true);
+
+        const bookList = [];
+
+        for (let book of cart) {
+            bookList.push({ bookId: book._id, quantity: book.orderQuantity });
+        }
+
         const orderInfo = {
             tel: phoneNumber,
             address: address,
-            user: userInfo.isLoggedIn ? userInfo._id : null,
+            //user: userInfo.isLoggedIn ? userInfo._id : null,
             shipping: deliveryChecked == 'first' ? false : true, //false: nhận tại tủ, true: giao tận nơi
             payment: payChecked == 'first' ? false : true, //false: momo, true: trực tiếp
             bookList,
         };
+
+        console.log(orderInfo);
+
+        bookApi.postOrder(orderInfo).then((res) => {
+            if (res.type === 'Valid') {
+                setConfirmLoading(false);
+                navigation.navigate('PaymentScreen', res.data);
+            } else {
+                Alert.alert('Có lỗi xảy ra. Vui lòng thử lại sau!');
+                console.log(res);
+                return;
+            }
+        });
     };
 
     return (
         <View style={styles.container}>
-            <ScrollView style={{ marginBottom: 100 }}>
+            <ScrollView style={{ marginBottom: 130 }}>
                 <View style={styles.phoneContainer}>
-                    <Text style={styles.phoneText}>Số điện thoại liên hệ</Text>
+                    <Text style={styles.phoneText}>Số điện thoại</Text>
                     <TextInput
                         placeholder='Nhập số điện thoại người nhận'
                         placeholderTextColor='#666666'
@@ -198,6 +228,43 @@ export default function OrderScreen() {
                 </View>
             </ScrollView>
             <View style={styles.confirmContainer}>
+                <View style={{ height: 55, flexDirection: 'row' }}>
+                    <View
+                        style={{
+                            flex: 2,
+                            paddingHorizontal: 15,
+                            paddingTop: 5,
+                        }}
+                    >
+                        <Text style={{ fontSize: 15, color: '#808080' }}>
+                            Thành tiền
+                        </Text>
+                        <Text style={{ fontSize: 15, color: '#808080' }}>
+                            (Chưa bao gồm phí giao hàng)
+                        </Text>
+                    </View>
+                    <View
+                        style={{
+                            flex: 1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexDirection: 'row',
+                        }}
+                    >
+                        <Text style={{ fontSize: 19, color: '#f33f3f' }}>
+                            {total}
+                        </Text>
+                        <Text
+                            style={{
+                                fontSize: 19,
+                                textDecorationLine: 'underline',
+                                color: '#f33f3f',
+                            }}
+                        >
+                            đ
+                        </Text>
+                    </View>
+                </View>
                 <TouchableOpacity
                     style={styles.confirmButton}
                     onPress={confirmOrder}
@@ -261,7 +328,7 @@ const styles = StyleSheet.create({
 
     deliveryContainer: {
         flex: 1,
-        marginVertical: 10,
+        marginTop: 5,
         paddingVertical: 15,
         paddingHorizontal: 15,
         backgroundColor: '#fff',
