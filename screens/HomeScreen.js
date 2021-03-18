@@ -18,6 +18,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
 import { bookActions } from '../redux/actions/book.actions';
 import { bestsellerActions } from '../redux/actions/bestseller.actions';
+import { categoryActions } from '../redux/actions/category.actions';
 
 import Header from '../components/Home/Header';
 import BookItem from '../components/Home/BookItem';
@@ -91,6 +92,7 @@ export default function HomeScreen({ navigation }) {
         dispatch(bookActions.getAllBooksAction(currentPage, bookPerPage));
         dispatch(bestsellerActions.getBestseller());
         dispatch(favoriteActions.getFavorite());
+        dispatch(categoryActions.getAllCategoriesAction());
     }, []);
 
     // if (allBooks.isFetching) {

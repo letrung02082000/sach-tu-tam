@@ -7,6 +7,7 @@ export const bookApi = {
     getBookById,
     postOrder,
     getFavorite,
+    getAllCategories,
 };
 
 const apiUrl = 'https://sach-tu-tam.herokuapp.com/api';
@@ -40,7 +41,6 @@ async function getBookBySku(bookSku) {
 }
 
 async function getBookById(bookId) {
-    console.log(bookId);
     return new Promise((resolve, reject) => {
         axios.get(`${apiUrl}/book/${bookId}`).then(
             (response) => {
@@ -82,6 +82,19 @@ async function getFavorite(page, limit) {
 async function postOrder(orderInfo) {
     return new Promise((resolve, reject) => {
         axios.post(`${apiUrl}/order/create`, orderInfo).then(
+            (response) => {
+                return resolve(response.data);
+            },
+            (error) => {
+                return reject(error);
+            }
+        );
+    });
+}
+
+async function getAllCategories() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${apiUrl}/category/all`).then(
             (response) => {
                 return resolve(response.data);
             },
