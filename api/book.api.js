@@ -8,6 +8,7 @@ export const bookApi = {
     postOrder,
     getFavorite,
     getAllCategories,
+    search,
 };
 
 const apiUrl = 'https://sach-tu-tam.herokuapp.com/api';
@@ -101,6 +102,15 @@ async function getAllCategories() {
             (error) => {
                 return reject(error);
             }
+        );
+    });
+}
+
+async function search(value) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${apiUrl}/book/query?search=${value}&quantity=0`).then(
+            (response) => resolve(response.data),
+            (error) => reject(error)
         );
     });
 }

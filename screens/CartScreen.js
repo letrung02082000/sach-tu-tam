@@ -146,11 +146,43 @@ function CartScreen({ navigation }) {
     return (
         <View style={{ flex: 1 }}>
             {quantity == 0 ? (
-                <View>
-                    <Text>Giỏ hàng trống</Text>
-                    <TouchableOpacity onPress={navigateToHomeScreen}>
-                        <Text>Quay lại trang chủ</Text>
-                    </TouchableOpacity>
+                <View
+                    style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flex: 1,
+                    }}
+                >
+                    <View>
+                        <Image
+                            source={require('../assets/emptycart.png')}
+                            style={{ width: 250, resizeMode: 'contain' }}
+                        />
+                    </View>
+                    <View
+                        style={{
+                            flex: 2,
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Text style={{ fontSize: 17, marginBottom: 50 }}>
+                            Giỏ hàng trống
+                        </Text>
+                        <TouchableOpacity onPress={navigateToHomeScreen}>
+                            <Text
+                                style={{
+                                    backgroundColor: '#009387',
+                                    fontSize: 17,
+                                    padding: 15,
+                                    color: '#fff',
+                                    borderRadius: 5,
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                Quay lại trang chủ
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             ) : (
                 <View style={{ flex: 1 }}>

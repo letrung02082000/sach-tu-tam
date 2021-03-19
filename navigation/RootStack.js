@@ -37,7 +37,7 @@ export default function RootStack() {
             <Stack.Screen
                 name='DetailScreen'
                 component={DetailScreen}
-                options={{ headerShown: true }}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name='SearchScreen'

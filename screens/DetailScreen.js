@@ -15,6 +15,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../redux/actions';
+import { StatusBar } from 'react-native';
 
 const domainUrl = 'https://sach-tu-tam.herokuapp.com';
 
@@ -67,96 +68,95 @@ export default function DetailScreen({ route, navigation }) {
     };
 
     return (
-        <SafeAreaView>
-            <View style={styles.container}>
-                <Modal
-                    isVisible={modalVisible}
-                    onSwipeComplete={() => setModalVisible(false)}
-                    swipeDirection={['down']}
-                    style={styles.modalContainer}
-                >
-                    <View style={styles.modalViewContainer}>
-                        <View style={styles.modalHeader}>
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    marginLeft: 10,
-                                }}
-                            >
-                                <Feather
-                                    name='check-circle'
-                                    color='#006600'
-                                    size={15}
-                                />
-                                <Text style={styles.modalMsg}>{msg}</Text>
-                            </View>
-                            <TouchableOpacity
-                                style={styles.closeModal}
-                                onPress={() => setModalVisible(false)}
-                            >
-                                <Feather
-                                    name='x'
-                                    size={17}
-                                    color='#000'
-                                    style={{ padding: 5 }}
-                                />
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={{ flexDirection: 'row' }}>
-                            <Image
-                                style={{
-                                    height: 100,
-                                    width: 70,
-                                    resizeMode: 'contain',
-                                }}
-                                source={{ uri: imgUrl }}
-                            />
-                            <View
-                                style={{
-                                    justifyContent: 'flex-start',
-                                    flex: 1,
-                                    padding: 5,
-                                }}
-                            >
-                                <Text numberOfLines={2} fontSize={15}>
-                                    {book.name}
-                                </Text>
-                                <Text
-                                    style={{
-                                        fontSize: 17,
-                                        fontWeight: 'bold',
-                                    }}
-                                >
-                                    {book.newprice}&nbsp;
-                                    <Text
-                                        style={{
-                                            textDecorationLine: 'underline',
-                                        }}
-                                    >
-                                        đ
-                                    </Text>
-                                </Text>
-                            </View>
-                        </View>
-
-                        <TouchableOpacity
-                            style={styles.goToCartBtn}
-                            onPress={navigateToCart}
+        <SafeAreaView style={{ flex: 1 }}>
+            <Modal
+                isVisible={modalVisible}
+                onSwipeComplete={() => setModalVisible(false)}
+                swipeDirection={['down']}
+                style={styles.modalContainer}
+            >
+                <View style={styles.modalViewContainer}>
+                    <View style={styles.modalHeader}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                marginLeft: 10,
+                            }}
                         >
-                            <Text style={styles.goToCartText}>
-                                Xem Giỏ Hàng
-                            </Text>
+                            <Feather
+                                name='check-circle'
+                                color='#006600'
+                                size={15}
+                            />
+                            <Text style={styles.modalMsg}>{msg}</Text>
+                        </View>
+                        <TouchableOpacity
+                            style={styles.closeModal}
+                            onPress={() => setModalVisible(false)}
+                        >
+                            <Feather
+                                name='x'
+                                size={17}
+                                color='#000'
+                                style={{ padding: 5 }}
+                            />
                         </TouchableOpacity>
                     </View>
-                </Modal>
-                <ScrollView>
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <Image
+                            style={{
+                                height: 100,
+                                width: 70,
+                                resizeMode: 'contain',
+                            }}
+                            source={{ uri: imgUrl }}
+                        />
+                        <View
+                            style={{
+                                justifyContent: 'flex-start',
+                                flex: 1,
+                                padding: 5,
+                            }}
+                        >
+                            <Text numberOfLines={2} fontSize={15}>
+                                {book.name}
+                            </Text>
+                            <Text
+                                style={{
+                                    fontSize: 17,
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                {book.newprice}&nbsp;
+                                <Text
+                                    style={{
+                                        textDecorationLine: 'underline',
+                                    }}
+                                >
+                                    đ
+                                </Text>
+                            </Text>
+                        </View>
+                    </View>
+
+                    <TouchableOpacity
+                        style={styles.goToCartBtn}
+                        onPress={navigateToCart}
+                    >
+                        <Text style={styles.goToCartText}>Xem Giỏ Hàng</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+            <View style={{ flex: 1 }}>
+                <View style={{ backgroundColor: 'red', height: 50 }}></View>
+                <ScrollView style={{ flex: 1 }}>
                     <Image
                         style={{
-                            width: imgWidth,
-                            height: imgHeight,
-                            resizeMode: 'cover',
+                            width: '100%',
+                            height: 350,
+                            resizeMode: 'contain',
                         }}
                         source={{
                             uri: imgUrl,
@@ -165,8 +165,16 @@ export default function DetailScreen({ route, navigation }) {
                     <Text>{book.name}</Text>
                     <Text>{book.description}</Text>
                 </ScrollView>
+                {/* <View style={{ flex: 1 }}>
+                    <TouchableOpacity
+                        //style={styles.positionInBottom}
+                        onPress={handleBuyBook}
+                    >
+                        <Text>Mua sách</Text>
+                    </TouchableOpacity>
+                </View> */}
                 <TouchableOpacity
-                    style={styles.positionInBottom}
+                    style={{ height: 50, backgroundColor: 'red' }}
                     onPress={handleBuyBook}
                 >
                     <Text>Mua sách</Text>
@@ -177,20 +185,25 @@ export default function DetailScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        minHeight: Dimensions.get('window').height - 70,
+    // container: {
+    //     minHeight: Dimensions.get('window').height - 70,
+    // },
+
+    header: {
+        //height: 50,
+        flex: 1,
     },
 
-    positionInBottom: {
-        position: 'absolute',
-        flex: 1,
-        flexDirection: 'row',
-        width: Dimensions.get('window').width,
-        height: 70,
-        bottom: 0,
-        backgroundColor: 'red',
-        zIndex: 100,
-    },
+    // positionInBottom: {
+    //     position: 'absolute',
+    //     flex: 1,
+    //     flexDirection: 'row',
+    //     width: Dimensions.get('window').width,
+    //     height: 50,
+    //     bottom: 39,
+    //     backgroundColor: 'red',
+    //     zIndex: 100,
+    // },
 
     modalContainer: {
         justifyContent: 'flex-end',
