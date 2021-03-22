@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
-    Button,
+    TouchableOpacity,
     StyleSheet,
     ActivityIndicator,
     Alert,
@@ -48,6 +48,12 @@ export default function ScanScreen({ navigation }) {
             });
     };
 
+    const goBack = () => {
+        if (navigation.canGoBack()) {
+            navigation.goBack();
+        }
+    };
+
     if (hasPermission === null) {
         return (
             <SafeAreaView>
@@ -72,30 +78,61 @@ export default function ScanScreen({ navigation }) {
         return (
             <SafeAreaView>
                 <View>
-                    <Text>Scan successfully. Waiting for fetching data...</Text>
+                    <Text>Đang tìm kiếm! Bạn chờ chút nhé...</Text>
                 </View>
             </SafeAreaView>
         );
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <BarCodeScanner
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style={StyleSheet.absoluteFillObject}
             />
-            {scanned && (
-                <Button
-                    title={'Tap to Scan Again'}
-                    onPress={() => setScanned(false)}
-                />
-            )}
-        </View>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.scanButton} onPress={goBack}>
+                    <Text style={styles.btnText}>Quay lại</Text>
+                </TouchableOpacity>
+                {scanned && (
+                    <TouchableOpacity
+                        style={[styles.scanButton, { marginLeft: 25 }]}
+                        onPress={() => setScanned(false)}
+                    >
+                        <Text style={styles.btnText}>Quét lại</Text>
+                    </TouchableOpacity>
+                )}
+            </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: 'flex-end',
+    },
+
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    scanButton: {
+        //flex: 1,
+        backgroundColor: '#4287f5',
+        marginBottom: '30%',
+        padding: 15,
+        color: '#fff',
+        borderRadius: 100,
+        width: 150,
+    },
+
+    btnText: {
+        color: '#fff',
+        fontSize: 17,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 });

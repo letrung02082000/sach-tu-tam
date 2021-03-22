@@ -143,6 +143,10 @@ function CartScreen({ navigation }) {
         navigation.navigate('HomeScreen');
     };
 
+    const navigateToSearchScreen = () => {
+        navigation.navigate('SearchScreen');
+    };
+
     return (
         <View style={{ flex: 1 }}>
             {quantity == 0 ? (
@@ -153,33 +157,85 @@ function CartScreen({ navigation }) {
                         flex: 1,
                     }}
                 >
-                    <View>
-                        <Image
-                            source={require('../assets/emptycart.png')}
-                            style={{ width: 250, resizeMode: 'contain' }}
-                        />
-                    </View>
                     <View
                         style={{
                             flex: 2,
+                            justifyContent: 'center',
                             alignItems: 'center',
+                            //backgroundColor: '#fff',
                         }}
                     >
-                        <Text style={{ fontSize: 17, marginBottom: 50 }}>
+                        <Image
+                            source={require('../assets/emptycart.png')}
+                            style={{
+                                width: 210,
+                                height: 190,
+                                resizeMode: 'contain',
+                            }}
+                        />
+                        <Text style={{ fontSize: 15, textAlign: 'center' }}>
                             Giỏ hàng trống
                         </Text>
+                    </View>
+                    <View
+                        style={{
+                            flex: 3,
+                            alignItems: 'flex-start',
+                            justifyContent: 'center',
+                            //backgroundColor: '#fff',
+                            flexDirection: 'row',
+                        }}
+                    >
                         <TouchableOpacity onPress={navigateToHomeScreen}>
                             <Text
                                 style={{
                                     backgroundColor: '#009387',
                                     fontSize: 17,
-                                    padding: 15,
+                                    padding: 10,
                                     color: '#fff',
                                     borderRadius: 5,
                                     fontWeight: 'bold',
+                                    width: 110,
+                                    textAlign: 'center',
                                 }}
                             >
-                                Quay lại trang chủ
+                                Quay lại
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={navigateToSearchScreen}
+                            style={{
+                                backgroundColor: '#009387',
+                                marginLeft: 15,
+                                borderRadius: 5,
+                                width: 130,
+                                padding: 10,
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignContent: 'center',
+                            }}
+                        >
+                            <FontAwesome
+                                name='search'
+                                size={15}
+                                style={{
+                                    // backgroundColor: '#fff',
+                                    marginRight: 7,
+                                    color: '#fff',
+                                    marginTop: 4,
+                                }}
+                            />
+                            <Text
+                                style={{
+                                    fontSize: 17,
+                                    padding: 0,
+                                    margin: 0,
+                                    color: '#fff',
+                                    fontWeight: 'bold',
+                                    textAlign: 'center',
+                                }}
+                            >
+                                Tìm kiếm
                             </Text>
                         </TouchableOpacity>
                     </View>

@@ -7,17 +7,15 @@ import {
     ScrollView,
     TouchableOpacity,
     StyleSheet,
-    Button,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
+import { DataTable } from 'react-native-paper';
 import Feather from 'react-native-vector-icons/Feather';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../redux/actions';
-import { StatusBar } from 'react-native';
-
-const domainUrl = 'https://sach-tu-tam.herokuapp.com';
 
 export default function DetailScreen({ route, navigation }) {
     const [imgWidth, setImgWidth] = useState(0);
@@ -65,6 +63,16 @@ export default function DetailScreen({ route, navigation }) {
     const navigateToCart = () => {
         setModalVisible(false);
         navigation.navigate('CartScreen');
+    };
+
+    const readMore = () => {
+        navigation.navigate('DescriptionScreen', book);
+    };
+
+    const backToHome = () => {
+        if (navigation.canGoBack()) {
+            navigation.goBack();
+        }
     };
 
     return (
@@ -150,20 +158,163 @@ export default function DetailScreen({ route, navigation }) {
                 </View>
             </Modal>
             <View style={{ flex: 1 }}>
-                <View style={{ backgroundColor: 'red', height: 50 }}></View>
+                <View style={{ backgroundColor: 'transparent', height: 50 }}>
+                    <TouchableOpacity
+                        style={{ marginLeft: 10, marginTop: 11 }}
+                        onPress={backToHome}
+                    >
+                        <MaterialCommunityIcons
+                            name='arrow-left'
+                            color='#000'
+                            size={30}
+                        />
+                    </TouchableOpacity>
+                </View>
                 <ScrollView style={{ flex: 1 }}>
-                    <Image
+                    <View
                         style={{
-                            width: '100%',
-                            height: 350,
-                            resizeMode: 'contain',
+                            backgroundColor: '#f5f5f5',
                         }}
-                        source={{
-                            uri: imgUrl,
+                    >
+                        <Image
+                            style={{
+                                width: '100%',
+                                height: 350,
+                                resizeMode: 'contain',
+                            }}
+                            source={{
+                                uri: imgUrl,
+                            }}
+                        />
+                    </View>
+                    <View
+                        style={{
+                            backgroundColor: '#fff',
+                            paddingVertical: 15,
+                            paddingHorizontal: 15,
                         }}
-                    />
-                    <Text>{book.name}</Text>
-                    <Text>{book.description}</Text>
+                    >
+                        <Text
+                            style={{
+                                fontSize: 17,
+                                //fontWeight: 'bold',
+                                marginBottom: 15,
+                            }}
+                        >
+                            {book.name}
+                        </Text>
+                        <Text
+                            style={{
+                                fontSize: 17,
+                                color: '#4d4d4d',
+                                marginBottom: 9,
+                            }}
+                        >
+                            <Text style={{ fontWeight: 'bold' }}>
+                                Giá bìa:&nbsp;
+                            </Text>
+                            <Text
+                                style={{
+                                    textDecorationLine: 'line-through',
+                                }}
+                            >
+                                {book.oldprice}&nbsp;đ
+                            </Text>
+                        </Text>
+                        <Text
+                            style={{
+                                fontSize: 23,
+                                fontWeight: 'bold',
+                                color: '#4d4d4d',
+                            }}
+                        >
+                            <Text style={{ fontSize: 17, fontWeight: 'bold' }}>
+                                Giá bán:&nbsp;
+                            </Text>
+                            {book.newprice}&nbsp;
+                            <Text
+                                style={{
+                                    textDecorationLine: 'underline',
+                                }}
+                            >
+                                đ
+                            </Text>
+                        </Text>
+                    </View>
+                    <View style={{ backgroundColor: '#fff', marginTop: 9 }}>
+                        <Text
+                            style={{
+                                fontSize: 17,
+                                fontWeight: 'bold',
+                                paddingVertical: 10,
+                                paddingHorizontal: 10,
+                                color: '#4d4d4d',
+                            }}
+                        >
+                            Mô tả sách
+                        </Text>
+                        <Text
+                            style={{
+                                fontSize: 15,
+                                lineHeight: 21,
+                                paddingHorizontal: 19,
+                                paddingBottom: 10,
+                            }}
+                            numberOfLines={10}
+                        >
+                            {book.description}
+                        </Text>
+                        <TouchableOpacity
+                            style={{ paddingVertical: 10 }}
+                            onPress={readMore}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 15,
+                                    fontWeight: 'bold',
+                                    textAlign: 'center',
+                                    color: '#0050a6',
+                                }}
+                            >
+                                Đọc tiếp >
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
+                            backgroundColor: '#fff',
+                            marginTop: 9,
+                            marginBottom: 50,
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 17,
+                                fontWeight: 'bold',
+                                paddingVertical: 10,
+                                paddingHorizontal: 10,
+                                color: '#4d4d4d',
+                            }}
+                        >
+                            Thông tin chi tiết
+                        </Text>
+                        {book.others && (
+                            <DataTable>
+                                {book.others.map((item, index) => {
+                                    return (
+                                        <DataTable.Row key={index.toString()}>
+                                            <DataTable.Cell>
+                                                {item['key']}
+                                            </DataTable.Cell>
+                                            <DataTable.Cell>
+                                                {item['value']}
+                                            </DataTable.Cell>
+                                        </DataTable.Row>
+                                    );
+                                })}
+                            </DataTable>
+                        )}
+                    </View>
                 </ScrollView>
                 {/* <View style={{ flex: 1 }}>
                     <TouchableOpacity
@@ -174,10 +325,10 @@ export default function DetailScreen({ route, navigation }) {
                     </TouchableOpacity>
                 </View> */}
                 <TouchableOpacity
-                    style={{ height: 50, backgroundColor: 'red' }}
+                    style={{ height: 50, marginHorizontal: 5 }}
                     onPress={handleBuyBook}
                 >
-                    <Text>Mua sách</Text>
+                    <Text style={styles.goToCartText}>Mua sách</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
