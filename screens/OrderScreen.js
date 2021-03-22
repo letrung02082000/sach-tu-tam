@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Alert } from 'react-native';
 import {
     View,
     Text,
@@ -8,10 +7,12 @@ import {
     Platform,
     ScrollView,
     StyleSheet,
+    Alert,
 } from 'react-native';
 import { RadioButton } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { bookApi } from '../api';
+import { cartActions } from '../redux/actions';
 
 export default function OrderScreen({ navigation }) {
     const [phoneNumber, setPhoneNumber] = useState(false);
@@ -23,6 +24,8 @@ export default function OrderScreen({ navigation }) {
 
     const userInfo = useSelector((state) => state.authReducer);
     const cart = useSelector((state) => state.cartReducer.data);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         let sum = 0;
@@ -42,12 +45,26 @@ export default function OrderScreen({ navigation }) {
     };
 
     const confirmOrder = () => {
+        if (!phoneNumber) {
+            Alert.alert('Bạn chưa nhập số điện thoại');
+            return;
+        }
+
+        if (deliveryChecked == 'second' && !address) {
+            Alert.alert('Bạn chưa nhập địa chỉ');
+            return;
+        }
         setConfirmLoading(true);
 
         const bookList = [];
 
         for (let book of cart) {
             bookList.push({ bookId: book._id, quantity: book.orderQuantity });
+        }
+
+        if (bookList.length <= 0) {
+            Alert.alert('Giỏ hàng trống. Hãy thêm sản phẩm vào giỏ hàng');
+            return;
         }
 
         const orderInfo = {
@@ -63,10 +80,12 @@ export default function OrderScreen({ navigation }) {
 
         bookApi.postOrder(orderInfo).then((res) => {
             if (res.type === 'Valid') {
+                dispatch(cartActions.clearCartAction());
                 setConfirmLoading(false);
                 navigation.navigate('PaymentScreen', res.data);
             } else {
-                Alert.alert('Có lỗi xảy ra. Vui lòng thử lại sau!');
+                Alert.alert(res.err);
+                setConfirmLoading(false);
                 console.log(res);
                 return;
             }

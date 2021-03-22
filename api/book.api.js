@@ -9,6 +9,8 @@ export const bookApi = {
     getFavorite,
     getAllCategories,
     search,
+    getBooksByCategories,
+    getBooksByCategory,
 };
 
 const apiUrl = 'https://sach-tu-tam.herokuapp.com/api';
@@ -112,5 +114,27 @@ async function search(value) {
             (response) => resolve(response.data),
             (error) => reject(error)
         );
+    });
+}
+
+async function getBooksByCategories() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${apiUrl}/category/books`).then(
+            (res) => resolve(res.data),
+            (error) => reject(error)
+        );
+    });
+}
+
+async function getBooksByCategory(catId) {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(
+                `${apiUrl}/book/query?page=1&limit=10&category=${catId}&quantity=0`
+            )
+            .then(
+                (res) => resolve(res.data),
+                (error) => reject(error)
+            );
     });
 }

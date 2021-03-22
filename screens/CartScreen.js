@@ -64,7 +64,15 @@ const CartItem = ({ book }) => {
     };
 
     return (
-        <View style={{ flexDirection: 'row', height: 100 }}>
+        <View
+            style={{
+                flexDirection: 'row',
+                height: 125,
+                marginTop: 10,
+                backgroundColor: '#fff',
+                paddingVertical: 9,
+            }}
+        >
             <Image
                 source={{ uri: imageUrl }}
                 style={{
@@ -76,17 +84,55 @@ const CartItem = ({ book }) => {
                 style={{
                     flex: 5,
                     height: '100%',
+                    marginLeft: 9,
                 }}
             >
-                <Text numberOfLines={2}>{book.name}</Text>
-                <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={decreaseQuantity}>
+                <Text numberOfLines={2} style={{ fontSize: 15 }}>
+                    {book.name}
+                </Text>
+                <View style={{ flexDirection: 'row', marginVertical: 5 }}>
+                    <Text
+                        style={{
+                            fontSize: 15,
+                            color: '#f33f3f',
+                            fontWeight: 'bold',
+                            marginRight: 9,
+                        }}
+                    >
+                        {book.newprice}đ
+                    </Text>
+                    <Text
+                        style={{
+                            color: '#a5a2a2',
+                            textDecorationLine: 'line-through',
+                            fontSize: 15,
+                        }}
+                    >
+                        {book.oldprice}đ
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity
+                        onPress={decreaseQuantity}
+                        style={{ backgroundColor: '#ccc' }}
+                    >
                         <Feather name='minus' size={25} />
                     </TouchableOpacity>
-                    <Text style={{ width: 50, textAlign: 'center' }}>
+                    <Text
+                        style={{
+                            width: 50,
+                            textAlign: 'center',
+                            textAlignVertical: 'center',
+                            backgroundColor: '#e8e8e8',
+                            height: '100%',
+                        }}
+                    >
                         {quantity}
                     </Text>
-                    <TouchableOpacity onPress={increaseQuantity}>
+                    <TouchableOpacity
+                        onPress={increaseQuantity}
+                        style={{ backgroundColor: '#ccc' }}
+                    >
                         <Feather name='plus' size={25} />
                     </TouchableOpacity>
                 </View>
@@ -254,7 +300,20 @@ function CartScreen({ navigation }) {
                                 { width: '100%' },
                             ]}
                         >
-                            <ActivityIndicator size='small' color='white' />
+                            <Text
+                                style={{
+                                    fontWeight: '500',
+                                    color: '#fff',
+                                    backgroundColor: '#f33f3f',
+                                    fontSize: 21,
+                                    padding: 7,
+                                    textAlign: 'center',
+                                    borderRadius: 5,
+                                    margin: 10,
+                                }}
+                            >
+                                Vui lòng chờ...
+                            </Text>
                         </View>
                     ) : (
                         <View
@@ -263,11 +322,21 @@ function CartScreen({ navigation }) {
                                 { width: '100%' },
                             ]}
                         >
-                            <TouchableOpacity
-                                onPress={orderBooks}
-                                style={{ width: '100%', height: '100%' }}
-                            >
-                                <Text>Tiến Hành Đặt Sách</Text>
+                            <TouchableOpacity onPress={orderBooks}>
+                                <Text
+                                    style={{
+                                        fontWeight: '500',
+                                        color: '#fff',
+                                        backgroundColor: '#f33f3f',
+                                        fontSize: 21,
+                                        padding: 7,
+                                        textAlign: 'center',
+                                        borderRadius: 5,
+                                        margin: 10,
+                                    }}
+                                >
+                                    Tiến Hành Đặt Sách
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     )}
@@ -280,9 +349,8 @@ function CartScreen({ navigation }) {
 const styles = StyleSheet.create({
     orderButtonContainer: {
         position: 'absolute',
-        backgroundColor: 'red',
+        backgroundColor: '#fff',
         bottom: 0,
-        height: 50,
     },
 });
 

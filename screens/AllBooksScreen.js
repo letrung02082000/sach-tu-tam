@@ -1,43 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     SafeAreaView,
     View,
     FlatList,
     StyleSheet,
     Text,
-    StatusBar,
+    Dimensions,
 } from 'react-native';
+import { bookApi } from '../api';
+import BookItem from '../components/Home/BookItem';
 
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-    },
-];
+const AllBooksScreen = ({ route, navigation }) => {
+    const window = Dimensions.get('window');
+    const catId = route.params.id;
+    const catTitle = route.params.title;
 
-const Item = ({ title }) => (
-    <View style={styles.item}>
-        <Text style={styles.title}>{title}</Text>
-    </View>
-);
+    const [data, setData] = useState(null);
 
-const AllBooksScreen = () => {
-    const renderItem = ({ item }) => <Item title={item.title} />;
+    const navigateToDetailScreen = (item) => {
+        navigation.navigate('DetailScreen', { book: item });
+    };
+
+    const renderItem = ({ item }) => (
+        <BookItem
+            item={item}
+            style={{ width: window.width / 2 - 5 }}
+            onPress={() => navigateToDetailScreen(item)}
+        />
+    );
+
+    useEffect(() => {
+        bookApi.getBooksByCategory(catId).then((res) => {
+            if (res.type == 'Valid') {
+                setData(res.data);
+            }
+        });
+    }, []);
 
     return (
         <SafeAreaView style={styles.container}>
+            <Text style={styles.headerText}>{catTitle}</Text>
             <FlatList
-                data={DATA}
+                data={data}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item._id}
+                numColumns={2}
+                showsVerticalScrollIndicator={false}
             />
         </SafeAreaView>
     );
@@ -46,7 +54,9 @@ const AllBooksScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: StatusBar.currentHeight || 0,
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        paddingVertical: 25,
     },
     item: {
         backgroundColor: '#f9c2ff',
@@ -56,6 +66,19 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 32,
+    },
+    headerText: {
+        justifyContent: 'center',
+        padding: 10,
+        marginBottom: 25,
+        borderRadius: 9,
+        borderWidth: 2,
+        fontSize: 21,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        width: 250,
+        color: '#03ada0',
+        borderColor: '#03ada0',
     },
 });
 

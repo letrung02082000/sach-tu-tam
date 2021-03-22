@@ -176,7 +176,7 @@ function SearchScreen() {
                             Rất tiếc!
                         </Text>
                         <Text style={{ fontSize: 15, marginTop: 15 }}>
-                            Mình hông tìm thấy quyển sách bạn muốn
+                            Mình không tìm thấy quyển sách bạn muốn
                         </Text>
                     </View>
                 ) : null}

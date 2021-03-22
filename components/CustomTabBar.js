@@ -55,7 +55,7 @@ export default function CustomTabBar(props) {
             </TouchableOpacity>
 
             <TouchableOpacity
-                onPress={navigateToEventScreen}
+                onPress={navigateToReaderScreen}
                 activeOpacity={0.6}
                 style={styles.button}
             >
@@ -71,7 +71,7 @@ export default function CustomTabBar(props) {
                             : styles.defaultText
                     }
                 >
-                    Sự kiện
+                    Bạn đọc
                 </Text>
             </TouchableOpacity>
 
@@ -89,7 +89,7 @@ export default function CustomTabBar(props) {
             </TouchableOpacity>
 
             <TouchableOpacity
-                onPress={navigateToReaderScreen}
+                onPress={navigateToEventScreen}
                 activeOpacity={0.6}
                 style={styles.button}
             >
@@ -105,7 +105,7 @@ export default function CustomTabBar(props) {
                             : styles.defaultText
                     }
                 >
-                    Bạn đọc
+                    Hoạt động
                 </Text>
             </TouchableOpacity>
 

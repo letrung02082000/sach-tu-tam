@@ -13,19 +13,19 @@ export default function Header() {
         navigation.navigate('DetailScreen', { book: { name: 'a' } });
     };
 
-    const navigateToAllCategoriesScreen = () => {
-        navigation.navigate('AllCategoriesScreen');
+    const navigateToCategoriesScreen = () => {
+        navigation.navigate('CategoriesScreen');
     };
 
-    const renderItem = ({ item }) => {
-        return (
-            <TouchableOpacity onPress={navigateToDetail}>
-                <View>
-                    <Text>{item.title}</Text>
-                </View>
-            </TouchableOpacity>
-        );
-    };
+    // const renderItem = ({ item }) => {
+    //     return (
+    //         <TouchableOpacity onPress={navigateToDetail}>
+    //             <View>
+    //                 <Text>{item.title}</Text>
+    //             </View>
+    //         </TouchableOpacity>
+    //     );
+    // };
     return (
         <View>
             <View style={styles.categoryContainer}>
@@ -40,9 +40,7 @@ export default function Header() {
                 >
                     <View style={styles.categoryHeader}>
                         <Text style={styles.headerText}>Danh mục nổi bật</Text>
-                        <TouchableOpacity
-                            onPress={navigateToAllCategoriesScreen}
-                        >
+                        <TouchableOpacity onPress={navigateToCategoriesScreen}>
                             <Text
                                 style={{
                                     textTransform: 'uppercase',

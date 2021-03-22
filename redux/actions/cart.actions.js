@@ -6,6 +6,7 @@ export const cartActions = {
     removeFromCartAction,
     refreshCartAction,
     updateCartAction,
+    clearCartAction,
 };
 
 function addToCartAction(book) {
@@ -44,5 +45,11 @@ function refreshCartAction(cart) {
             type: cartConstants.REFRESH_CART,
             payload: newCart,
         });
+    };
+}
+
+function clearCartAction() {
+    return {
+        type: cartConstants.CLEAR_CART,
     };
 }

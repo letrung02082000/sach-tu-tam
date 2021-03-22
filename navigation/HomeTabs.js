@@ -18,9 +18,9 @@ export default function HomeTabs() {
             tabBar={(props) => <CustomTabBar {...props} />}
         >
             <Tab.Screen name='HomeStackScreen' component={HomeStackScreen} />
-            <Tab.Screen name='EventStackScreen' component={EventStack} />
-            <Tab.Screen name='QrCodeScreen' component={QrCodeScreen} />
             <Tab.Screen name='ReaderStackScreen' component={ReaderStack} />
+            <Tab.Screen name='QrCodeScreen' component={QrCodeScreen} />
+            <Tab.Screen name='EventStackScreen' component={EventStack} />
             <Tab.Screen
                 name='ProfileStackScreen'
                 component={ProfileStackScreen}
