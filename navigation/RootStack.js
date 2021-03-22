@@ -15,6 +15,7 @@ import PaymentScreen from '../screens/PaymentScreen';
 import AllBooksScreen from '../screens/AllBooksScreen';
 import DescriptionScreen from '../screens/DescriptionScreen';
 import CategoriesScreen from '../screens/CategoriesScreen';
+import DetailPostScreen from '../screens/DetailPostScreen';
 
 const Stack = createStackNavigator();
 
@@ -95,6 +96,11 @@ export default function RootStack() {
                 name='CategoriesScreen'
                 component={CategoriesScreen}
                 options={{ headerShown: true, title: 'Sách theo danh mục' }}
+            />
+            <Stack.Screen
+                name='DetailPostScreen'
+                component={DetailPostScreen}
+                options={{ headerShown: true, title: 'Bài viết' }}
             />
         </Stack.Navigator>
     );

@@ -10,7 +10,11 @@ export default function ReaderStack() {
             <Stack.Screen
                 name='ReaderScreen'
                 component={ReaderScreen}
-                options={{ headerShown: true }}
+                options={{
+                    headerShown: true,
+                    title: 'Bạn đọc',
+                    headerTitleAlign: 'center',
+                }}
             />
         </Stack.Navigator>
     );

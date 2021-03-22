@@ -60,7 +60,7 @@ export default function CustomTabBar(props) {
                 style={styles.button}
             >
                 <MaterialCommunityIcons
-                    name='newspaper-variant'
+                    name='heart-circle'
                     color={selectedIndex == 1 ? '#4287f5' : '#5c5555'}
                     size={25}
                 />
@@ -94,7 +94,7 @@ export default function CustomTabBar(props) {
                 style={styles.button}
             >
                 <MaterialCommunityIcons
-                    name='heart-circle'
+                    name='newspaper-variant'
                     color={selectedIndex == 3 ? '#4287f5' : '#5c5555'}
                     size={25}
                 />
