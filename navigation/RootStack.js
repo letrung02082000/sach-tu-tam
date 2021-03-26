@@ -16,6 +16,7 @@ import AllBooksScreen from '../screens/AllBooksScreen';
 import DescriptionScreen from '../screens/DescriptionScreen';
 import CategoriesScreen from '../screens/CategoriesScreen';
 import DetailPostScreen from '../screens/DetailPostScreen';
+import DetailEventScreen from '../screens/DetailEventScreen';
 
 const Stack = createStackNavigator();
 
@@ -101,6 +102,11 @@ export default function RootStack() {
                 name='DetailPostScreen'
                 component={DetailPostScreen}
                 options={{ headerShown: true, title: 'Bài viết' }}
+            />
+            <Stack.Screen
+                name='DetailEventScreen'
+                component={DetailEventScreen}
+                options={{ headerShown: true, title: 'Chi tiết hoạt động' }}
             />
         </Stack.Navigator>
     );

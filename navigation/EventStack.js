@@ -10,7 +10,11 @@ export default function EventStack() {
             <Stack.Screen
                 name='EventScreen'
                 component={EventScreen}
-                options={{ headerShown: true }}
+                options={{
+                    headerShown: true,
+                    title: 'Hoạt động tình nguyện',
+                    headerTitleAlign: 'center',
+                }}
             />
         </Stack.Navigator>
     );
