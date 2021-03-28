@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
+import { postApi } from '../../api/post.api';
 
 function Post({ post }) {
     const navigation = useNavigation();
-    const [loved, setLoved] = useState(false);
+    const [loved, setLoved] = useState(post.postlike);
+    console.log(loved);
+    const user = useSelector((state) => state.authReducer);
 
     const addPostToFavorite = () => {
+        if (!user.isLoggedIn) {
+            return navigation.navigate('SignInScreen');
+        }
+
         setLoved(!loved);
+        postApi
+            .likePost(post._id, user._id, user.token)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
     };
 
     const navigateToDetailPostScreen = () => {
