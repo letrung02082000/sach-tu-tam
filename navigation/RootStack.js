@@ -17,6 +17,7 @@ import DescriptionScreen from '../screens/DescriptionScreen';
 import CategoriesScreen from '../screens/CategoriesScreen';
 import DetailPostScreen from '../screens/DetailPostScreen';
 import DetailEventScreen from '../screens/DetailEventScreen';
+import CommentScreen from '../screens/CommentScreen';
 
 const Stack = createStackNavigator();
 
@@ -107,6 +108,11 @@ export default function RootStack() {
                 name='DetailEventScreen'
                 component={DetailEventScreen}
                 options={{ headerShown: true, title: 'Chi tiết hoạt động' }}
+            />
+            <Stack.Screen
+                name='CommentScreen'
+                component={CommentScreen}
+                options={{ headerShown: true, title: 'Bình luận' }}
             />
         </Stack.Navigator>
     );

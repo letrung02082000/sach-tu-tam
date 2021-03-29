@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import { postApi } from '../../api/post.api';
 
 function Post({ post }) {
     const navigation = useNavigation();
     const [loved, setLoved] = useState(post.postlike);
-    console.log(loved);
+    // console.log(post);
     const user = useSelector((state) => state.authReducer);
 
     const addPostToFavorite = () => {
@@ -16,15 +18,31 @@ function Post({ post }) {
             return navigation.navigate('SignInScreen');
         }
 
+        if (loved) {
+            postApi
+                .removeLikePost(post._id)
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err));
+        } else {
+            postApi
+                .likePost(post._id)
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err));
+        }
+
         setLoved(!loved);
-        postApi
-            .likePost(post._id, user._id, user.token)
-            .then((res) => console.log(res))
-            .catch((err) => console.log(err));
     };
 
     const navigateToDetailPostScreen = () => {
         navigation.navigate('DetailPostScreen', { post });
+    };
+
+    const navigateToCommentScreen = () => {
+        navigation.navigate('CommentScreen', { postId: post._id });
+    };
+
+    const navigateToDetailScreen = () => {
+        navigation.navigate('DetailScreen', { book: post.book });
     };
 
     return (
@@ -56,8 +74,7 @@ function Post({ post }) {
                         style={{ height: 35, width: 35 }}
                         resizeMode={'cover'}
                         source={{
-                            uri:
-                                'https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.0-9/120235410_1238559176485707_6637949935409294661_o.jpg?_nc_cat=104&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=Ic2Om2HgoYEAX9YCQko&_nc_ht=scontent.fsgn5-1.fna&oh=c6fd95b6386af5ae65f3b2e024353a45&oe=607DCA61',
+                            uri: post.user.avt,
                         }}
                     />
                 </View>
@@ -112,15 +129,47 @@ function Post({ post }) {
             </View>
 
             <View
-                style={{ marginTop: 15, marginBottom: 5, marginHorizontal: 5 }}
+                style={{
+                    marginTop: 15,
+                    marginBottom: 5,
+                    marginHorizontal: 5,
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                }}
             >
-                <TouchableOpacity onPress={addPostToFavorite}>
-                    <MaterialIcons
-                        name={loved ? 'favorite' : 'favorite-border'}
-                        size={25}
-                        color={loved ? '#e32d2d' : '#1f1f1f'}
-                    />
-                </TouchableOpacity>
+                <View>
+                    <TouchableOpacity
+                        style={{ marginBottom: 5 }}
+                        onPress={addPostToFavorite}
+                    >
+                        <MaterialIcons
+                            name={loved ? 'favorite' : 'favorite-border'}
+                            size={25}
+                            color={loved ? '#e32d2d' : '#1f1f1f'}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <TouchableOpacity onPress={navigateToCommentScreen}>
+                        <EvilIcons name='comment' size={30} />
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <TouchableOpacity onPress={navigateToDetailScreen}>
+                        <AntDesign name='arrowright' size={25} />
+                    </TouchableOpacity>
+                </View>
+            </View>
+            {/* <Text style={{ fontWeight: 'bold' }}>{post.likecount} tim</Text> */}
+            <View style={{ alignItems: 'center', marginTop: 17 }}>
+                {loved ? (
+                    <Text>Bạn đã &#9825; bài viết này</Text>
+                ) : (
+                    <Text>
+                        Thả &#9825; nếu thấy hay để động viên người viết nhé!
+                    </Text>
+                )}
             </View>
         </View>
     );

@@ -4,6 +4,9 @@ import authHeader from '../utils/authHeader';
 export const postApi = {
     getPosts,
     likePost,
+    removeLikePost,
+    getComments,
+    postComment,
 };
 
 const apiUrl = 'https://sach-tu-tam.herokuapp.com/api';
@@ -30,6 +33,49 @@ async function likePost(postId) {
     return new Promise((resolve, reject) => {
         axios
             .post(`${apiUrl}/post/like`, { postId: postId }, authHeader())
+            .then(
+                (response) => {
+                    return resolve(response.data);
+                },
+                (error) => {
+                    return reject(error);
+                }
+            );
+    });
+}
+
+async function removeLikePost(postId) {
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`${apiUrl}/post/removelike`, { postId: postId }, authHeader())
+            .then(
+                (response) => {
+                    return resolve(response.data);
+                },
+                (error) => {
+                    return reject(error);
+                }
+            );
+    });
+}
+
+async function getComments(postId) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${apiUrl}/post/comment?post=${postId}`, authHeader()).then(
+            (response) => {
+                return resolve(response.data);
+            },
+            (error) => {
+                return reject(error);
+            }
+        );
+    });
+}
+
+async function postComment(postId, comment) {
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`${apiUrl}/post/comment`, { postId, comment }, authHeader())
             .then(
                 (response) => {
                     return resolve(response.data);

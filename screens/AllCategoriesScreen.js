@@ -7,14 +7,15 @@ import {
     Text,
     StatusBar,
     Dimensions,
+    TouchableWithoutFeedback,
 } from 'react-native';
 
 import { useSelector } from 'react-redux';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
-const Item = ({ title, style, index }) => {
+const Item = ({ title, style, index, catid }) => {
     const color = [
         '#E1515A',
         '#46b1c9',
@@ -22,14 +23,19 @@ const Item = ({ title, style, index }) => {
         '#42E2B8',
         '#D33F49',
         '#D7C0D0',
-        '#EFF0D1',
+        '#789699',
         '#77BA99',
         '#858AE3',
     ];
-    var colorValue = color[index % 7];
+    var colorValue = color[index % 9];
+    const navigation = useNavigation();
+
+    const navigateToAllBooksScreen = () => {
+        navigation.navigate('AllBooksScreen', { id: catid, title: title });
+    };
 
     return (
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={navigateToAllBooksScreen}>
             <View style={[styles.item, style, { backgroundColor: colorValue }]}>
                 <View>
                     <Text style={styles.title}>{title}</Text>
@@ -51,6 +57,7 @@ const AllCategoriesScreen = () => {
             title={item.name}
             style={{ width: window.width / 2 - 14 }}
             index={index}
+            catid={item._id}
         />
     );
 
@@ -75,7 +82,7 @@ const styles = StyleSheet.create({
     item: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 15,
+        paddingHorizontal: 10,
         paddingVertical: 25,
         marginTop: 15,
         marginHorizontal: 7,
@@ -91,9 +98,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#ccc',
     },
     title: {
-        fontSize: 17,
+        fontSize: 15,
         color: '#fff',
         fontWeight: 'bold',
+        paddingRight: 5,
     },
 });
 

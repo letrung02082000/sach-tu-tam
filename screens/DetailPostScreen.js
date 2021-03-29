@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { postApi } from '../api/post.api';
 
 function DetailPostScreen({ route, navigation }) {
     const post = route.params.post;
-    const [loved, setLoved] = useState(false);
+    const [loved, setLoved] = useState(post.postlike);
 
-    const addPostToFavorite = () => {
-        setLoved(!loved);
-    };
+    // const addPostToFavorite = () => {
+    //     if (loved) {
+    //         postApi
+    //             .removeLikePost(post._id)
+    //             .then((res) => console.log(res))
+    //             .catch((err) => console.log(err));
+    //     } else {
+    //         postApi
+    //             .likePost(post._id)
+    //             .then((res) => console.log(res))
+    //             .catch((err) => console.log(err));
+    //     }
+
+    //     setLoved(!loved);
+    // };
     return (
         <ScrollView
             style={{
@@ -78,7 +91,7 @@ function DetailPostScreen({ route, navigation }) {
                 />
             </View>
 
-            <View
+            {/* <View
                 style={{
                     marginTop: 15,
                     marginBottom: 5,
@@ -94,7 +107,7 @@ function DetailPostScreen({ route, navigation }) {
                         color={loved ? '#e32d2d' : '#1f1f1f'}
                     />
                 </TouchableOpacity>
-            </View>
+            </View> */}
         </ScrollView>
     );
 }
