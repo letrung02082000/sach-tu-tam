@@ -4,6 +4,7 @@ import { bookApi } from '../../api';
 export const bookActions = {
     getAllBooksAction,
     loadMoreAction,
+    refreshingAction,
 };
 
 function getAllBooksAction(page, limit) {
@@ -90,4 +91,10 @@ function loadMoreAction(page, limit) {
             type: bookConstants.LOAD_MORE_END,
         };
     }
+}
+
+function refreshingAction() {
+    return {
+        type: bookConstants.REFRESHING_REQUEST,
+    };
 }

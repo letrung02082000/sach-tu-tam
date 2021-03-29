@@ -25,6 +25,7 @@ import { userActions } from '../redux/actions';
 
 //import screen
 import LoadingScreen from './LoadingScreen';
+import { postActions } from '../redux/actions/post.actions';
 
 function SignInScreen({ navigation }) {
     const { colors } = useTheme();
@@ -44,9 +45,14 @@ function SignInScreen({ navigation }) {
 
     useEffect(() => {
         if (user.isLoggedIn) {
-            setTimeout(() => {
+            dispatch(postActions.refreshingAction());
+            dispatch(postActions.getAllPostsAction(1, 10));
+
+            if (navigation.canGoBack()) {
+                navigation.goBack();
+            } else {
                 navigation.navigate('ProfileStackScreen');
-            }, 3000);
+            }
         }
     });
 

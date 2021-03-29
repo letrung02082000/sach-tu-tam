@@ -54,6 +54,12 @@ export function bookReducer(state = initalState, action) {
                 ...state,
                 endOfList: true,
             };
+        case bookConstants.REFRESHING_REQUEST:
+            return {
+                ...state,
+                hasError: false,
+                endOfList: false,
+            };
         default:
             return state;
     }

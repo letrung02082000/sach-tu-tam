@@ -4,14 +4,13 @@ import {
     TouchableOpacity,
     Text,
     StyleSheet,
-    StatusBar,
     ActivityIndicator,
     Dimensions,
     TouchableWithoutFeedback,
     FlatList,
+    RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { SearchBar } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
@@ -107,6 +106,14 @@ export default function HomeScreen({ navigation }) {
     //     );
     // }
 
+    const onRefresh = () => {
+        dispatch(bookActions.refreshingAction());
+        dispatch(bookActions.getAllBooksAction(1, 10));
+        dispatch(bestsellerActions.getBestseller());
+        dispatch(favoriteActions.getFavorite());
+        dispatch(categoryActions.getAllCategoriesAction());
+    };
+
     const navigateToSearchScreen = () => navigation.navigate('SearchScreen');
     const navigateToCartScreen = () => navigation.navigate('CartScreen');
 
@@ -164,7 +171,9 @@ export default function HomeScreen({ navigation }) {
                 </View>
 
                 {allBooks.hasError ? (
-                    <Text>Some errors occured</Text>
+                    <Text>
+                        Có lỗi xảy ra. Vui lòng kiểm tra kết nối internet!
+                    </Text>
                 ) : (
                     <FlatList
                         data={allBooks.data}
@@ -180,6 +189,12 @@ export default function HomeScreen({ navigation }) {
                             paddingBottom: 150,
                             backgroundColor: '#fff',
                         }}
+                        refreshControl={
+                            <RefreshControl
+                                onRefresh={onRefresh}
+                                refreshing={allBooks.isFetching}
+                            />
+                        }
                     />
                 )}
             </View>

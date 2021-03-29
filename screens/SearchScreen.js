@@ -102,7 +102,7 @@ function SearchScreen() {
                         );
                     }}
                     onIconPress={() => navigation.goBack()}
-                    placeholder='Bạn cần tìm sách gì'
+                    placeholder='Tên sách, tác giả hoặc ISBN'
                     onChangeText={handleTextChange}
                     value={searchValue}
                     autoFocus
@@ -173,7 +173,7 @@ function SearchScreen() {
                                 color: '#2e3338',
                             }}
                         >
-                            Rất tiếc!
+                            Oops!
                         </Text>
                         <Text style={{ fontSize: 15, marginTop: 15 }}>
                             Mình không tìm thấy quyển sách bạn muốn

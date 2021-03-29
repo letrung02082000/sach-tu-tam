@@ -54,6 +54,12 @@ export function postReducer(state = initalState, action) {
                 ...state,
                 endOfList: true,
             };
+        case postConstants.REFRESHING_REQUEST:
+            return {
+                ...state,
+                hasError: false,
+                endOfList: false,
+            };
         default:
             return state;
     }

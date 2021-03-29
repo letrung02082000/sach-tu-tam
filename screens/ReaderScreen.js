@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, RefreshControl } from 'react-native';
+import {
+    View,
+    FlatList,
+    RefreshControl,
+    ActivityIndicator,
+} from 'react-native';
 import Post from '../components/ReaderScreen/Post';
 import { postApi } from '../api/post.api';
 import { useSelector, useDispatch } from 'react-redux';
 import { postActions } from '../redux/actions/post.actions';
 
 function ReaderScreen() {
-    const [postList, setPostList] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [fetching, setFetching] = useState(false);
     const user = useSelector((state) => state.authReducer);
+    const posts = useSelector((state) => state.postReducer);
     const dispatch = useDispatch();
+    const pageLimit = 10;
 
     useEffect(() => {
         // setLoading(true);
@@ -23,49 +27,55 @@ function ReaderScreen() {
         //         setLoading(false);
         //     }
         // });
-        dispatch(postActions.getAllPostsAction(1, 10));
+        dispatch(postActions.getAllPostsAction(1, pageLimit));
     }, []);
 
     const onRefresh = () => {
-        console.log('refreshing');
-        console.log(user);
-        setFetching(true);
-        postApi.getPosts(1, 10, user._id, user.token).then((res) => {
-            if (res.type == 'Valid') {
-                console.log(res.data[0]);
-                setPostList(res.data);
-                setFetching(false);
-                console.log(res.data.length);
-            } else {
-                console.log(res.err);
-                setFetching(false);
-            }
-        });
+        dispatch(postActions.refreshingAction());
+        dispatch(postActions.getAllPostsAction(1, pageLimit));
+    };
+
+    const handleLoadMore = () => {
+        dispatch(postActions.loadMoreAction(posts.currentPage + 1, pageLimit));
     };
 
     const renderItem = ({ item }) => {
         return <Post post={item} />;
     };
 
+    const renderFooter = () => {
+        if (posts.endOfList) return null;
+        return (
+            <View>
+                <ActivityIndicator size='small' color='#ccc' />
+            </View>
+        );
+    };
+
+    if (posts.isFetching) {
+        return (
+            <View style={{ marginTop: 15 }}>
+                <ActivityIndicator size='small' color='#ccc' />
+            </View>
+        );
+    }
+
     return (
         <View>
-            {loading ? (
-                <View>
-                    <Text>loading...</Text>
-                </View>
-            ) : (
-                <FlatList
-                    data={postList}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item._id}
-                    refreshControl={
-                        <RefreshControl
-                            onRefresh={onRefresh}
-                            refreshing={fetching}
-                        />
-                    }
-                />
-            )}
+            <FlatList
+                data={posts.data}
+                renderItem={renderItem}
+                keyExtractor={(item) => item._id}
+                refreshControl={
+                    <RefreshControl
+                        onRefresh={onRefresh}
+                        refreshing={posts.isFetching}
+                    />
+                }
+                onEndReachedThreshold={0.5}
+                onEndReached={handleLoadMore}
+                ListFooterComponent={() => renderFooter()}
+            />
         </View>
     );
 }

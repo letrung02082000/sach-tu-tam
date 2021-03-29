@@ -49,16 +49,20 @@ const DATA = [
     {
         id: 1,
         title: 'Kinh tế',
+        catid: '604ee2edbbba6625107e4f5d',
         image:
             'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_181505.jpg',
         title2: 'Kỹ năng sống',
+        catid2: '604f25673ee7f92c7047abf6',
         image2:
             'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/u/n/untitled-2_67.jpg',
     },
     {
         id: 2,
         title: 'Văn học',
+        catid: '604f24c83ee7f92c7047abf5',
         title2: 'Học ngoại ngữ',
+        catid2: '604f25c73ee7f92c7047abf7',
         image:
             'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_180771.jpg',
         image2:
@@ -69,18 +73,22 @@ const DATA = [
         image:
             'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_222872.jpg',
         title: 'Giáo khoa - giáo trình',
+        catid: '60613c6e961c8b0015e8e5da',
         image2:
             'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_195509_1_45299.jpg',
         title2: 'Văn hoá - địa lý',
+        catid2: '60613c8a961c8b0015e8e5db',
     },
     {
         id: 4,
         image:
             'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_195509_1_32556.jpg',
         title: 'Khoa học - kỹ thuật',
+        catid: '60613ca0961c8b0015e8e5dc',
         image2:
             'https://cdn0.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/8/9/8936071674074_1_1.jpg',
         title2: 'Lịch sử',
+        catid2: '60613cb9961c8b0015e8e5dd',
     },
     // {
     //     id: 5,
@@ -139,7 +147,23 @@ const DATA = [
 ];
 
 export default function CategoryList() {
+    const navigation = useNavigation();
+
     const renderItem = ({ item }) => {
+        const navigateToAllBooksScreen1 = () => {
+            navigation.navigate('AllBooksScreen', {
+                id: item.catid,
+                title: item.title,
+            });
+        };
+
+        const navigateToAllBooksScreen2 = () => {
+            navigation.navigate('AllBooksScreen', {
+                id: item.catid2,
+                title: item.title2,
+            });
+        };
+
         return (
             <View
                 style={{
@@ -149,6 +173,7 @@ export default function CategoryList() {
                 }}
             >
                 <TouchableOpacity
+                    onPress={navigateToAllBooksScreen1}
                     style={{
                         flexDirection: 'row',
                         marginHorizontal: 10,
@@ -183,6 +208,7 @@ export default function CategoryList() {
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
+                    onPress={navigateToAllBooksScreen2}
                     style={{
                         flexDirection: 'row',
                         marginHorizontal: 10,

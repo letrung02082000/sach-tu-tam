@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '../redux/actions';
+import { postActions } from '../redux/actions/post.actions';
 
 export default function ProfileScreen({ navigation }) {
     const user = useSelector((state) => state.authReducer);
@@ -16,9 +17,11 @@ export default function ProfileScreen({ navigation }) {
 
     const handleLogout = () => {
         dispatch(userActions.logout());
-        setTimeout(() => {
-            navigation.navigate('SignInScreen');
-        }, 3000);
+        dispatch(postActions.refreshingAction());
+        dispatch(postActions.getAllPostsAction(1, 10));
+        // setTimeout(() => {
+        //     navigation.navigate('SignInScreen');
+        // }, 3000);
     };
 
     if (user.isLoggedIn) {

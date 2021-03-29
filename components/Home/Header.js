@@ -39,7 +39,7 @@ export default function Header() {
                     }}
                 >
                     <View style={styles.categoryHeader}>
-                        <Text style={styles.headerText}>Danh mục nổi bật</Text>
+                        <Text style={styles.headerText}>Danh mục</Text>
                         <TouchableOpacity onPress={navigateToCategoriesScreen}>
                             <Text
                                 style={{
