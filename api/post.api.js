@@ -7,6 +7,7 @@ export const postApi = {
     removeLikePost,
     getComments,
     postComment,
+    getPostsByBookId,
 };
 
 const apiUrl = 'https://sach-tu-tam.herokuapp.com/api';
@@ -76,6 +77,24 @@ async function postComment(postId, comment) {
     return new Promise((resolve, reject) => {
         axios
             .post(`${apiUrl}/post/comment`, { postId, comment }, authHeader())
+            .then(
+                (response) => {
+                    return resolve(response.data);
+                },
+                (error) => {
+                    return reject(error);
+                }
+            );
+    });
+}
+
+async function getPostsByBookId(page, limit, bookId) {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(
+                `${apiUrl}/book/review/${bookId}?page=${page}&limit=${limit}`,
+                authHeader()
+            )
             .then(
                 (response) => {
                     return resolve(response.data);

@@ -5,16 +5,26 @@ import { ScrollView } from 'react-native-gesture-handler';
 function DescriptionScreen({ route }) {
     const book = route.params;
     return (
-        <ScrollView style={styles.container}>
-            <Text style={styles.text}>{book.description}</Text>
-        </ScrollView>
+        <View
+            style={{
+                backgroundColor: '#fff',
+                flex: 1,
+                paddingVertical: 15,
+                paddingHorizontal: 15,
+            }}
+        >
+            <ScrollView
+                style={styles.container}
+                showsVerticalScrollIndicator={false}
+            >
+                <Text style={styles.text}>{book.description}</Text>
+            </ScrollView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 15,
-        paddingHorizontal: 15,
         backgroundColor: '#fff',
         flex: 1,
     },

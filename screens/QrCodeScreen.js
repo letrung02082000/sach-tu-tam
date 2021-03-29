@@ -8,7 +8,7 @@ import QRCode from 'react-native-qrcode-svg';
 
 function QrCodeScreen({ navigation }) {
     const user = useSelector((state) => state.authReducer);
-    const data = { ...user, token: 'hidden' };
+    const data = { id: user._id, username: user.username, email: user.email };
     console.log(data);
 
     return (
@@ -32,7 +32,7 @@ function QrCodeScreen({ navigation }) {
                     >
                         <QRCode
                             size={200}
-                            value={JSON.stringify(user)}
+                            value={JSON.stringify(data)}
                             logoBackgroundColor='transparent'
                         />
                     </View>

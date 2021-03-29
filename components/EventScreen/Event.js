@@ -43,7 +43,7 @@ function Event({ event }) {
                 <Text
                     style={{ fontSize: 15, fontWeight: 'bold', paddingTop: 5 }}
                 >
-                    Đã tham gia: {event.joinlist.length}/{event.limit}
+                    {event.joinlist.length}/{event.limit} đã tham gia
                 </Text>
             </View>
             <Text
@@ -76,7 +76,7 @@ function Event({ event }) {
                     {event.joinlist.length < event.limit ? (
                         <TouchableOpacity
                             style={[
-                                { backgroundColor: '#32C532' },
+                                { backgroundColor: '#32C532', marginLeft: 15 },
                                 styles.buttonContainer,
                             ]}
                         >
@@ -101,9 +101,9 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        borderRadius: 5,
-        marginRight: 25,
+        borderRadius: 3,
         padding: 7,
+        width: 130,
     },
 
     buttonText: {
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         paddingVertical: 2,
         paddingHorizontal: 5,
+        textAlign: 'center',
     },
 });
 

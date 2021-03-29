@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -13,15 +13,18 @@ import Modal from 'react-native-modal';
 import { DataTable } from 'react-native-paper';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../redux/actions';
+import { postApi } from '../api';
 
 export default function DetailScreen({ route, navigation }) {
     const [imgWidth, setImgWidth] = useState(0);
     const [imgHeight, setImgHeight] = useState(0);
     const [msg, setMsg] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
+    const [reviewsList, setReviewsList] = useState([]);
 
     const book = route.params.book;
     const imgUrl = book.imageurl;
@@ -40,6 +43,19 @@ export default function DetailScreen({ route, navigation }) {
 
     const dispatch = useDispatch();
     const cart = useSelector((state) => state.cartReducer.data);
+
+    useEffect(() => {
+        postApi
+            .getPostsByBookId(1, 10, book._id)
+            .then((res) => {
+                if (res.type == 'Valid') {
+                    setReviewsList(res.data);
+                } else {
+                    console.log(res.err);
+                }
+            })
+            .catch((error) => console.log(error));
+    }, []);
 
     const handleBuyBook = () => {
         if (book.quantity <= 0) {
@@ -284,7 +300,7 @@ export default function DetailScreen({ route, navigation }) {
                         style={{
                             backgroundColor: '#fff',
                             marginTop: 9,
-                            marginBottom: 50,
+                            marginBottom: 15,
                         }}
                     >
                         <Text
@@ -314,6 +330,65 @@ export default function DetailScreen({ route, navigation }) {
                                 })}
                             </DataTable>
                         )}
+                    </View>
+                    <View>
+                        <View
+                            style={{
+                                backgroundColor: '#fff',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <TouchableOpacity
+                                style={{
+                                    marginVertical: 15,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        padding: 9,
+                                        borderRadius: 5,
+                                        borderWidth: 2,
+                                        fontSize: 17,
+                                        fontWeight: 'bold',
+                                        textAlign: 'center',
+                                        color: '#03ada0',
+                                        borderColor: '#03ada0',
+                                    }}
+                                >
+                                    <SimpleLineIcons
+                                        name='note'
+                                        color='#03ada0'
+                                        size={17}
+                                        style={{ marginRight: 15 }}
+                                    />
+                                    &nbsp;&nbsp;Viết Review
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        {reviewsList.map((child, index) => {
+                            return (
+                                <View
+                                    key={child._id}
+                                    style={{
+                                        height: 150,
+                                        backgroundColor: '#fff',
+                                    }}
+                                >
+                                    <Text>{child.user.username}</Text>
+                                    <Text numberOfLines={5}>
+                                        {child.content}
+                                    </Text>
+                                    <TouchableOpacity>
+                                        <Text>Đọc tiếp</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            );
+                        })}
                     </View>
                 </ScrollView>
                 {/* <View style={{ flex: 1 }}>
