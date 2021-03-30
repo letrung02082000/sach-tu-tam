@@ -6,7 +6,6 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import Post from '../components/ReaderScreen/Post';
-import { postApi } from '../api/post.api';
 import { useSelector, useDispatch } from 'react-redux';
 import { postActions } from '../redux/actions/post.actions';
 

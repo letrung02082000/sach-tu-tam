@@ -7,6 +7,7 @@ import { cartReducer } from './cart.reducer';
 import { favoriteReducer } from './favorite.reducer';
 import { categoryReducer } from './category.reducer';
 import { postReducer } from './post.reducer';
+import { eventReducer } from './event.reducer';
 
 const rootReducer = combineReducers({
     authReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     favoriteReducer,
     categoryReducer,
     postReducer,
+    eventReducer,
 });
 
 export default rootReducer;

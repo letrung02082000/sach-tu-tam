@@ -74,7 +74,9 @@ function Post({ post }) {
                         style={{ height: 35, width: 35 }}
                         resizeMode={'cover'}
                         source={{
-                            uri: post.user.avt,
+                            uri:
+                                post.user.avt ||
+                                'https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png',
                         }}
                     />
                 </View>

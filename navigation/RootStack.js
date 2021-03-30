@@ -19,6 +19,7 @@ import DetailPostScreen from '../screens/DetailPostScreen';
 import DetailEventScreen from '../screens/DetailEventScreen';
 import CommentScreen from '../screens/CommentScreen';
 import ReviewScreen from '../screens/ReviewScreen';
+import JoinEventScreen from '../screens/JoinEventScreen';
 
 const Stack = createStackNavigator();
 
@@ -119,6 +120,11 @@ export default function RootStack() {
                 name='ReviewScreen'
                 component={ReviewScreen}
                 options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name='JoinEventScreen'
+                component={JoinEventScreen}
+                options={{ headerShown: true, title: 'Xác nhận tham gia' }}
             />
         </Stack.Navigator>
     );

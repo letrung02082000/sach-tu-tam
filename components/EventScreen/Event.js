@@ -19,6 +19,10 @@ function Event({ event }) {
         navigation.navigate('DetailEventScreen', event);
     };
 
+    const navigateToJoinEventScreen = () => {
+        navigation.navigate('JoinEventScreen', event);
+    };
+
     return (
         <View style={styles.container}>
             <View style={{ padding: 5 }}>
@@ -47,7 +51,12 @@ function Event({ event }) {
                 </Text>
             </View>
             <Text
-                style={{ fontSize: 21, fontWeight: 'bold', paddingTop: 5 }}
+                style={{
+                    fontSize: 21,
+                    fontWeight: 'bold',
+                    paddingVertical: 9,
+                    textAlign: 'center',
+                }}
                 numberOfLines={2}
             >
                 {event.title}
@@ -75,6 +84,7 @@ function Event({ event }) {
                     </TouchableOpacity>
                     {event.joinlist.length < event.limit ? (
                         <TouchableOpacity
+                            onPress={navigateToJoinEventScreen}
                             style={[
                                 { backgroundColor: '#32C532', marginLeft: 15 },
                                 styles.buttonContainer,
