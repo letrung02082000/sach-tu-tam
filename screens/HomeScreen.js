@@ -23,8 +23,6 @@ import Header from '../components/Home/Header';
 import BookItem from '../components/Home/BookItem';
 import { favoriteActions } from '../redux/actions/favorite.actions';
 
-import authHeader from '../utils/authHeader';
-
 // const domainUrl = 'https://sach-tu-tam.herokuapp.com';
 
 // const Item = ({ item, onPress, style }) => {

@@ -13,7 +13,7 @@ export const bookApi = {
     getBooksByCategory,
 };
 
-const apiUrl = 'https://sach-tu-tam.herokuapp.com/api';
+const apiUrl = 'https://sachtutam.herokuapp.com/api';
 
 async function getAllBooks(page, limit) {
     return new Promise((resolve, reject) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     ScrollView,
@@ -9,29 +9,81 @@ import {
     StyleSheet,
     Dimensions,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { eventApi } from '../api';
+import { eventActions } from '../redux/actions';
 import convertToDate from '../utils/convertToDate';
 
 function JoinEventScreen({ route, navigation }) {
     const window = Dimensions.get('window');
-    const event = route.params;
+    const [event, setEvent] = useState(route.params);
     const user = useSelector((state) => state.authReducer);
-    const [joinedEvent, setJoinedEvent] = useState(false);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        eventApi
+            .getEventById(route.params._id)
+            .then((res) => {
+                if (res.type == 'Valid') {
+                    setEvent(res.data);
+                }
+            })
+            .catch((error) => console.log(error));
+    }, []);
 
     const handleJoinEvent = () => {
-        if (joinedEvent) {
+        if (event.registered) {
+            eventApi
+                .leaveEvent(event._id)
+                .then((res) => {
+                    if (res.type == 'Valid') {
+                        eventApi
+                            .getEventById(event._id)
+                            .then((res) => {
+                                if (res.type == 'Valid') {
+                                    setEvent(res.data);
+                                }
+                            })
+                            .catch((error) => console.log(error));
+                        Alert.alert('Bạn đã huỷ tham gia hoạt động này!');
+                        dispatch(eventActions.getAllEventsAction(1, 10));
+                    } else {
+                        if (res.err == 'event closed') {
+                            Alert.alert(
+                                'Đã hết thời gian mở đăng ký. Nếu bạn muốn huỷ hoạt động, vui lòng liên hệ ban tổ chức.'
+                            );
+                        }
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    Alert.alert('Có lỗi xảy ra. Vui lòng thử lại!');
+                });
         } else {
             eventApi
                 .joinEvent(event._id)
                 .then((res) => {
                     if (res.type == 'Valid') {
+                        eventApi
+                            .getEventById(event._id)
+                            .then((res) => {
+                                if (res.type == 'Valid') {
+                                    setEvent(res.data);
+                                }
+                            })
+                            .catch((error) => console.log(error));
                         Alert.alert('Đăng ký thành công!');
-                        setJoinedEvent(true);
+                        dispatch(eventActions.getAllEventsAction(1, 10));
                     } else {
-                        console.log(res);
-                        Alert.alert('Có lỗi xảy ra! Vui lòng thử lại sau.');
-                        setJoinedEvent(false);
+                        if (res.err == 'event joined') {
+                            Alert.alert('Bạn đã tham gia hoạt động này.');
+                        } else if (res.err == 'event full') {
+                            Alert.alert(
+                                'Hoạt động đã đủ số lượng. Hãy tham gia các hoạt động khác.'
+                            );
+                        } else {
+                            Alert.alert('Có lỗi xảy ra! Vui lòng thử lại sau.');
+                        }
                     }
                 })
                 .catch((error) => console.log(error));
@@ -110,9 +162,9 @@ function JoinEventScreen({ route, navigation }) {
                                     color: '#fff',
                                 }}
                             >
-                                {joinedEvent
-                                    ? 'Huỷ tham gia'
-                                    : 'Xác nhận tham gia hoạt động'}
+                                {event.registered
+                                    ? 'Huỷ đăng ký'
+                                    : 'Đăng ký tham gia hoạt động'}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -148,7 +200,7 @@ function JoinEventScreen({ route, navigation }) {
                     <View style={{ padding: 5, marginBottom: 15 }}>
                         <Text style={styles.text}>Số lượng: {event.limit}</Text>
                         <Text style={styles.text}>
-                            Đã đăng ký: {event.joinlist.length}
+                            Đã đăng ký: {event.joinnumber}
                         </Text>
                         <Text style={styles.text}>
                             Hạn đăng ký: {convertToDate(event.deadline)}

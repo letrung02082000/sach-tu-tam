@@ -1,11 +1,15 @@
 import axios from 'axios';
+import authHeader from '../utils/authHeader';
 
 export const userApi = {
     login,
     register,
+    getAllEvents,
+    getAllOrders,
+    getAllDonations,
 };
 
-const apiUrl = 'https://sach-tu-tam.herokuapp.com/api';
+const apiUrl = 'https://sachtutam.herokuapp.com/api';
 
 async function login(email, password) {
     return new Promise((resolve, reject) => {
@@ -38,6 +42,48 @@ async function register(email, password) {
             },
             (error) => {
                 console.log('loi');
+                return reject(error);
+            }
+        );
+    });
+}
+
+async function getAllEvents() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${apiUrl}/user/allevents`, authHeader()).then(
+            (response) => {
+                return resolve(response.data);
+            },
+            (error) => {
+                console.log(error);
+                return reject(error);
+            }
+        );
+    });
+}
+
+async function getAllOrders() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${apiUrl}/user/allorders`, authHeader()).then(
+            (response) => {
+                return resolve(response.data);
+            },
+            (error) => {
+                console.log(error);
+                return reject(error);
+            }
+        );
+    });
+}
+
+async function getAllDonations() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${apiUrl}/user/alldonations`, authHeader()).then(
+            (response) => {
+                return resolve(response.data);
+            },
+            (error) => {
+                console.log(error);
                 return reject(error);
             }
         );

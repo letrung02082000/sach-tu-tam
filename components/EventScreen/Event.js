@@ -47,7 +47,7 @@ function Event({ event }) {
                 <Text
                     style={{ fontSize: 15, fontWeight: 'bold', paddingTop: 5 }}
                 >
-                    {event.joinlist.length}/{event.limit} đã tham gia
+                    {event.joinnumber}/{event.limit} đã đăng ký
                 </Text>
             </View>
             <Text
@@ -82,17 +82,19 @@ function Event({ event }) {
                     >
                         <Text style={styles.buttonText}>Xem chi tiết</Text>
                     </TouchableOpacity>
-                    {event.joinlist.length < event.limit ? (
-                        <TouchableOpacity
-                            onPress={navigateToJoinEventScreen}
-                            style={[
-                                { backgroundColor: '#32C532', marginLeft: 15 },
-                                styles.buttonContainer,
-                            ]}
-                        >
-                            <Text style={styles.buttonText}>Tham gia</Text>
-                        </TouchableOpacity>
-                    ) : null}
+                    <TouchableOpacity
+                        onPress={navigateToJoinEventScreen}
+                        style={[
+                            { backgroundColor: '#32C532', marginLeft: 15 },
+                            styles.buttonContainer,
+                        ]}
+                    >
+                        {event.registered ? (
+                            <Text style={styles.buttonText}>Đã đăng ký</Text>
+                        ) : (
+                            <Text style={styles.buttonText}>Đăng ký</Text>
+                        )}
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>

@@ -10,7 +10,7 @@ export const postApi = {
     getPostsByBookId,
 };
 
-const apiUrl = 'https://sach-tu-tam.herokuapp.com/api';
+const apiUrl = 'https://sachtutam.herokuapp.com/api';
 
 async function getPosts(page, limit) {
     return new Promise((resolve, reject) => {

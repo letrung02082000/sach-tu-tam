@@ -22,9 +22,7 @@ function DetailEventScreen({ route, navigation }) {
             </View>
             <View style={{ padding: 5, marginBottom: 15 }}>
                 <Text style={styles.text}>Số lượng: {event.limit}</Text>
-                <Text style={styles.text}>
-                    Đã đăng ký: {event.joinlist.length}
-                </Text>
+                <Text style={styles.text}>Đã đăng ký: {event.joinnumber}</Text>
                 <Text style={styles.text}>
                     Hạn đăng ký: {convertToDate(event.deadline)}
                 </Text>

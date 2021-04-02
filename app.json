@@ -24,6 +24,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBtZoLxY5yYPPVewuB_3J0neTjjS5fM_oE"
+        }
+      },
       "package": "com.sachtutamteam.sachtutam"
     },
     "web": {

@@ -20,6 +20,9 @@ import DetailEventScreen from '../screens/DetailEventScreen';
 import CommentScreen from '../screens/CommentScreen';
 import ReviewScreen from '../screens/ReviewScreen';
 import JoinEventScreen from '../screens/JoinEventScreen';
+import MyOrdersScreen from '../screens/MyOrdersScreen';
+import MyEventsScreen from '../screens/MyEventsScreen';
+import MyDonationsScreen from '../screens/MyDonationsScreen';
 
 const Stack = createStackNavigator();
 
@@ -125,6 +128,30 @@ export default function RootStack() {
                 name='JoinEventScreen'
                 component={JoinEventScreen}
                 options={{ headerShown: true, title: 'Xác nhận tham gia' }}
+            />
+            <Stack.Screen
+                name='MyOrdersScreen'
+                component={MyOrdersScreen}
+                options={{
+                    headerShown: true,
+                    title: 'Hoạt động mua sách của bạn',
+                }}
+            />
+            <Stack.Screen
+                name='MyDonationsScreen'
+                component={MyDonationsScreen}
+                options={{
+                    headerShown: true,
+                    title: 'Hoạt động quyên góp của bạn',
+                }}
+            />
+            <Stack.Screen
+                name='MyEventsScreen'
+                component={MyEventsScreen}
+                options={{
+                    headerShown: true,
+                    title: 'Hoạt động tình nguyện của bạn',
+                }}
             />
         </Stack.Navigator>
     );
