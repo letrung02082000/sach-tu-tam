@@ -10,7 +10,7 @@ export default function ProfileStack() {
             <Stack.Screen
                 name='ProfileScreen'
                 component={ProfileScreen}
-                options={{ title: 'Cá nhân' }}
+                options={{ headerShown: false }}
             />
         </Stack.Navigator>
     );

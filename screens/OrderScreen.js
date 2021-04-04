@@ -15,15 +15,15 @@ import { bookApi } from '../api';
 import { cartActions } from '../redux/actions';
 
 export default function OrderScreen({ navigation }) {
-    const [phoneNumber, setPhoneNumber] = useState(false);
+    const userInfo = useSelector((state) => state.authReducer);
+    const cart = useSelector((state) => state.cartReducer.data);
+
+    const [phoneNumber, setPhoneNumber] = useState(userInfo.tel || false);
     const [deliveryChecked, setDeliveryChecked] = useState('first');
     const [payChecked, setPayChecked] = useState('first');
     const [total, setTotal] = useState(null);
     const [confirmLoading, setConfirmLoading] = useState(false);
-    const [address, setAddress] = useState(null);
-
-    const userInfo = useSelector((state) => state.authReducer);
-    const cart = useSelector((state) => state.cartReducer.data);
+    const [address, setAddress] = useState(userInfo.address || false);
 
     const dispatch = useDispatch();
 
@@ -98,6 +98,7 @@ export default function OrderScreen({ navigation }) {
                 <View style={styles.phoneContainer}>
                     <Text style={styles.phoneText}>Số điện thoại</Text>
                     <TextInput
+                        value={phoneNumber}
                         placeholder='Nhập số điện thoại người nhận'
                         placeholderTextColor='#666666'
                         keyboardType={

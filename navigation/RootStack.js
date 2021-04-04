@@ -23,6 +23,7 @@ import JoinEventScreen from '../screens/JoinEventScreen';
 import MyOrdersScreen from '../screens/MyOrdersScreen';
 import MyEventsScreen from '../screens/MyEventsScreen';
 import MyDonationsScreen from '../screens/MyDonationsScreen';
+import UpdateInfoScreen from '../screens/UpdateInfoScreen';
 
 const Stack = createStackNavigator();
 
@@ -92,7 +93,7 @@ export default function RootStack() {
             <Stack.Screen
                 name='AllBooksScreen'
                 component={AllBooksScreen}
-                options={{ headerShown: true, title: '' }}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name='DescriptionScreen'
@@ -151,6 +152,14 @@ export default function RootStack() {
                 options={{
                     headerShown: true,
                     title: 'Hoạt động tình nguyện của bạn',
+                }}
+            />
+            <Stack.Screen
+                name='UpdateInfoScreen'
+                component={UpdateInfoScreen}
+                options={{
+                    headerShown: true,
+                    title: 'Cập nhật thông tin',
                 }}
             />
         </Stack.Navigator>
