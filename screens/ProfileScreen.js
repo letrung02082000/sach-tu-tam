@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userApi } from '../api';
@@ -80,6 +80,10 @@ export default function ProfileScreen({ navigation }) {
         navigation.navigate('UpdateInfoScreen');
     };
 
+    const navigateToMyOrdersScreen = () => {
+        navigation.navigate('MyOrdersScreen');
+    };
+
     const handleLogin = () => {
         navigation.navigate('SignInScreen');
     };
@@ -122,7 +126,7 @@ export default function ProfileScreen({ navigation }) {
                     >
                         {user.name}
                     </Text>
-                    {/* <TouchableOpacity
+                    <TouchableOpacity
                         style={{
                             borderRadius: 5,
                             borderWidth: 1,
@@ -130,120 +134,148 @@ export default function ProfileScreen({ navigation }) {
                             paddingHorizontal: 15,
                             paddingVertical: 5,
                         }}
-                    ></TouchableOpacity> */}
+                        onPress={navigateToUpdateInfoScreen}
+                    >
+                        <View style={{ flexDirection: 'row', width: 125 }}>
+                            <Text style={{ fontSize: 15 }}>
+                                Cập nhật thông tin
+                            </Text>
+                            {/* <AntDesign
+                                name='edit'
+                                size={21}
+                                style={{ paddingHorizontal: 15 }}
+                            /> */}
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{
+                            borderRadius: 5,
+                            borderWidth: 1,
+                            borderColor: '#ccc',
+                            paddingHorizontal: 15,
+                            paddingVertical: 5,
+                            marginTop: 15,
+                        }}
+                        onPress={navigateToUpdateInfoScreen}
+                    >
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                width: 125,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+                                Yêu thích
+                            </Text>
+                            <MaterialIcons
+                                name='favorite'
+                                size={21}
+                                style={{ paddingLeft: 15 }}
+                            />
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <View
+                    style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#fff',
+                        marginTop: 5,
+                    }}
+                >
                     <View
                         style={{
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}
                     >
+                        <Text>
+                            {orderPoint + donationPoint + eventPoint} điểm
+                        </Text>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                            alignItems: 'center',
+                            marginVertical: 25,
+                        }}
+                    >
                         <View
                             style={{
+                                flex: 1,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                             }}
                         >
-                            <Text>
-                                {orderPoint + donationPoint + eventPoint} điểm
-                            </Text>
+                            <TouchableOpacity
+                                style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                                onPress={navigateToMyOrdersScreen}
+                            >
+                                <Text>{orderPoint}</Text>
+                                <Text>Mua sách</Text>
+                            </TouchableOpacity>
                         </View>
                         <View
                             style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-around',
+                                flex: 1,
+                                justifyContent: 'center',
                                 alignItems: 'center',
-                                marginVertical: 25,
+                                // borderLeftWidth: 1,
+                                // borderRightWidth: 1,
+                                // borderLeftColor: '#333',
+                                // borderRightColor: '#333',
                             }}
                         >
-                            <View
+                            <TouchableOpacity
                                 style={{
-                                    flex: 1,
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                 }}
+                                onPress={() =>
+                                    navigation.navigate('MyDonationsScreen')
+                                }
                             >
-                                <TouchableOpacity
-                                    style={{
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}
-                                    onPress={() =>
-                                        navigation.navigate('MyOrdersScreen')
-                                    }
-                                >
-                                    <Text>{orderPoint}</Text>
-                                    <Text>Mua sách</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View
-                                style={{
-                                    flex: 1,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    // borderLeftWidth: 1,
-                                    // borderRightWidth: 1,
-                                    // borderLeftColor: '#333',
-                                    // borderRightColor: '#333',
-                                }}
-                            >
-                                <TouchableOpacity
-                                    style={{
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}
-                                    onPress={() =>
-                                        navigation.navigate('MyDonationsScreen')
-                                    }
-                                >
-                                    <Text>{donationPoint}</Text>
-                                    <Text>Quyên góp</Text>
-                                </TouchableOpacity>
-                            </View>
+                                <Text>{donationPoint}</Text>
+                                <Text>Quyên góp</Text>
+                            </TouchableOpacity>
+                        </View>
 
-                            <View
+                        <View
+                            style={{
+                                flex: 1,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <TouchableOpacity
                                 style={{
-                                    flex: 1,
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                 }}
+                                onPress={() =>
+                                    navigation.navigate('MyEventsScreen')
+                                }
                             >
-                                <TouchableOpacity
-                                    style={{
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}
-                                    onPress={() =>
-                                        navigation.navigate('MyEventsScreen')
-                                    }
-                                >
-                                    <Text>{eventPoint}</Text>
-                                    <Text>Tình nguyện</Text>
-                                </TouchableOpacity>
-                            </View>
+                                <Text>{eventPoint}</Text>
+                                <Text>Tình nguyện</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
-
-                <View>
-                    <Text>Quản lý đơn hàng</Text>
-                    <View>
-                        <TouchableOpacity>
-                            <Text>Đã hoàn tất</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text>Đang xử lý</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                <TouchableOpacity onPress={navigateToUpdateInfoScreen}>
+                <TouchableOpacity onPress={navigateToMyOrdersScreen}>
                     <View
                         style={{
                             flexDirection: 'row',
                             alignItems: 'center',
                             justifyContent: 'space-between',
                             backgroundColor: '#fff',
-                            marginVertical: 5,
+                            marginTop: 5,
                         }}
                     >
                         <View
@@ -252,21 +284,16 @@ export default function ProfileScreen({ navigation }) {
                                 alignItems: 'center',
                             }}
                         >
-                            <AntDesign
-                                name='edit'
-                                size={25}
-                                style={{ paddingHorizontal: 15 }}
-                            />
                             <Text
                                 style={{
                                     paddingVertical: 15,
-                                    // paddingHorizontal: 15,
+                                    paddingHorizontal: 15,
                                     fontSize: 17,
                                     color: '#383838',
                                     fontWeight: 'bold',
                                 }}
                             >
-                                Cập nhật thông tin
+                                Ủng hộ chúng mình
                             </Text>
                         </View>
                         <SimpleLineIcons
@@ -278,6 +305,82 @@ export default function ProfileScreen({ navigation }) {
                         />
                     </View>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={navigateToMyOrdersScreen}>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            backgroundColor: '#fff',
+                            marginTop: 5,
+                        }}
+                    >
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    paddingVertical: 15,
+                                    paddingHorizontal: 15,
+                                    fontSize: 17,
+                                    color: '#383838',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                Quản lý đơn sách
+                            </Text>
+                        </View>
+                        <SimpleLineIcons
+                            name='arrow-right'
+                            size={15}
+                            style={{
+                                paddingHorizontal: 15,
+                            }}
+                        />
+                    </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={navigateToMyOrdersScreen}>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            backgroundColor: '#fff',
+                            marginTop: 5,
+                        }}
+                    >
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    paddingVertical: 15,
+                                    paddingHorizontal: 15,
+                                    fontSize: 17,
+                                    color: '#383838',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                Sách yêu thích
+                            </Text>
+                        </View>
+                        <SimpleLineIcons
+                            name='arrow-right'
+                            size={15}
+                            style={{
+                                paddingHorizontal: 15,
+                            }}
+                        />
+                    </View>
+                </TouchableOpacity>
+
                 <Button title='Đăng xuất' onPress={handleLogout} />
             </SafeAreaView>
         );

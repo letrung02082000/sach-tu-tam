@@ -149,12 +149,10 @@ export default function HomeScreen({ navigation }) {
                             flexDirection: 'row',
                             flex: 1,
                             justifyContent: 'flex-end',
+                            alignContent: 'center',
                             width: 100,
                         }}
                     >
-                        <TouchableOpacity>
-                            <FontAwesome5 name='bell' color='#fff' size={25} />
-                        </TouchableOpacity>
                         <TouchableOpacity
                             style={{ marginHorizontal: 25 }}
                             onPress={navigateToCartScreen}
@@ -164,6 +162,9 @@ export default function HomeScreen({ navigation }) {
                                 color='#fff'
                                 size={25}
                             />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <FontAwesome name='qrcode' color='#fff' size={25} />
                         </TouchableOpacity>
                     </View>
                 </View>

@@ -109,7 +109,7 @@ export default function Header() {
                     <BestSellerList />
                 </View>
             </View>
-            <View style={styles.categoryContainer}>
+            {/* <View style={styles.categoryContainer}>
                 <View
                     style={{
                         backgroundColor: '#fff',
@@ -162,7 +162,7 @@ export default function Header() {
                         </Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </View> */}
             <View style={styles.allBookHeader}>
                 <Text
                     style={[

@@ -21,6 +21,36 @@ const BookItem = ({ item, onPress, style }) => {
                 <Text numberOfLines={2} style={styles.title}>
                     {item.name}
                 </Text>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Text numberOfLines={1} style={styles.price}>
+                        {item.newprice}&nbsp;
+                    </Text>
+                    <Text
+                        style={{
+                            textDecorationLine: 'underline',
+                            fontWeight: 'bold',
+                            fontSize: 16,
+                        }}
+                    >
+                        đ
+                    </Text>
+                    <Text>
+                        {' '}
+                        -
+                        {100 -
+                            Math.round(
+                                (item.newprice / item.oldprice) * 100,
+                                0
+                            )}
+                        %
+                    </Text>
+                </View>
             </View>
         </TouchableOpacity>
     );
@@ -38,5 +68,11 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 16,
         textAlign: 'center',
+    },
+
+    price: {
+        fontSize: 16,
+        textAlign: 'center',
+        fontWeight: 'bold',
     },
 });
