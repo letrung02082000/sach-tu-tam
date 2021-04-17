@@ -24,6 +24,7 @@ import MyOrdersScreen from '../screens/MyOrdersScreen';
 import MyEventsScreen from '../screens/MyEventsScreen';
 import MyDonationsScreen from '../screens/MyDonationsScreen';
 import UpdateInfoScreen from '../screens/UpdateInfoScreen';
+import DonateScreen from '../screens/DonateScreen';
 
 const Stack = createStackNavigator();
 
@@ -160,6 +161,14 @@ export default function RootStack() {
                 options={{
                     headerShown: true,
                     title: 'Cập nhật thông tin',
+                }}
+            />
+            <Stack.Screen
+                name='DonateScreen'
+                component={DonateScreen}
+                options={{
+                    headerShown: true,
+                    title: 'Quyên góp',
                 }}
             />
         </Stack.Navigator>

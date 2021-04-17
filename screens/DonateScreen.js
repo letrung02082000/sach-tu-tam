@@ -1,0 +1,84 @@
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
+import { userApi } from '../api';
+
+function DonateScreen() {
+    const [tel, setTel] = useState(null);
+    const [address, setAddress] = useState(null);
+    const [content, setContent] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+
+    const handleTelChange = (val) => {
+        const cleanNumber = val.replace(/[^0-9]/g, '');
+        setTel(cleanNumber);
+    };
+
+    const handleAddressChange = (val) => {
+        setAddress(val);
+    };
+
+    const handleContentChange = (val) => {
+        setContent(val);
+    };
+
+    const confirmDonation = () => {
+        if (!tel) return Alert.alert('Vui lòng nhập số điện thoại!');
+        if (tel.length != 10) return Alert.alert('Số điện thoại không hợp lệ!');
+        if (!address) return Alert.alert('Vui lòng nhập địa chỉ liên hệ!');
+        if (!content) return Alert.alert('Vui lòng nhập nội dung quyên góp!');
+        setLoading(true);
+
+        const donation = {
+            tel,
+            address,
+            content,
+        };
+
+        userApi.postDonation(donation).then((res) => {
+            if (res.type == 'Valid') {
+                setLoading(false);
+                setSuccess(true);
+            } else {
+                Alert.alert('Có lỗi xảy ra! Vui lòng thử lại.');
+                setLoading(false);
+            }
+        });
+    };
+
+    return (
+        <View>
+            {success ? (
+                <Text>Thành công.</Text>
+            ) : (
+                <View>
+                    <Text>Số điện thoại</Text>
+                    <TextInput
+                        placeholder='Nhập số điện thoại liên hệ của bạn'
+                        onChangeText={(val) => handleTelChange(val)}
+                        keyboardType={
+                            Platform.OS === 'android' ? 'numeric' : 'number-pad'
+                        }
+                    />
+                    <Text>Địa chỉ</Text>
+                    <TextInput
+                        placeholder='Nhập địa chỉ liên hệ của bạn'
+                        onChangeText={handleAddressChange}
+                    />
+                    <Text>Nội dung quyên góp</Text>
+                    <TextInput
+                        placeholder='Sách vở, quần áo hay đồ dùng thiết yếu'
+                        onChangeText={handleContentChange}
+                    />
+                    {loading ? (
+                        <Text>Vui lòng chờ...</Text>
+                    ) : (
+                        <Button title='Xác nhận' onPress={confirmDonation} />
+                    )}
+                </View>
+            )}
+        </View>
+    );
+}
+
+export default DonateScreen;

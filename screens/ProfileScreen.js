@@ -84,6 +84,10 @@ export default function ProfileScreen({ navigation }) {
         navigation.navigate('MyOrdersScreen');
     };
 
+    const navigateToDonateScreen = () => {
+        navigation.navigate('DonateScreen');
+    };
+
     const handleLogin = () => {
         navigation.navigate('SignInScreen');
     };
@@ -268,7 +272,7 @@ export default function ProfileScreen({ navigation }) {
                         </View>
                     </View>
                 </View>
-                <TouchableOpacity onPress={navigateToMyOrdersScreen}>
+                <TouchableOpacity onPress={navigateToDonateScreen}>
                     <View
                         style={{
                             flexDirection: 'row',
@@ -293,7 +297,7 @@ export default function ProfileScreen({ navigation }) {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                Ủng hộ chúng mình
+                                Quyên góp
                             </Text>
                         </View>
                         <SimpleLineIcons
@@ -330,7 +334,7 @@ export default function ProfileScreen({ navigation }) {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                Quản lý đơn sách
+                                Quản lý đặt sách
                             </Text>
                         </View>
                         <SimpleLineIcons
@@ -343,7 +347,7 @@ export default function ProfileScreen({ navigation }) {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={navigateToMyOrdersScreen}>
+                {/* <TouchableOpacity onPress={navigateToMyOrdersScreen}>
                     <View
                         style={{
                             flexDirection: 'row',
@@ -379,7 +383,7 @@ export default function ProfileScreen({ navigation }) {
                             }}
                         />
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <Button title='Đăng xuất' onPress={handleLogout} />
             </SafeAreaView>

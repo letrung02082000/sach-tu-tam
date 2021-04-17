@@ -114,6 +114,7 @@ export default function HomeScreen({ navigation }) {
 
     const navigateToSearchScreen = () => navigation.navigate('SearchScreen');
     const navigateToCartScreen = () => navigation.navigate('CartScreen');
+    const navigateToScanScreen = () => navigation.navigate('ScanScreen');
 
     return (
         <SafeAreaView>
@@ -163,16 +164,17 @@ export default function HomeScreen({ navigation }) {
                                 size={25}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            style={{ marginRight: 25 }}
+                            onPress={navigateToScanScreen}
+                        >
                             <FontAwesome name='qrcode' color='#fff' size={25} />
                         </TouchableOpacity>
                     </View>
                 </View>
 
                 {allBooks.hasError ? (
-                    <Text>
-                        Có lỗi xảy ra. Vui lòng kiểm tra kết nối internet!
-                    </Text>
+                    <Text>Có lỗi xảy ra!</Text>
                 ) : (
                     <FlatList
                         data={allBooks.data}

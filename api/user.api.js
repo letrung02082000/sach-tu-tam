@@ -7,6 +7,7 @@ export const userApi = {
     getAllEvents,
     getAllOrders,
     getAllDonations,
+    postDonation,
 };
 
 const apiUrl = 'https://sachtutam.herokuapp.com/api';
@@ -84,6 +85,19 @@ async function getAllDonations() {
             },
             (error) => {
                 console.log(error);
+                return reject(error);
+            }
+        );
+    });
+}
+
+async function postDonation(donation) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${apiUrl}/user/donation`, donation, authHeader()).then(
+            (response) => {
+                return resolve(response.data);
+            },
+            (error) => {
                 return reject(error);
             }
         );
