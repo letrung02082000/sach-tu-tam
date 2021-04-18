@@ -8,6 +8,8 @@ export const userApi = {
     getAllOrders,
     getAllDonations,
     postDonation,
+    updateInfo,
+    changeUsername,
 };
 
 const apiUrl = 'https://sachtutam.herokuapp.com/api';
@@ -101,5 +103,25 @@ async function postDonation(donation) {
                 return reject(error);
             }
         );
+    });
+}
+
+async function updateInfo(userInfo) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${apiUrl}/user/updateinfo`, userInfo, authHeader()).then(
+            (response) => resolve(response.data),
+            (error) => reject(error)
+        );
+    });
+}
+
+async function changeUsername(username) {
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`${apiUrl}/user/changeusername`, userInfo, authHeader())
+            .then(
+                (response) => resolve(response.data),
+                (error) => reject(error)
+            );
     });
 }
