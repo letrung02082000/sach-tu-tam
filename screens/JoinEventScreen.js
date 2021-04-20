@@ -81,6 +81,10 @@ function JoinEventScreen({ route, navigation }) {
                             Alert.alert(
                                 'Hoạt động đã đủ số lượng. Hãy tham gia các hoạt động khác.'
                             );
+                        } else if (res.err == 'event closed') {
+                            Alert.alert(
+                                'Đã hết thời gian mở đăng ký. Hãy tham gia các hoạt động khác.'
+                            );
                         } else {
                             Alert.alert('Có lỗi xảy ra! Vui lòng thử lại sau.');
                         }

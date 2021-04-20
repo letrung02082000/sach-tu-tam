@@ -166,7 +166,11 @@ function Post({ post }) {
             {/* <Text style={{ fontWeight: 'bold' }}>{post.likecount} tim</Text> */}
             <View style={{ alignItems: 'center', marginTop: 17 }}>
                 {loved ? (
-                    <Text>Bạn đã &#9825; bài viết này</Text>
+                    <Text>
+                        Bạn và{' '}
+                        {post.postlike ? post.likecount - 1 : post.likecount}{' '}
+                        người khác đã &#9825; bài viết này
+                    </Text>
                 ) : (
                     <Text>
                         Thả &#9825; nếu thấy hay để động viên người viết nhé!

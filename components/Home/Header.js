@@ -26,6 +26,14 @@ export default function Header() {
         navigation.navigate('CategoriesScreen');
     };
 
+    const navigateToAllFavoriteBooksScreen = () => {
+        navigation.navigate('AllFavoriteBooksScreen');
+    };
+
+    const navigateToAllBestsellerScreen = () => {
+        navigation.navigate('AllBestsellerScreen');
+    };
+
     // const renderItem = ({ item }) => {
     //     return (
     //         <TouchableOpacity onPress={navigateToDetail}>
@@ -50,16 +58,7 @@ export default function Header() {
                     <View style={styles.categoryHeader}>
                         <Text style={styles.headerText}>Danh mục</Text>
                         <TouchableOpacity onPress={navigateToCategoriesScreen}>
-                            <Text
-                                style={{
-                                    textTransform: 'uppercase',
-                                    color: '#003399',
-                                    fontWeight: 'bold',
-                                    marginRight: 5,
-                                }}
-                            >
-                                Tất cả
-                            </Text>
+                            <Text style={styles.seeMoreText}>Tất cả</Text>
                         </TouchableOpacity>
                     </View>
                     <CategoryList />
@@ -77,14 +76,22 @@ export default function Header() {
                         paddingBottom: 10,
                     }}
                 >
-                    <Text
-                        style={[
-                            styles.headerText,
-                            { paddingVertical: 15, paddingHorizontal: 10 },
-                        ]}
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            paddingVertical: 15,
+                            paddingHorizontal: 10,
+                        }}
                     >
-                        Được Yêu Thích
-                    </Text>
+                        <Text style={[styles.headerText]}>Được Yêu Thích</Text>
+                        <TouchableOpacity
+                            onPress={navigateToAllFavoriteBooksScreen}
+                        >
+                            <Text style={styles.seeMoreText}>Xem thêm</Text>
+                        </TouchableOpacity>
+                    </View>
                     <FavoriteList />
                 </View>
             </View>
@@ -98,14 +105,22 @@ export default function Header() {
                         paddingBottom: 10,
                     }}
                 >
-                    <Text
-                        style={[
-                            styles.headerText,
-                            { paddingVertical: 15, paddingHorizontal: 10 },
-                        ]}
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            paddingVertical: 15,
+                            paddingHorizontal: 10,
+                        }}
                     >
-                        Được Đọc Nhiều
-                    </Text>
+                        <Text style={styles.headerText}>Được Đọc Nhiều</Text>
+                        <TouchableOpacity
+                            onPress={navigateToAllBestsellerScreen}
+                        >
+                            <Text style={styles.seeMoreText}>Xem thêm</Text>
+                        </TouchableOpacity>
+                    </View>
                     <BestSellerList />
                 </View>
             </View>
@@ -207,5 +222,12 @@ const styles = StyleSheet.create({
     map: {
         width: Dimensions.get('window').width - 20,
         height: 210,
+    },
+
+    seeMoreText: {
+        textTransform: 'uppercase',
+        color: '#003399',
+        fontWeight: 'bold',
+        marginRight: 5,
     },
 });

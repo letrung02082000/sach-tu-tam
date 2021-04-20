@@ -4,22 +4,26 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
-    ActivityIndicator,
+    StatusBar,
     Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 
-import { BarCodeScanner } from 'expo-barcode-scanner';
+// import { BarCodeScanner } from 'expo-barcode-scanner';
+import { Camera } from 'expo-camera';
 import { bookApi } from '../api';
 
 export default function ScanScreen({ navigation }) {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
     const [isFetching, setIsFetching] = useState(false);
+    const [torch, setTorch] = useState(false);
 
     useEffect(() => {
         (async () => {
-            const { status } = await BarCodeScanner.requestPermissionsAsync();
+            const { status } = await Camera.requestPermissionsAsync();
             setHasPermission(status === 'granted');
         })();
     }, []);
@@ -28,6 +32,7 @@ export default function ScanScreen({ navigation }) {
         console.log(data);
         setScanned(true);
         setIsFetching(true);
+        setTorch(false);
         bookApi
             .getBookBySku(data.toString())
             .then((response) => {
@@ -86,22 +91,77 @@ export default function ScanScreen({ navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <BarCodeScanner
+            <StatusBar />
+            {/* <BarCodeScanner
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style={StyleSheet.absoluteFillObject}
+            /> */}
+            <Camera
+                style={StyleSheet.absoluteFillObject}
+                flashMode={torch ? 'torch' : 'off'}
+                autoFocus={'on'}
+                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             />
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.scanButton} onPress={goBack}>
-                    <Text style={styles.btnText}>Quay lại</Text>
+
+            <View style={{ position: 'absolute', top: 17, right: 15 }}>
+                <TouchableOpacity
+                    onPress={goBack}
+                    style={{
+                        backgroundColor: 'rgba(205, 205, 205, 0.5)',
+                        padding: 5,
+                        borderRadius: 50,
+                    }}
+                >
+                    <Feather name='x' color='#fff' size={25} />
                 </TouchableOpacity>
+            </View>
+            <View
+                style={{
+                    flex: 5,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <View
+                    style={{
+                        width: 350,
+                        height: 200,
+                        backgroundColor: 'transparent',
+                        borderColor: 'white',
+                        borderWidth: 3,
+                    }}
+                ></View>
+                <Text style={{ color: '#fff', marginTop: 15 }}>
+                    Hướng camera vào mã ISBN in trên quyển sách
+                </Text>
+            </View>
+            <View style={styles.buttonContainer}>
                 {scanned && (
                     <TouchableOpacity
-                        style={[styles.scanButton, { marginLeft: 25 }]}
+                        style={[styles.scanButton]}
                         onPress={() => setScanned(false)}
                     >
-                        <Text style={styles.btnText}>Quét lại</Text>
+                        <Text style={styles.btnText}>Nhấn để quét lại</Text>
                     </TouchableOpacity>
                 )}
+            </View>
+            <View style={{ flex: 2 }}>
+                <TouchableOpacity
+                    onPress={() => {
+                        setTorch(!torch);
+                    }}
+                >
+                    <Ionicons
+                        name='flashlight'
+                        size={50}
+                        color='#fff'
+                        style={{
+                            backgroundColor: 'rgba(205, 205, 205, 0.8)',
+                            padding: 9,
+                            borderRadius: 50,
+                        }}
+                    />
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );
@@ -110,23 +170,24 @@ export default function ScanScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        flex: 1,
     },
 
     scanButton: {
         //flex: 1,
         backgroundColor: '#4287f5',
-        marginBottom: '30%',
-        padding: 15,
+        paddingVertical: 15,
+        paddingHorizontal: 25,
         color: '#fff',
         borderRadius: 100,
-        width: 150,
     },
 
     btnText: {

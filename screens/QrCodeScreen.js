@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Button, Text } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSelector } from 'react-redux';
@@ -48,10 +48,12 @@ function QrCodeScreen({ navigation }) {
                     <Text style={{ marginBottom: 15 }}>
                         Đăng nhập ngay để nhận mã QR tại đây
                     </Text>
-                    <Button
-                        title='Đăng nhập'
+                    <TouchableOpacity
+                        style={styles.scanButton}
                         onPress={() => navigation.navigate('SignInScreen')}
-                    />
+                    >
+                        <Text style={styles.btnText}>Đăng nhập</Text>
+                    </TouchableOpacity>
                 </View>
             )}
 
@@ -61,13 +63,34 @@ function QrCodeScreen({ navigation }) {
                     alignItems: 'center',
                 }}
             >
-                <Button
+                <TouchableOpacity
                     onPress={() => navigation.navigate('ScanScreen')}
-                    title='Quét sách'
-                />
+                    style={styles.scanButton}
+                >
+                    <Text style={styles.btnText}>Quét sách</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );
 }
 
 export default QrCodeScreen;
+
+const styles = StyleSheet.create({
+    scanButton: {
+        //flex: 1,
+        backgroundColor: '#4287f5',
+        marginBottom: '30%',
+        padding: 15,
+        color: '#fff',
+        borderRadius: 100,
+        width: 150,
+    },
+
+    btnText: {
+        color: '#fff',
+        fontSize: 17,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+});

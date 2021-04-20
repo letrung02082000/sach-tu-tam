@@ -25,6 +25,8 @@ import MyEventsScreen from '../screens/MyEventsScreen';
 import MyDonationsScreen from '../screens/MyDonationsScreen';
 import UpdateInfoScreen from '../screens/UpdateInfoScreen';
 import DonateScreen from '../screens/DonateScreen';
+import AllBestsellerScreen from '../screens/AllBestsellerScreen';
+import AllFavoriteBooksScreen from '../screens/AllFavoriteBooksScreen';
 
 const Stack = createStackNavigator();
 
@@ -169,6 +171,22 @@ export default function RootStack() {
                 options={{
                     headerShown: true,
                     title: 'Quyên góp',
+                }}
+            />
+            <Stack.Screen
+                name='AllBestsellerScreen'
+                component={AllBestsellerScreen}
+                options={{
+                    headerShown: true,
+                    title: 'Sách được đọc nhiều',
+                }}
+            />
+            <Stack.Screen
+                name='AllFavoriteBooksScreen'
+                component={AllFavoriteBooksScreen}
+                options={{
+                    headerShown: true,
+                    title: 'Sách được yêu thích',
                 }}
             />
         </Stack.Navigator>

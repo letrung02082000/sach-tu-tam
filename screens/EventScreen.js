@@ -54,6 +54,14 @@ function EventScreen() {
         return <Event event={item} />;
     };
 
+    if (events.isFetching) {
+        return (
+            <View style={{ marginTop: 15 }}>
+                <ActivityIndicator size='small' color='#ccc' />
+            </View>
+        );
+    }
+
     return (
         <View>
             <FlatList

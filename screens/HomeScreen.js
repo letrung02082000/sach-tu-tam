@@ -69,7 +69,7 @@ export default function HomeScreen({ navigation }) {
         );
     };
 
-    const bookPerPage = 10;
+    const bookPerPage = 30;
 
     const handleLoadMore = () => {
         dispatch(bookActions.loadMoreAction(currentPage + 1, bookPerPage));
@@ -106,7 +106,7 @@ export default function HomeScreen({ navigation }) {
 
     const onRefresh = () => {
         dispatch(bookActions.refreshingAction());
-        dispatch(bookActions.getAllBooksAction(1, 10));
+        dispatch(bookActions.getAllBooksAction(1, bookPerPage));
         dispatch(bestsellerActions.getBestseller());
         dispatch(favoriteActions.getFavorite());
         dispatch(categoryActions.getAllCategoriesAction());
