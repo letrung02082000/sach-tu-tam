@@ -13,7 +13,6 @@ const apiUrl = 'https://sachtutam.herokuapp.com/api';
 
 function StationScreen({ route, navigation }) {
     const station = route.params.station;
-    console.log(station);
 
     const scheme = Platform.select({
         ios: 'maps:0,0?q=',

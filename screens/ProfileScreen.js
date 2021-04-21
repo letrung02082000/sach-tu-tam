@@ -88,6 +88,10 @@ export default function ProfileScreen({ navigation }) {
         navigation.navigate('DonateScreen');
     };
 
+    const navigateToAllOrdersScreen = () => {
+        navigation.navigate('AllOrdersScreen');
+    };
+
     const handleLogin = () => {
         navigation.navigate('SignInScreen');
     };
@@ -309,7 +313,7 @@ export default function ProfileScreen({ navigation }) {
                         />
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={navigateToMyOrdersScreen}>
+                <TouchableOpacity onPress={navigateToAllOrdersScreen}>
                     <View
                         style={{
                             flexDirection: 'row',

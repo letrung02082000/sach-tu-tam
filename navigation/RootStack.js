@@ -29,6 +29,7 @@ import AllBestsellerScreen from '../screens/AllBestsellerScreen';
 import AllFavoriteBooksScreen from '../screens/AllFavoriteBooksScreen';
 import StationScreen from '../screens/StationScreen';
 import AllStationsScreen from '../screens/AllStationsScreen';
+import AllOrdersScreen from '../screens/AllOrdersScreen';
 
 const Stack = createStackNavigator();
 
@@ -201,6 +202,13 @@ export default function RootStack() {
             <Stack.Screen
                 name='AllStationsScreen'
                 component={AllStationsScreen}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name='AllOrdersScreen'
+                component={AllOrdersScreen}
                 options={{
                     headerShown: false,
                 }}
