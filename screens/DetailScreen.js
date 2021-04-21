@@ -33,6 +33,7 @@ export default function DetailScreen({ route, navigation }) {
         book.quantity = 0;
     }
 
+    console.log(book);
     Image.getSize(imgUrl, (width, height) => {
         const screenWidth = Dimensions.get('window').width;
         const scaleFactor = width / screenWidth;
@@ -43,6 +44,7 @@ export default function DetailScreen({ route, navigation }) {
 
     const dispatch = useDispatch();
     const cart = useSelector((state) => state.cartReducer.data);
+    const user = useSelector((state) => state.authReducer);
 
     useEffect(() => {
         postApi
@@ -55,7 +57,7 @@ export default function DetailScreen({ route, navigation }) {
                 }
             })
             .catch((error) => console.log(error));
-    }, []);
+    }, [book.loadReview]);
 
     const handleBuyBook = () => {
         if (book.quantity <= 0) {
@@ -89,6 +91,11 @@ export default function DetailScreen({ route, navigation }) {
         if (navigation.canGoBack()) {
             navigation.goBack();
         }
+    };
+
+    const navigateToReviewScreen = () => {
+        if (!user.isLoggedIn) return navigation.navigate('SignInScreen');
+        navigation.navigate('ReviewScreen', book);
     };
 
     return (
@@ -242,6 +249,7 @@ export default function DetailScreen({ route, navigation }) {
                                 fontSize: 23,
                                 fontWeight: 'bold',
                                 color: '#4d4d4d',
+                                marginBottom: 9,
                             }}
                         >
                             <Text style={{ fontSize: 17, fontWeight: 'bold' }}>
@@ -254,6 +262,17 @@ export default function DetailScreen({ route, navigation }) {
                                 }}
                             >
                                 đ
+                            </Text>
+                        </Text>
+                        <Text
+                            style={{
+                                fontSize: 23,
+                                fontWeight: 'bold',
+                                color: '#4d4d4d',
+                            }}
+                        >
+                            <Text style={{ fontSize: 17, fontWeight: 'bold' }}>
+                                Tủ sách/Điểm đọc:&nbsp;
                             </Text>
                         </Text>
                     </View>
@@ -345,6 +364,7 @@ export default function DetailScreen({ route, navigation }) {
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                 }}
+                                onPress={navigateToReviewScreen}
                             >
                                 <Text
                                     style={{

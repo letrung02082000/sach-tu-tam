@@ -173,31 +173,32 @@ export default function HomeScreen({ navigation }) {
                     </View>
                 </View>
 
-                {allBooks.hasError ? (
+                {/* {allBooks.hasError ? (
                     <Text>Có lỗi xảy ra!</Text>
                 ) : (
-                    <FlatList
-                        data={allBooks.data}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item._id}
-                        onEndReachedThreshold={0.5}
-                        onEndReached={handleLoadMore}
-                        ListFooterComponent={() => renderFooter()}
-                        numColumns={2}
-                        ListHeaderComponent={Header}
-                        showsVerticalScrollIndicator={false}
-                        contentContainerStyle={{
-                            paddingBottom: 150,
-                            backgroundColor: '#fff',
-                        }}
-                        refreshControl={
-                            <RefreshControl
-                                onRefresh={onRefresh}
-                                refreshing={allBooks.isFetching}
-                            />
-                        }
-                    />
-                )}
+                    
+                )} */}
+                <FlatList
+                    data={allBooks.data}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item._id}
+                    onEndReachedThreshold={0.5}
+                    onEndReached={handleLoadMore}
+                    ListFooterComponent={() => renderFooter()}
+                    numColumns={2}
+                    ListHeaderComponent={Header}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{
+                        paddingBottom: 150,
+                        backgroundColor: '#fff',
+                    }}
+                    refreshControl={
+                        <RefreshControl
+                            onRefresh={onRefresh}
+                            refreshing={allBooks.isFetching}
+                        />
+                    }
+                />
             </View>
         </SafeAreaView>
     );

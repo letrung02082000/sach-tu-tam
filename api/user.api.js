@@ -10,6 +10,7 @@ export const userApi = {
     postDonation,
     updateInfo,
     changeUsername,
+    postReview,
 };
 
 const apiUrl = 'https://sachtutam.herokuapp.com/api';
@@ -123,5 +124,14 @@ async function changeUsername(username) {
                 (response) => resolve(response.data),
                 (error) => reject(error)
             );
+    });
+}
+
+async function postReview(post) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${apiUrl}/post/create`, post, authHeader()).then(
+            (response) => resolve(response.data),
+            (error) => reject(error)
+        );
     });
 }

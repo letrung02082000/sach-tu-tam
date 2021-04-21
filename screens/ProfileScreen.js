@@ -74,7 +74,7 @@ export default function ProfileScreen({ navigation }) {
                 console.log(donationPoint);
             }
         });
-    }, []);
+    }, [user.isLoggedIn]);
 
     const navigateToUpdateInfoScreen = () => {
         navigation.navigate('UpdateInfoScreen');

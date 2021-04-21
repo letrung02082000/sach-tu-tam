@@ -28,20 +28,20 @@ import LoadingScreen from './LoadingScreen';
 import { postActions } from '../redux/actions/post.actions';
 
 function SignInScreen({ navigation }) {
-    const { colors } = useTheme();
-
+    const user = useSelector((state) => state.authReducer);
+    console.log(user);
     const dispatch = useDispatch();
 
+    const { colors } = useTheme();
+
     const [data, setData] = useState({
-        username: '',
+        username: user.email || '',
         password: '',
         secureTextEntry: true,
         isValidEmail: true,
         isValidPassword: true,
         isValidUser: false,
     });
-
-    const user = useSelector((state) => state.authReducer);
 
     useEffect(() => {
         if (user.isLoggedIn) {
@@ -179,6 +179,7 @@ function SignInScreen({ navigation }) {
                                 ]}
                                 autoCapitalize='none'
                                 onChangeText={(val) => textInputChange(val)}
+                                value={data.username}
                             />
                             {data.isValidUser ? (
                                 <Animatable.View animation='bounceIn'>

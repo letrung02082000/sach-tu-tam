@@ -84,7 +84,7 @@ function Post({ post }) {
                 <Text
                     style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 10 }}
                 >
-                    {post.user.username}
+                    {post.user.name}
                 </Text>
             </View>
 

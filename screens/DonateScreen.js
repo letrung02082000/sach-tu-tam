@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { userApi } from '../api';
 
+import { useSelector } from 'react-redux';
+
 function DonateScreen() {
-    const [tel, setTel] = useState(null);
-    const [address, setAddress] = useState(null);
+    const user = useSelector((state) => state.authReducer);
+
+    const [tel, setTel] = useState(user.tel);
+    const [address, setAddress] = useState(user.address);
     const [content, setContent] = useState(null);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -54,6 +58,7 @@ function DonateScreen() {
                 <View>
                     <Text>Số điện thoại</Text>
                     <TextInput
+                        value={tel}
                         placeholder='Nhập số điện thoại liên hệ của bạn'
                         onChangeText={(val) => handleTelChange(val)}
                         keyboardType={
@@ -64,6 +69,7 @@ function DonateScreen() {
                     <TextInput
                         placeholder='Nhập địa chỉ liên hệ của bạn'
                         onChangeText={handleAddressChange}
+                        value={address}
                     />
                     <Text>Nội dung quyên góp</Text>
                     <TextInput

@@ -7,6 +7,10 @@ const initialState = {
     email: '',
     password: '',
     token: '',
+    tel: '',
+    name: '',
+    studentid: '',
+    username: '',
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -37,9 +41,13 @@ export const authReducer = (state = initialState, action) => {
                 isFetching: false,
                 isLoggedIn: false,
                 _id: '',
-                email: '',
+                email: state.email,
                 password: '',
                 token: '',
+                tel: '',
+                name: '',
+                studentid: '',
+                username: '',
             };
         default:
             return state;
