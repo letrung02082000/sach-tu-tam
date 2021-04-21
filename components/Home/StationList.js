@@ -5,7 +5,7 @@ import { stationApi } from '../../api';
 
 import Station from './Station';
 
-function StationList() {
+function StationList({ getAllStations }) {
     const navigation = useNavigation();
     const window = Dimensions.get('window');
     const [data, setData] = useState([]);
@@ -16,6 +16,7 @@ function StationList() {
             .then((res) => {
                 if (res.type == 'Valid') {
                     setData(res.data);
+                    getAllStations(res.data);
                 } else {
                     console.log(res.err);
                 }
@@ -28,7 +29,7 @@ function StationList() {
             <Station
                 item={item}
                 onPress={() =>
-                    navigation.navigate('DetailScreen', { book: item })
+                    navigation.navigate('StationScreen', { station: item })
                 }
                 style={{ width: (window.width * 5) / 7 }}
             />

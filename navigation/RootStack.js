@@ -27,6 +27,8 @@ import UpdateInfoScreen from '../screens/UpdateInfoScreen';
 import DonateScreen from '../screens/DonateScreen';
 import AllBestsellerScreen from '../screens/AllBestsellerScreen';
 import AllFavoriteBooksScreen from '../screens/AllFavoriteBooksScreen';
+import StationScreen from '../screens/StationScreen';
+import AllStationsScreen from '../screens/AllStationsScreen';
 
 const Stack = createStackNavigator();
 
@@ -187,6 +189,20 @@ export default function RootStack() {
                 options={{
                     headerShown: true,
                     title: 'Sách được yêu thích',
+                }}
+            />
+            <Stack.Screen
+                name='StationScreen'
+                component={StationScreen}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name='AllStationsScreen'
+                component={AllStationsScreen}
+                options={{
+                    headerShown: false,
                 }}
             />
         </Stack.Navigator>
