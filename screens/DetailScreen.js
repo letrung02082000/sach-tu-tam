@@ -15,6 +15,7 @@ import { DataTable } from 'react-native-paper';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import { Rating } from 'react-native-elements';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../redux/actions';
@@ -28,10 +29,10 @@ export default function DetailScreen({ route, navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [reviewsList, setReviewsList] = useState([]);
     const [reviewLoading, setReviewLoading] = useState(true);
-
+    const [userReview, setUserReview] = useState(false);
     const book = route.params.book;
     const imgUrl = book.imageurl;
-
+    console.log(userReview);
     if (!book.quantity) {
         book.quantity = 0;
     }
@@ -60,6 +61,17 @@ export default function DetailScreen({ route, navigation }) {
             })
             .catch((error) => console.log(error));
         setReviewLoading(false);
+
+        postApi
+            .getUserPostByBookId(book._id)
+            .then((res) => {
+                if (res.type == 'Valid') {
+                    setUserReview(res.data);
+                } else {
+                    console.log(res.err);
+                }
+            })
+            .catch((error) => console.log(error));
     }, [book.loadReview]);
 
     const handleBuyBook = () => {
@@ -343,39 +355,101 @@ export default function DetailScreen({ route, navigation }) {
                         )}
                     </View>
                     <View>
-                        <View
-                            style={{
-                                backgroundColor: '#fff',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginVertical: 10,
-                            }}
-                        >
-                            <Text
+                        {userReview ? (
+                            <View
                                 style={{
-                                    fontWeight: 'bold',
-                                    color: '#303030',
-                                    marginTop: 15,
-                                    fontSize: 17,
+                                    backgroundColor: '#fff',
+                                    marginVertical: 10,
+                                    padding: 15,
                                 }}
                             >
-                                Bạn đã đọc cuốn sách này chưa?
-                            </Text>
-                            <TouchableOpacity
-                                style={styles.reviewButton}
-                                onPress={navigateToReviewScreen}
+                                <View
+                                    style={{
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontSize: 15,
+                                                marginLeft: 5,
+                                            }}
+                                        >
+                                            Bạn đã đánh giá quyển sách này
+                                        </Text>
+                                        <Rating
+                                            imageSize={20}
+                                            readonly
+                                            startingValue={5}
+                                        />
+                                    </View>
+                                </View>
+
+                                <View
+                                    style={{
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <Text
+                                        numberOfLines={2}
+                                        style={{
+                                            marginTop: 15,
+                                            fontWeight: 'bold',
+                                            fontSize: 17,
+                                            color: '#303030',
+                                        }}
+                                    >
+                                        {userReview.title}
+                                    </Text>
+                                    <Text
+                                        style={{ fontSize: 15, lineHeight: 21 }}
+                                    >
+                                        {userReview.content}
+                                    </Text>
+                                </View>
+                            </View>
+                        ) : (
+                            <View
+                                style={{
+                                    backgroundColor: '#fff',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginVertical: 10,
+                                }}
                             >
-                                <Text style={styles.reviewText}>
-                                    <SimpleLineIcons
-                                        name='note'
-                                        color='#fff'
-                                        size={17}
-                                        style={{ marginRight: 15 }}
-                                    />
-                                    &nbsp;&nbsp;Viết Review ngay
+                                <Text
+                                    style={{
+                                        fontWeight: 'bold',
+                                        color: '#303030',
+                                        marginTop: 15,
+                                        fontSize: 17,
+                                    }}
+                                >
+                                    Bạn đã đọc cuốn sách này chưa?
                                 </Text>
-                            </TouchableOpacity>
-                        </View>
+                                <TouchableOpacity
+                                    style={styles.reviewButton}
+                                    onPress={navigateToReviewScreen}
+                                >
+                                    <Text style={styles.reviewText}>
+                                        <SimpleLineIcons
+                                            name='note'
+                                            color='#fff'
+                                            size={17}
+                                            style={{ marginRight: 15 }}
+                                        />
+                                        &nbsp;&nbsp;Viết Review ngay
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+
                         {reviewLoading ? (
                             <View style={styles.reviewLoading}>
                                 <ActivityIndicator size='large' color='#ccc' />
@@ -385,9 +459,8 @@ export default function DetailScreen({ route, navigation }) {
                             </View>
                         ) : null}
                         {reviewsList.map((child, index) => {
-                            return <ReviewPost post={child} />;
+                            return <ReviewPost post={child} key={child._id} />;
                         })}
-
                         <TouchableOpacity
                             style={{
                                 paddingVertical: 15,

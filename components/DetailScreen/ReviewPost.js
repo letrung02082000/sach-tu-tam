@@ -70,7 +70,7 @@ function ReviewPost(props) {
             <View>
                 <Text
                     numberOfLines={textShown ? undefined : NUM_OF_LINES}
-                    style={{ fontSize: 15 }}
+                    style={{ fontSize: 15, lineHeight: 21 }}
                     onTextLayout={onTextLayout}
                 >
                     {child.content}

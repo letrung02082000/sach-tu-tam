@@ -8,6 +8,7 @@ export const postApi = {
     getComments,
     postComment,
     getPostsByBookId,
+    getUserPostByBookId,
 };
 
 const apiUrl = 'https://sachtutam.herokuapp.com/api';
@@ -103,5 +104,18 @@ async function getPostsByBookId(page, limit, bookId) {
                     return reject(error);
                 }
             );
+    });
+}
+
+async function getUserPostByBookId(bookId) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${apiUrl}/user/review/${bookId}`, authHeader()).then(
+            (response) => {
+                return resolve(response.data);
+            },
+            (error) => {
+                return reject(error);
+            }
+        );
     });
 }

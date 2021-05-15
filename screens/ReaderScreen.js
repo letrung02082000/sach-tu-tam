@@ -26,7 +26,7 @@ function ReaderScreen() {
         //         setLoading(false);
         //     }
         // });
-        dispatch(postActions.getAllPostsAction(1, pageLimit));
+        // dispatch(postActions.getAllPostsAction(1, pageLimit));
     }, []);
 
     const onRefresh = () => {

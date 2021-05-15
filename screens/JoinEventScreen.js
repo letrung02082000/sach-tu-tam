@@ -33,32 +33,32 @@ function JoinEventScreen({ route, navigation }) {
 
     const handleJoinEvent = () => {
         if (event.registered) {
-            eventApi
-                .leaveEvent(event._id)
-                .then((res) => {
-                    if (res.type == 'Valid') {
-                        eventApi
-                            .getEventById(event._id)
-                            .then((res) => {
-                                if (res.type == 'Valid') {
-                                    setEvent(res.data);
-                                }
-                            })
-                            .catch((error) => console.log(error));
-                        Alert.alert('Bạn đã huỷ tham gia hoạt động này!');
-                        dispatch(eventActions.getAllEventsAction(1, 10));
-                    } else {
-                        if (res.err == 'event closed') {
-                            Alert.alert(
-                                'Đã hết thời gian mở đăng ký. Nếu bạn muốn huỷ hoạt động, vui lòng liên hệ ban tổ chức.'
-                            );
-                        }
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                    Alert.alert('Có lỗi xảy ra. Vui lòng thử lại!');
-                });
+            // eventApi
+            //     .leaveEvent(event._id)
+            //     .then((res) => {
+            //         if (res.type == 'Valid') {
+            //             eventApi
+            //                 .getEventById(event._id)
+            //                 .then((res) => {
+            //                     if (res.type == 'Valid') {
+            //                         setEvent(res.data);
+            //                     }
+            //                 })
+            //                 .catch((error) => console.log(error));
+            //             Alert.alert('Bạn đã huỷ tham gia hoạt động này!');
+            //             dispatch(eventActions.getAllEventsAction(1, 10));
+            //         } else {
+            //             if (res.err == 'event closed') {
+            //                 Alert.alert(
+            //                     'Đã hết thời gian mở đăng ký. Nếu bạn muốn huỷ hoạt động, vui lòng liên hệ ban tổ chức.'
+            //                 );
+            //             }
+            //         }
+            //     })
+            //     .catch((error) => {
+            //         console.log(error);
+            //         Alert.alert('Có lỗi xảy ra. Vui lòng thử lại!');
+            //     });
         } else {
             eventApi
                 .joinEvent(event._id)
@@ -167,7 +167,7 @@ function JoinEventScreen({ route, navigation }) {
                                 }}
                             >
                                 {event.registered
-                                    ? 'Huỷ đăng ký'
+                                    ? 'Đã đăng ký'
                                     : 'Đăng ký tham gia hoạt động'}
                             </Text>
                         </TouchableOpacity>

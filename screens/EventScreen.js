@@ -17,7 +17,7 @@ function EventScreen() {
     const dispatch = useDispatch();
     const limit = 10;
     useEffect(() => {
-        dispatch(eventActions.getAllEventsAction(1, limit));
+        // dispatch(eventActions.getAllEventsAction(1, limit));
         // eventApi.getEvents(1, 10).then((res) => {
         //     if (res.type == 'Valid') {
         //         setEventList(res.data);

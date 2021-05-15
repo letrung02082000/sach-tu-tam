@@ -22,6 +22,8 @@ import { categoryActions } from '../redux/actions/category.actions';
 import Header from '../components/Home/Header';
 import BookItem from '../components/Home/BookItem';
 import { favoriteActions } from '../redux/actions/favorite.actions';
+import { postActions } from '../redux/actions/post.actions';
+import { eventActions } from '../redux/actions';
 
 export default function HomeScreen({ navigation }) {
     const window = Dimensions.get('window');
@@ -73,6 +75,8 @@ export default function HomeScreen({ navigation }) {
         dispatch(bestsellerActions.getBestseller());
         dispatch(favoriteActions.getFavorite());
         dispatch(categoryActions.getAllCategoriesAction());
+        dispatch(postActions.getAllPostsAction(1, 10));
+        dispatch(eventActions.getAllEventsAction(1, 10));
     }, []);
 
     const onRefresh = () => {

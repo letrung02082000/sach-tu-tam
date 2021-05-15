@@ -51,8 +51,7 @@ function DetailPostScreen({ route, navigation }) {
                         style={{ height: 35, width: 35 }}
                         resizeMode={'cover'}
                         source={{
-                            uri:
-                                'https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.0-9/120235410_1238559176485707_6637949935409294661_o.jpg?_nc_cat=104&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=Ic2Om2HgoYEAX9YCQko&_nc_ht=scontent.fsgn5-1.fna&oh=c6fd95b6386af5ae65f3b2e024353a45&oe=607DCA61',
+                            uri: 'https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.0-9/120235410_1238559176485707_6637949935409294661_o.jpg?_nc_cat=104&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=Ic2Om2HgoYEAX9YCQko&_nc_ht=scontent.fsgn5-1.fna&oh=c6fd95b6386af5ae65f3b2e024353a45&oe=607DCA61',
                         }}
                     />
                 </View>
@@ -60,7 +59,7 @@ function DetailPostScreen({ route, navigation }) {
                 <Text
                     style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 10 }}
                 >
-                    {post.user.username}
+                    {post.user.name}
                 </Text>
             </View>
 
