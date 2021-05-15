@@ -7,6 +7,7 @@ import {
     ScrollView,
     TouchableOpacity,
     StyleSheet,
+    ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
@@ -18,6 +19,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../redux/actions';
 import { postApi } from '../api';
+import ReviewPost from '../components/DetailScreen/ReviewPost';
 
 export default function DetailScreen({ route, navigation }) {
     const [imgWidth, setImgWidth] = useState(0);
@@ -25,6 +27,7 @@ export default function DetailScreen({ route, navigation }) {
     const [msg, setMsg] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
     const [reviewsList, setReviewsList] = useState([]);
+    const [reviewLoading, setReviewLoading] = useState(true);
 
     const book = route.params.book;
     const imgUrl = book.imageurl;
@@ -33,7 +36,6 @@ export default function DetailScreen({ route, navigation }) {
         book.quantity = 0;
     }
 
-    console.log(book);
     Image.getSize(imgUrl, (width, height) => {
         const screenWidth = Dimensions.get('window').width;
         const scaleFactor = width / screenWidth;
@@ -48,7 +50,7 @@ export default function DetailScreen({ route, navigation }) {
 
     useEffect(() => {
         postApi
-            .getPostsByBookId(1, 10, book._id)
+            .getPostsByBookId(1, 5, book._id)
             .then((res) => {
                 if (res.type == 'Valid') {
                     setReviewsList(res.data);
@@ -57,6 +59,7 @@ export default function DetailScreen({ route, navigation }) {
                 }
             })
             .catch((error) => console.log(error));
+        setReviewLoading(false);
     }, [book.loadReview]);
 
     const handleBuyBook = () => {
@@ -108,13 +111,7 @@ export default function DetailScreen({ route, navigation }) {
             >
                 <View style={styles.modalViewContainer}>
                     <View style={styles.modalHeader}>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                marginLeft: 10,
-                            }}
-                        >
+                        <View style={styles.msgContainer}>
                             <Feather
                                 name='check-circle'
                                 color='#006600'
@@ -135,13 +132,9 @@ export default function DetailScreen({ route, navigation }) {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.imgContainer}>
                         <Image
-                            style={{
-                                height: 100,
-                                width: 70,
-                                resizeMode: 'contain',
-                            }}
+                            style={styles.bookImage}
                             source={{ uri: imgUrl }}
                         />
                         <View
@@ -319,7 +312,6 @@ export default function DetailScreen({ route, navigation }) {
                         style={{
                             backgroundColor: '#fff',
                             marginTop: 9,
-                            marginBottom: 15,
                         }}
                     >
                         <Text
@@ -356,71 +348,79 @@ export default function DetailScreen({ route, navigation }) {
                                 backgroundColor: '#fff',
                                 justifyContent: 'center',
                                 alignItems: 'center',
+                                marginVertical: 10,
                             }}
                         >
-                            <TouchableOpacity
+                            <Text
                                 style={{
-                                    marginVertical: 15,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
+                                    fontWeight: 'bold',
+                                    color: '#303030',
+                                    marginTop: 15,
+                                    fontSize: 17,
                                 }}
+                            >
+                                Bạn đã đọc cuốn sách này chưa?
+                            </Text>
+                            <TouchableOpacity
+                                style={styles.reviewButton}
                                 onPress={navigateToReviewScreen}
                             >
-                                <Text
-                                    style={{
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        padding: 9,
-                                        borderRadius: 5,
-                                        borderWidth: 2,
-                                        fontSize: 17,
-                                        fontWeight: 'bold',
-                                        textAlign: 'center',
-                                        color: '#03ada0',
-                                        borderColor: '#03ada0',
-                                    }}
-                                >
+                                <Text style={styles.reviewText}>
                                     <SimpleLineIcons
                                         name='note'
-                                        color='#03ada0'
+                                        color='#fff'
                                         size={17}
                                         style={{ marginRight: 15 }}
                                     />
-                                    &nbsp;&nbsp;Viết Review
+                                    &nbsp;&nbsp;Viết Review ngay
                                 </Text>
                             </TouchableOpacity>
                         </View>
+                        {reviewLoading ? (
+                            <View style={styles.reviewLoading}>
+                                <ActivityIndicator size='large' color='#ccc' />
+                                <Text style={styles.loadingText}>
+                                    Đang tải đánh giá...
+                                </Text>
+                            </View>
+                        ) : null}
                         {reviewsList.map((child, index) => {
-                            return (
-                                <View
-                                    key={child._id}
-                                    style={{
-                                        height: 150,
-                                        backgroundColor: '#fff',
-                                    }}
-                                >
-                                    <Text>{child.user.username}</Text>
-                                    <Text numberOfLines={5}>
-                                        {child.content}
-                                    </Text>
-                                    <TouchableOpacity>
-                                        <Text>Đọc tiếp</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            );
+                            return <ReviewPost post={child} />;
                         })}
+
+                        <TouchableOpacity
+                            style={{
+                                paddingVertical: 15,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: 5,
+                                borderWidth: 2,
+                                borderColor: '#03ada0',
+                                marginTop: 5,
+                                marginBottom: 15,
+                                marginHorizontal: 15,
+                                backgroundColor: '#fff',
+                            }}
+                            onPress={() =>
+                                navigation.navigate('AllBookReviewsScreen', {
+                                    book: book,
+                                })
+                            }
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 15,
+                                    fontWeight: 'bold',
+                                    color: '#03ada0',
+                                }}
+                            >
+                                Xem tất cả đánh giá
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                 </ScrollView>
-                {/* <View style={{ flex: 1 }}>
-                    <TouchableOpacity
-                        //style={styles.positionInBottom}
-                        onPress={handleBuyBook}
-                    >
-                        <Text>Mua sách</Text>
-                    </TouchableOpacity>
-                </View> */}
                 <TouchableOpacity
-                    style={{ height: 50, marginHorizontal: 5 }}
+                    style={styles.buyButton}
                     onPress={handleBuyBook}
                 >
                     <Text style={styles.goToCartText}>Mua sách</Text>
@@ -431,25 +431,10 @@ export default function DetailScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-    // container: {
-    //     minHeight: Dimensions.get('window').height - 70,
-    // },
-
     header: {
         //height: 50,
         flex: 1,
     },
-
-    // positionInBottom: {
-    //     position: 'absolute',
-    //     flex: 1,
-    //     flexDirection: 'row',
-    //     width: Dimensions.get('window').width,
-    //     height: 50,
-    //     bottom: 39,
-    //     backgroundColor: 'red',
-    //     zIndex: 100,
-    // },
 
     modalContainer: {
         justifyContent: 'flex-end',
@@ -464,6 +449,12 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingHorizontal: 10,
         justifyContent: 'space-between',
+    },
+
+    msgContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 10,
     },
 
     closeModal: {
@@ -499,4 +490,48 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
+
+    bookImage: {
+        height: 100,
+        width: 70,
+        resizeMode: 'contain',
+    },
+
+    buyButton: { height: 50, marginHorizontal: 5 },
+
+    reviewText: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 9,
+        borderRadius: 5,
+        borderWidth: 2,
+        fontSize: 17,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#fff',
+        borderColor: '#03ada0',
+        backgroundColor: '#03ada0',
+    },
+
+    reviewButton: {
+        marginTop: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: 21,
+    },
+
+    reviewLoading: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        paddingTop: 50,
+        paddingBottom: 100,
+    },
+
+    loadingText: {
+        marginTop: 5,
+        fontSize: 17,
+    },
+
+    imgContainer: { flexDirection: 'row' },
 });

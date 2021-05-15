@@ -30,6 +30,8 @@ import AllFavoriteBooksScreen from '../screens/AllFavoriteBooksScreen';
 import StationScreen from '../screens/StationScreen';
 import AllStationsScreen from '../screens/AllStationsScreen';
 import AllOrdersScreen from '../screens/AllOrdersScreen';
+import SellBookScreen from '../screens/SellBookScreen';
+import AllBookReviewsScreen from '../screens/AllBookReviewsScreen';
 
 const Stack = createStackNavigator();
 
@@ -210,7 +212,24 @@ export default function RootStack() {
                 name='AllOrdersScreen'
                 component={AllOrdersScreen}
                 options={{
-                    headerShown: false,
+                    headerShown: true,
+                    title: 'Quản lý đặt sách',
+                }}
+            />
+            <Stack.Screen
+                name='SellBookScreen'
+                component={SellBookScreen}
+                options={{
+                    headerShown: true,
+                    title: 'Liên hệ bán sách',
+                }}
+            />
+            <Stack.Screen
+                name='AllBookReviewsScreen'
+                component={AllBookReviewsScreen}
+                options={{
+                    headerShown: true,
+                    title: 'Tất cả đánh giá',
                 }}
             />
         </Stack.Navigator>

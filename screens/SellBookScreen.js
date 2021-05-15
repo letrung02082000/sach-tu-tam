@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { userApi } from '../api';
 
 import { useSelector } from 'react-redux';
@@ -60,15 +60,8 @@ function DonateScreen() {
             }}
         >
             {success ? (
-                <View
-                    style={{
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Text>Gửi yêu cầu thành công!</Text>
-                    <Text>Chúng mình sẽ liên hệ lại cho bạn sớm nhất.</Text>
+                <View>
+                    <Text>Gửi yêu cầu thành công</Text>
                 </View>
             ) : (
                 <View>
@@ -104,9 +97,3 @@ function DonateScreen() {
 }
 
 export default DonateScreen;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});

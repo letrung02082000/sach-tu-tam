@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { bookActions } from '../redux/actions/book.actions';
@@ -23,29 +23,6 @@ import Header from '../components/Home/Header';
 import BookItem from '../components/Home/BookItem';
 import { favoriteActions } from '../redux/actions/favorite.actions';
 
-// const domainUrl = 'https://sach-tu-tam.herokuapp.com';
-
-// const Item = ({ item, onPress, style }) => {
-//     const imgUrl = `${domainUrl}/${item.imageurl}`;
-//     return (
-//         <TouchableOpacity onPress={onPress}>
-//             <View style={[styles.item, style]}>
-//                 <Image
-//                     style={{
-//                         width: '100%',
-//                         height: 210,
-//                         resizeMode: 'cover',
-//                     }}
-//                     source={{
-//                         uri: imgUrl,
-//                     }}
-//                 />
-//                 <Text style={styles.title}>{item.name}</Text>
-//             </View>
-//         </TouchableOpacity>
-//     );
-// };
-
 export default function HomeScreen({ navigation }) {
     const window = Dimensions.get('window');
 
@@ -54,6 +31,10 @@ export default function HomeScreen({ navigation }) {
     const allBooks = useSelector((state) => state.bookReducer);
     const currentPage = useSelector((state) => state.bookReducer.currentPage);
     const endOfList = useSelector((state) => state.bookReducer.endOfList);
+
+    const listRef = useRef(null);
+    const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
+    const CONTENT_OFFSET_THRESHOLD = 2100;
 
     const renderFooter = () => {
         if (endOfList) return null;
@@ -94,16 +75,6 @@ export default function HomeScreen({ navigation }) {
         dispatch(categoryActions.getAllCategoriesAction());
     }, []);
 
-    // if (allBooks.isFetching) {
-    //     return (
-    //         <SafeAreaView>
-    //             <View>
-    //                 <Text>is fetching...</Text>
-    //             </View>
-    //         </SafeAreaView>
-    //     );
-    // }
-
     const onRefresh = () => {
         dispatch(bookActions.refreshingAction());
         dispatch(bookActions.getAllBooksAction(1, bookPerPage));
@@ -118,88 +89,103 @@ export default function HomeScreen({ navigation }) {
 
     return (
         <SafeAreaView>
-            <View>
-                <View style={styles.headerContainer}>
-                    <View style={{ flex: 2 }}>
-                        <TouchableWithoutFeedback
-                            delayPressIn={0}
-                            onPress={navigateToSearchScreen}
-                        >
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    backgroundColor: '#fff',
-                                    color: '#ccc',
-                                    height: 39,
-                                    borderRadius: 3,
-                                    justifyContent: 'flex-start',
-                                    alignItems: 'center',
-                                    paddingHorizontal: 15,
-                                    marginHorizontal: 7,
-                                }}
-                            >
-                                <FontAwesome name='search' size={15} />
-                                <Text style={{ marginLeft: 10, fontSize: 15 }}>
-                                    Bạn cần tìm sách gì?
-                                </Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            flex: 1,
-                            justifyContent: 'flex-end',
-                            alignContent: 'center',
-                            width: 100,
-                        }}
+            {contentVerticalOffset > CONTENT_OFFSET_THRESHOLD && (
+                <TouchableOpacity
+                    onPress={() => {
+                        listRef.current.scrollToOffset({
+                            offset: 0,
+                            animated: true,
+                        });
+                    }}
+                    style={styles.scrollTopButton}
+                >
+                    <AntDesign
+                        name='totop'
+                        size={25}
+                        style={styles.scrollTopIcon}
+                    />
+                </TouchableOpacity>
+            )}
+            <View style={styles.headerContainer}>
+                <View style={{ flex: 2 }}>
+                    <TouchableWithoutFeedback
+                        delayPressIn={0}
+                        onPress={navigateToSearchScreen}
                     >
-                        <TouchableOpacity
-                            style={{ marginHorizontal: 25 }}
-                            onPress={navigateToCartScreen}
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                backgroundColor: '#fff',
+                                color: '#ccc',
+                                height: 39,
+                                borderRadius: 3,
+                                justifyContent: 'flex-start',
+                                alignItems: 'center',
+                                paddingHorizontal: 15,
+                                marginHorizontal: 7,
+                            }}
                         >
-                            <FontAwesome
-                                name='shopping-cart'
-                                color='#fff'
-                                size={25}
-                            />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{ marginRight: 25 }}
-                            onPress={navigateToScanScreen}
-                        >
-                            <FontAwesome name='qrcode' color='#fff' size={25} />
-                        </TouchableOpacity>
-                    </View>
+                            <FontAwesome name='search' size={15} />
+                            <Text style={{ marginLeft: 10, fontSize: 15 }}>
+                                Bạn cần tìm sách gì?
+                            </Text>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
 
-                {/* {allBooks.hasError ? (
-                    <Text>Có lỗi xảy ra!</Text>
-                ) : (
-                    
-                )} */}
-                <FlatList
-                    data={allBooks.data}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item._id}
-                    onEndReachedThreshold={0.5}
-                    onEndReached={handleLoadMore}
-                    ListFooterComponent={() => renderFooter()}
-                    numColumns={2}
-                    ListHeaderComponent={Header}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{
-                        paddingBottom: 150,
-                        backgroundColor: '#fff',
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        flex: 1,
+                        justifyContent: 'flex-end',
+                        alignContent: 'center',
+                        width: 100,
                     }}
-                    refreshControl={
-                        <RefreshControl
-                            onRefresh={onRefresh}
-                            refreshing={allBooks.isFetching}
+                >
+                    <TouchableOpacity
+                        style={{ marginHorizontal: 25 }}
+                        onPress={navigateToCartScreen}
+                    >
+                        <FontAwesome
+                            name='shopping-cart'
+                            color='#fff'
+                            size={25}
                         />
-                    }
-                />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{ marginRight: 25 }}
+                        onPress={navigateToScanScreen}
+                    >
+                        <FontAwesome name='qrcode' color='#fff' size={25} />
+                    </TouchableOpacity>
+                </View>
             </View>
+
+            <FlatList
+                ref={listRef}
+                data={allBooks.data}
+                renderItem={renderItem}
+                keyExtractor={(item) => item._id}
+                onEndReachedThreshold={0.5}
+                onEndReached={handleLoadMore}
+                ListFooterComponent={() => renderFooter()}
+                numColumns={2}
+                ListHeaderComponent={Header}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: 150,
+                    backgroundColor: '#fff',
+                }}
+                refreshControl={
+                    <RefreshControl
+                        onRefresh={onRefresh}
+                        refreshing={allBooks.isFetching}
+                    />
+                }
+                onScroll={(event) => {
+                    setContentVerticalOffset(event.nativeEvent.contentOffset.y);
+                }}
+            />
         </SafeAreaView>
     );
 }
@@ -225,4 +211,18 @@ const styles = StyleSheet.create({
     },
 
     searchContainer: {},
+
+    scrollTopButton: {
+        position: 'absolute',
+        bottom: 90,
+        right: 17,
+        zIndex: 100,
+    },
+
+    scrollTopIcon: {
+        color: '#fff',
+        padding: 15,
+        backgroundColor: '#009387',
+        borderRadius: 50,
+    },
 });

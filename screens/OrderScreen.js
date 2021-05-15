@@ -285,16 +285,20 @@ export default function OrderScreen({ navigation }) {
                         </Text>
                     </View>
                 </View>
-                <TouchableOpacity
-                    style={styles.confirmButton}
-                    onPress={confirmOrder}
-                >
-                    <Text style={styles.confirmText}>
-                        {confirmLoading
-                            ? 'Vui lòng chờ...'
-                            : 'Xác Nhận Đặt Sách'}
-                    </Text>
-                </TouchableOpacity>
+                {confirmLoading ? (
+                    <TouchableOpacity
+                        style={styles.confirmButton}
+                        onPress={confirmOrder}
+                    >
+                        <Text style={styles.confirmText}>
+                            Xác Nhận Đặt Sách
+                        </Text>
+                    </TouchableOpacity>
+                ) : (
+                    <View style={styles.confirmButton}>
+                        <Text style={styles.confirmText}>Vui lòng chờ...</Text>
+                    </View>
+                )}
             </View>
         </View>
     );

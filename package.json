@@ -41,6 +41,7 @@
     "react-native-svg": "^12.1.0",
     "react-native-tab-view": "^2.16.0",
     "react-native-vector-icons": "^8.1.0",
+    "react-native-view-more-text-cqsmart": "^1.3.4",
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",

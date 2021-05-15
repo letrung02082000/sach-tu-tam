@@ -18,8 +18,7 @@ function MyOrdersScreen() {
         return (
             <View>
                 <Text>
-                    Mã đơn sách: {item.orderId} +{' '}
-                    {item.pending ? 'đang chờ duyệt' : item.point}
+                    Mã đơn sách: {item.orderId} + {item.point}
                 </Text>
             </View>
         );
