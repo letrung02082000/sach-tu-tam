@@ -1,4 +1,5 @@
 import axios from 'axios';
+import authHeader from '../utils/authHeader';
 
 export const bookApi = {
     getAllBooks,
@@ -84,7 +85,7 @@ async function getFavorite(page, limit) {
 
 async function postOrder(orderInfo) {
     return new Promise((resolve, reject) => {
-        axios.post(`${apiUrl}/order/create`, orderInfo).then(
+        axios.post(`${apiUrl}/order/create`, orderInfo, authHeader()).then(
             (response) => {
                 return resolve(response.data);
             },

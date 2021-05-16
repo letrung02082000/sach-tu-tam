@@ -11,6 +11,8 @@ export const userApi = {
     updateInfo,
     changeUsername,
     postReview,
+    getPendingOrders,
+    getConfirmedOrders,
 };
 
 const apiUrl = 'https://sachtutam.herokuapp.com/api';
@@ -132,6 +134,34 @@ async function postReview(post) {
         axios.post(`${apiUrl}/post/create`, post, authHeader()).then(
             (response) => resolve(response.data),
             (error) => reject(error)
+        );
+    });
+}
+
+async function getPendingOrders() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${apiUrl}/user/pendingorders`, authHeader()).then(
+            (response) => {
+                return resolve(response.data);
+            },
+            (error) => {
+                console.log(error);
+                return reject(error);
+            }
+        );
+    });
+}
+
+async function getConfirmedOrders() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${apiUrl}/user/confirmedorders`, authHeader()).then(
+            (response) => {
+                return resolve(response.data);
+            },
+            (error) => {
+                console.log(error);
+                return reject(error);
+            }
         );
     });
 }

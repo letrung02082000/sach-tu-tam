@@ -7,6 +7,7 @@ import {
     ScrollView,
     Image,
     TouchableOpacity,
+    ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
@@ -20,11 +21,13 @@ export default function ProfileScreen({ navigation }) {
     const [orderPoint, setOrderPoint] = useState(0);
     const [donationPoint, setDonationPoint] = useState(0);
     const [eventPoint, setEventPoint] = useState(0);
+    const [pointLoading, setPointLoading] = useState(false);
 
     const user = useSelector((state) => state.authReducer);
     const dispatch = useDispatch();
 
     useEffect(() => {
+        setPointLoading(true);
         userApi.getAllEvents().then((res) => {
             if (res.type == 'Valid') {
                 let point = 0;
@@ -72,6 +75,7 @@ export default function ProfileScreen({ navigation }) {
                 console.log(donationPoint);
             }
         });
+        setPointLoading(false);
     }, [user.isLoggedIn]);
 
     const navigateToUpdateInfoScreen = () => {
@@ -107,128 +111,218 @@ export default function ProfileScreen({ navigation }) {
     if (user.isLoggedIn) {
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <View style={styles.profileContainer}>
-                    <Image source={{ uri: user.avt }} style={styles.avt} />
-                    <Text style={styles.nameText}>{user.name}</Text>
+                <ScrollView style={{ flex: 1 }}>
+                    <View style={styles.profileContainer}>
+                        <Image source={{ uri: user.avt }} style={styles.avt} />
+                        <Text style={styles.nameText}>{user.name}</Text>
 
-                    <View style={styles.updateInfoContainer}>
-                        <TouchableOpacity onPress={navigateToUpdateInfoScreen}>
-                            <Text style={{ fontSize: 15 }}>
-                                Cập nhật thông tin
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
+                        <View style={styles.updateInfoContainer}>
+                            <TouchableOpacity
+                                onPress={navigateToUpdateInfoScreen}
+                            >
+                                <Text style={{ fontSize: 15 }}>
+                                    Cập nhật thông tin
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
 
-                    <View
-                        style={[styles.updateInfoContainer, { marginTop: 15 }]}
-                        onPress={navigateToUpdateInfoScreen}
+                        <View
+                            style={[
+                                styles.updateInfoContainer,
+                                { marginTop: 15 },
+                            ]}
+                            onPress={navigateToUpdateInfoScreen}
+                        >
+                            <TouchableOpacity>
+                                <Text
+                                    style={{ fontSize: 15, fontWeight: 'bold' }}
+                                >
+                                    Danh sách yêu thích
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={[styles.pointContainer, { marginBottom: 5 }]}>
+                        <View style={[styles.totalPoint, { marginTop: 15 }]}>
+                            {pointLoading ? (
+                                <ActivityIndicator size='small' color='#ccc' />
+                            ) : (
+                                <Text style={styles.totalPointText}>
+                                    Bạn có{' '}
+                                    {orderPoint + donationPoint + eventPoint}{' '}
+                                    điểm thiện nguyện
+                                </Text>
+                            )}
+                        </View>
+                        <View style={styles.detailPointContainer}>
+                            <TouchableOpacity
+                                style={styles.orderPoint}
+                                onPress={navigateToMyOrdersScreen}
+                            >
+                                <Text style={styles.pointText}>
+                                    {orderPoint}
+                                </Text>
+                                <Text style={styles.pointText}>Mua sách</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.orderPoint}
+                                onPress={() =>
+                                    navigation.navigate('MyDonationsScreen')
+                                }
+                            >
+                                <Text style={styles.pointText}>
+                                    {donationPoint}
+                                </Text>
+                                <Text style={styles.pointText}>Quyên góp</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.orderPoint}
+                                onPress={() =>
+                                    navigation.navigate('MyEventsScreen')
+                                }
+                            >
+                                <Text style={styles.pointText}>
+                                    {eventPoint}
+                                </Text>
+                                <Text style={styles.pointText}>
+                                    Tình nguyện
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <TouchableOpacity
+                        onPress={navigateToDonateScreen}
+                        style={styles.donationContainer}
                     >
-                        <TouchableOpacity>
-                            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
-                                Danh sách yêu thích
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Text style={styles.donationText}>
+                                Gửi quyên góp
                             </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={styles.pointContainer}>
-                    <View style={[styles.totalPoint, { marginTop: 15 }]}>
-                        <Text style={styles.totalPointText}>
-                            {orderPoint + donationPoint + eventPoint} điểm
-                        </Text>
-                    </View>
-                    <View style={styles.detailPointContainer}>
-                        <TouchableOpacity
-                            style={styles.orderPoint}
-                            onPress={navigateToMyOrdersScreen}
+                        </View>
+                        <SimpleLineIcons
+                            name='arrow-right'
+                            size={15}
+                            style={{
+                                paddingHorizontal: 15,
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={navigateToSellBookScreen}
+                        style={styles.donationContainer}
+                    >
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
                         >
-                            <Text>{orderPoint}</Text>
-                            <Text>Mua sách</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.orderPoint}
-                            onPress={() =>
-                                navigation.navigate('MyDonationsScreen')
-                            }
+                            <Text style={styles.donationText}>
+                                Liên hệ bán sách
+                            </Text>
+                        </View>
+                        <SimpleLineIcons
+                            name='arrow-right'
+                            size={15}
+                            style={{
+                                paddingHorizontal: 15,
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.donationContainer]}
+                        onPress={navigateToAllOrdersScreen}
+                    >
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
                         >
-                            <Text>{donationPoint}</Text>
-                            <Text>Quyên góp</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.orderPoint}
-                            onPress={() =>
-                                navigation.navigate('MyEventsScreen')
-                            }
-                        >
-                            <Text>{eventPoint}</Text>
-                            <Text>Tình nguyện</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <TouchableOpacity
-                    onPress={navigateToDonateScreen}
-                    style={styles.donationContainer}
-                >
+                            <Text style={styles.donationText}>
+                                Quản lý đơn đặt sách
+                            </Text>
+                        </View>
+                        <SimpleLineIcons
+                            name='arrow-right'
+                            size={15}
+                            style={{
+                                paddingHorizontal: 15,
+                            }}
+                        />
+                    </TouchableOpacity>
                     <View
                         style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
+                            backgroundColor: '#fff',
+                            marginTop: 15,
+                            marginBottom: 5,
                         }}
                     >
-                        <Text style={styles.donationText}>Quyên góp</Text>
-                    </View>
-                    <SimpleLineIcons
-                        name='arrow-right'
-                        size={15}
-                        style={{
-                            paddingHorizontal: 15,
-                        }}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={navigateToSellBookScreen}
-                    style={styles.donationContainer}
-                >
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Text style={styles.donationText}>
-                            Liên hệ bán sách
+                        <Text
+                            style={{
+                                paddingVertical: 15,
+                                paddingHorizontal: 15,
+                                fontSize: 17,
+                                color: '#383838',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            Mục khác
                         </Text>
                     </View>
-                    <SimpleLineIcons
-                        name='arrow-right'
-                        size={15}
-                        style={{
-                            paddingHorizontal: 15,
-                        }}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.donationContainer, { marginBottom: 9 }]}
-                    onPress={navigateToAllOrdersScreen}
-                >
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                        }}
+                    <TouchableOpacity
+                        style={[styles.donationContainer]}
+                        onPress={navigateToAllOrdersScreen}
                     >
-                        <Text style={styles.donationText}>
-                            Quản lý đặt sách
-                        </Text>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Text style={styles.donationText}>
+                                Báo cáo tài chính
+                            </Text>
+                        </View>
+                        <SimpleLineIcons
+                            name='arrow-right'
+                            size={15}
+                            style={{
+                                paddingHorizontal: 15,
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.donationContainer, { marginBottom: 9 }]}
+                        onPress={navigateToAllOrdersScreen}
+                    >
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Text style={styles.donationText}>
+                                Báo lỗi ứng dụng
+                            </Text>
+                        </View>
+                        <SimpleLineIcons
+                            name='arrow-right'
+                            size={15}
+                            style={{
+                                paddingHorizontal: 15,
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <View style={{ marginBottom: 35 }}>
+                        <Button title='Đăng xuất' onPress={handleLogout} />
                     </View>
-                    <SimpleLineIcons
-                        name='arrow-right'
-                        size={15}
-                        style={{
-                            paddingHorizontal: 15,
-                        }}
-                    />
-                </TouchableOpacity>
-                <Button title='Đăng xuất' onPress={handleLogout} />
+                </ScrollView>
             </SafeAreaView>
         );
     }
@@ -303,7 +397,7 @@ const styles = StyleSheet.create({
     },
 
     totalPointText: {
-        fontSize: 17,
+        fontSize: 21,
         fontWeight: 'bold',
     },
 
@@ -312,7 +406,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: '#fff',
-        marginTop: 5,
+        marginBottom: 5,
     },
 
     donationText: {
@@ -321,5 +415,9 @@ const styles = StyleSheet.create({
         fontSize: 17,
         color: '#383838',
         fontWeight: 'bold',
+    },
+
+    pointText: {
+        fontSize: 15,
     },
 });

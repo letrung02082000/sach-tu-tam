@@ -3,11 +3,11 @@ import { View, Text, FlatList } from 'react-native';
 import { userApi } from '../api';
 import OrderItem from '../components/PendingOrdersScreen/OrderItem';
 
-function MyOrdersScreen() {
+function PendingOrdersScreen() {
     const [myOrders, setMyOrders] = useState([]);
 
     useEffect(() => {
-        userApi.getConfirmedOrders().then((res) => {
+        userApi.getPendingOrders().then((res) => {
             if (res.type == 'Valid') {
                 setMyOrders(res.data);
             }
@@ -15,6 +15,7 @@ function MyOrdersScreen() {
     }, []);
 
     const renderItem = ({ item }) => {
+        console.log(item);
         return <OrderItem order={item} />;
     };
 
@@ -29,4 +30,4 @@ function MyOrdersScreen() {
     );
 }
 
-export default MyOrdersScreen;
+export default PendingOrdersScreen;
