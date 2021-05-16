@@ -286,6 +286,10 @@ export default function OrderScreen({ navigation }) {
                     </View>
                 </View>
                 {confirmLoading ? (
+                    <View style={styles.confirmButton}>
+                        <Text style={styles.confirmText}>Vui lòng chờ...</Text>
+                    </View>
+                ) : (
                     <TouchableOpacity
                         style={styles.confirmButton}
                         onPress={confirmOrder}
@@ -294,10 +298,6 @@ export default function OrderScreen({ navigation }) {
                             Xác Nhận Đặt Sách
                         </Text>
                     </TouchableOpacity>
-                ) : (
-                    <View style={styles.confirmButton}>
-                        <Text style={styles.confirmText}>Vui lòng chờ...</Text>
-                    </View>
                 )}
             </View>
         </View>
