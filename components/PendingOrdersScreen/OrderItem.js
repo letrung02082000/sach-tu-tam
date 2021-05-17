@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    ActivityIndicator,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import { bookApi } from '../../api';
 
 function OrderItem({ order }) {
-    console.log(order);
-    const firstBook = order.bookList[0];
-    const [firstItem, setFirstItem] = useState(false);
+    const navigation = useNavigation();
+    const firstItem = order.bookList[0].book;
     const otherBooksCount = order.bookList.length - 1;
-
-    useEffect(() => {
-        bookApi.getBookById(firstBook.bookId).then((res) => {
-            if (res.type == 'Valid') {
-                setFirstItem(res.data);
-            }
-        });
-    }, []);
 
     return (
         <View
@@ -60,8 +59,19 @@ function OrderItem({ order }) {
                     )}
                 </View>
             </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <TouchableOpacity>
+            <View
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <TouchableOpacity
+                    onPress={() =>
+                        navigation.navigate('DetailOrderScreen', {
+                            order,
+                        })
+                    }
+                >
                     <Text
                         style={{
                             paddingVertical: 7,

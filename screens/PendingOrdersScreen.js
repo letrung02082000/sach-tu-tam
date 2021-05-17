@@ -15,7 +15,6 @@ function PendingOrdersScreen() {
     }, []);
 
     const renderItem = ({ item }) => {
-        console.log(item);
         return <OrderItem order={item} />;
     };
 
