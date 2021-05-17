@@ -5,18 +5,34 @@ import OrderItem from '../components/PendingOrdersScreen/OrderItem';
 
 function MyOrdersScreen() {
     const [myOrders, setMyOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         userApi.getConfirmedOrders().then((res) => {
             if (res.type == 'Valid') {
                 setMyOrders(res.data);
             }
+            setLoading(false);
         });
     }, []);
 
     const renderItem = ({ item }) => {
         return <OrderItem order={item} />;
     };
+
+    if (loading)
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    paddingTop: 25,
+                    alignItems: 'center',
+                    backgroundColor: '#fff',
+                }}
+            >
+                <Text>Đang tải dữ liệu...</Text>
+            </View>
+        );
 
     return (
         <View>

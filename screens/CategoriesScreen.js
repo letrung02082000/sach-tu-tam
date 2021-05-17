@@ -39,77 +39,82 @@ function CategoriesScreen({ navigation }) {
         navigation.navigate('DetailScreen', { book: item });
     };
 
+    if (loading)
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    paddingTop: 25,
+                    alignItems: 'center',
+                    backgroundColor: '#fff',
+                }}
+            >
+                <Text>Đang tải dữ liệu...</Text>
+            </View>
+        );
+
     return (
         <SafeAreaView style={styles.container}>
-            {loading ? (
-                <View>
-                    <Text>loading...</Text>
-                </View>
-            ) : (
-                <ScrollView style={{ flex: 1 }}>
-                    {catBooks.map((child, index) => {
-                        if (child.data.length == 0) return null;
-                        return (
-                            <View
-                                key={child.title}
-                                style={{
-                                    alignItems: 'center',
-                                    marginBottom: 15,
-                                    marginTop: 25,
-                                }}
-                            >
-                                <Text style={styles.headerIext}>
-                                    {child.title}
-                                </Text>
-                                <View style={styles.bookList}>
-                                    {child.data.map((item, index) => {
-                                        return (
-                                            <BookItem
-                                                item={item}
-                                                key={item._id}
-                                                style={{
-                                                    width:
-                                                        window.width / 2 - 10,
-                                                }}
-                                                onPress={() =>
-                                                    navigateToDetailScreen(item)
-                                                }
-                                            />
-                                        );
-                                    })}
-                                </View>
-                                {child.data.length > 0 ? (
-                                    <TouchableOpacity
-                                        style={{
-                                            backgroundColor: '#fff',
-                                            flex: 1,
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            padding: 15,
-                                        }}
-                                        onPress={() =>
-                                            navigateToAllBooksScreen(
-                                                child.id,
-                                                child.title
-                                            )
-                                        }
-                                    >
-                                        <Text
+            <ScrollView style={{ flex: 1 }}>
+                {catBooks.map((child, index) => {
+                    if (child.data.length == 0) return null;
+                    return (
+                        <View
+                            key={child.title}
+                            style={{
+                                alignItems: 'center',
+                                marginBottom: 15,
+                                marginTop: 25,
+                            }}
+                        >
+                            <Text style={styles.headerIext}>{child.title}</Text>
+                            <View style={styles.bookList}>
+                                {child.data.map((item, index) => {
+                                    return (
+                                        <BookItem
+                                            item={item}
+                                            key={item._id}
                                             style={{
-                                                textTransform: 'uppercase',
-                                                color: '#003399',
-                                                fontWeight: 'bold',
+                                                width: window.width / 2 - 10,
                                             }}
-                                        >
-                                            Xem tất cả
-                                        </Text>
-                                    </TouchableOpacity>
-                                ) : null}
+                                            onPress={() =>
+                                                navigateToDetailScreen(item)
+                                            }
+                                        />
+                                    );
+                                })}
                             </View>
-                        );
-                    })}
-                </ScrollView>
-            )}
+                            {child.data.length > 0 ? (
+                                <TouchableOpacity
+                                    style={{
+                                        backgroundColor: '#fff',
+                                        flex: 1,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        padding: 15,
+                                    }}
+                                    onPress={() =>
+                                        navigateToAllBooksScreen(
+                                            child.id,
+                                            child.title
+                                        )
+                                    }
+                                >
+                                    <Text
+                                        style={{
+                                            textTransform: 'uppercase',
+                                            color: '#003399',
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        Xem tất cả
+                                    </Text>
+                                </TouchableOpacity>
+                            ) : null}
+                        </View>
+                    );
+                })}
+            </ScrollView>
         </SafeAreaView>
     );
 }

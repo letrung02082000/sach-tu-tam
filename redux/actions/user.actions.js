@@ -8,6 +8,7 @@ export const userActions = {
     registerAction,
     registerRefresh,
     logout,
+    updateInfo,
 };
 
 function loginAction(email, password) {
@@ -142,5 +143,12 @@ function registerRefresh() {
 function logout() {
     return {
         type: userConstants.LOGOUT,
+    };
+}
+
+function updateInfo(user) {
+    return {
+        type: userConstants.UPDATE_INFO,
+        payload: user,
     };
 }

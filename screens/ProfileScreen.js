@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     View,
     Text,
@@ -8,13 +8,14 @@ import {
     Image,
     TouchableOpacity,
     ActivityIndicator,
+    RefreshControl,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { userApi } from '../api';
-import { userActions } from '../redux/actions';
+import { eventActions, userActions } from '../redux/actions';
 import { postActions } from '../redux/actions/post.actions';
 
 export default function ProfileScreen({ navigation }) {
@@ -22,6 +23,7 @@ export default function ProfileScreen({ navigation }) {
     const [donationPoint, setDonationPoint] = useState(0);
     const [eventPoint, setEventPoint] = useState(0);
     const [pointLoading, setPointLoading] = useState(false);
+    const [refreshing, setRefreshing] = React.useState(false);
 
     const user = useSelector((state) => state.authReducer);
     const dispatch = useDispatch();
@@ -35,12 +37,10 @@ export default function ProfileScreen({ navigation }) {
                 for (let event of res.data) {
                     if (event.joined) {
                         point += event.eventId.point;
-                        // console.log(event.eventId.point);
                     }
                 }
 
                 setEventPoint(point);
-                // console.log(point);
             } else {
                 console.log(res.err);
             }
@@ -57,7 +57,6 @@ export default function ProfileScreen({ navigation }) {
                 }
 
                 setOrderPoint(point);
-                // console.log(orderPoint);
             }
         });
 
@@ -72,11 +71,61 @@ export default function ProfileScreen({ navigation }) {
                 }
 
                 setDonationPoint(point);
-                console.log(donationPoint);
+                setPointLoading(false);
             }
         });
-        setPointLoading(false);
     }, [user.isLoggedIn]);
+
+    const onRefresh = () => {
+        setRefreshing(true);
+        setPointLoading(true);
+        userApi.getAllEvents().then((res) => {
+            if (res.type == 'Valid') {
+                let point = 0;
+
+                for (let event of res.data) {
+                    if (event.joined) {
+                        point += event.eventId.point;
+                    }
+                }
+
+                setEventPoint(point);
+            } else {
+                console.log(res.err);
+            }
+        });
+
+        userApi.getAllOrders().then((res) => {
+            if (res.type == 'Valid') {
+                let point = 0;
+
+                for (let order of res.data) {
+                    if (!order.pending) {
+                        point += order.point;
+                    }
+                }
+
+                setOrderPoint(point);
+            }
+        });
+
+        userApi.getAllDonations().then((res) => {
+            if (res.type == 'Valid') {
+                let point = 0;
+
+                for (let donation of res.data) {
+                    if (!donation.pending) {
+                        point += parseInt(donation.point);
+                    }
+                }
+
+                setDonationPoint(point);
+                setPointLoading(false);
+            }
+        });
+
+        setRefreshing(false);
+    };
 
     const navigateToUpdateInfoScreen = () => {
         navigation.navigate('UpdateInfoScreen');
@@ -94,6 +143,10 @@ export default function ProfileScreen({ navigation }) {
         navigation.navigate('SellBookScreen');
     };
 
+    const navigateToBugReportScreen = () => {
+        navigation.navigate('BugReportScreen');
+    };
+
     const navigateToAllOrdersScreen = () => {
         navigation.navigate('AllOrdersScreen');
     };
@@ -106,12 +159,22 @@ export default function ProfileScreen({ navigation }) {
         dispatch(userActions.logout());
         dispatch(postActions.refreshingAction());
         dispatch(postActions.getAllPostsAction(1, 10));
+        dispatch(eventActions.refreshingAction());
+        dispatch(eventActions.getAllEventsAction(1, 10));
     };
 
     if (user.isLoggedIn) {
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <ScrollView style={{ flex: 1 }}>
+                <ScrollView
+                    style={{ flex: 1 }}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
+                >
                     <View style={styles.profileContainer}>
                         <Image source={{ uri: user.avt }} style={styles.avt} />
                         <Text style={styles.nameText}>{user.name}</Text>
@@ -126,7 +189,7 @@ export default function ProfileScreen({ navigation }) {
                             </TouchableOpacity>
                         </View>
 
-                        <View
+                        {/* <View
                             style={[
                                 styles.updateInfoContainer,
                                 { marginTop: 15 },
@@ -140,7 +203,7 @@ export default function ProfileScreen({ navigation }) {
                                     Danh sách yêu thích
                                 </Text>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
                     </View>
                     <View style={[styles.pointContainer, { marginBottom: 5 }]}>
                         <View style={[styles.totalPoint, { marginTop: 15 }]}>
@@ -275,7 +338,7 @@ export default function ProfileScreen({ navigation }) {
                             Mục khác
                         </Text>
                     </View>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         style={[styles.donationContainer]}
                         onPress={navigateToAllOrdersScreen}
                     >
@@ -296,10 +359,10 @@ export default function ProfileScreen({ navigation }) {
                                 paddingHorizontal: 15,
                             }}
                         />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity
                         style={[styles.donationContainer, { marginBottom: 9 }]}
-                        onPress={navigateToAllOrdersScreen}
+                        onPress={navigateToBugReportScreen}
                     >
                         <View
                             style={{
@@ -319,7 +382,7 @@ export default function ProfileScreen({ navigation }) {
                             }}
                         />
                     </TouchableOpacity>
-                    <View style={{ marginBottom: 35 }}>
+                    <View style={{ marginBottom: 35, marginTop: 10 }}>
                         <Button title='Đăng xuất' onPress={handleLogout} />
                     </View>
                 </ScrollView>

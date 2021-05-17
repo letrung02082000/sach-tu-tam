@@ -33,6 +33,8 @@ import AllOrdersScreen from '../screens/AllOrdersScreen';
 import SellBookScreen from '../screens/SellBookScreen';
 import AllBookReviewsScreen from '../screens/AllBookReviewsScreen';
 import DetailOrderScreen from '../screens/DetailOrderScreen';
+import BugReportScreen from '../screens/BugReportScreen';
+import ContactInfoScreen from '../screens/ContactInfoScreen';
 
 const Stack = createStackNavigator();
 
@@ -239,6 +241,22 @@ export default function RootStack() {
                 options={{
                     headerShown: true,
                     title: 'Chi tiết đơn sách',
+                }}
+            />
+            <Stack.Screen
+                name='ContactInfoScreen'
+                component={ContactInfoScreen}
+                options={{
+                    headerShown: true,
+                    title: 'Liên hệ bán sách',
+                }}
+            />
+            <Stack.Screen
+                name='BugReportScreen'
+                component={BugReportScreen}
+                options={{
+                    headerShown: true,
+                    title: 'Báo lỗi ứng dụng',
                 }}
             />
         </Stack.Navigator>

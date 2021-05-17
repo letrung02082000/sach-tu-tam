@@ -47,7 +47,7 @@ export default function HomeScreen({ navigation }) {
                     width: window.width,
                 }}
             >
-                <ActivityIndicator size='small' color='#0000ff' />
+                <ActivityIndicator size='large' color='#ccc' />
             </View>
         );
     };

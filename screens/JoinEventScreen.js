@@ -96,17 +96,64 @@ function JoinEventScreen({ route, navigation }) {
 
     if (!user.isLoggedIn)
         return (
-            <View>
-                <Text>Vui lòng đăng nhập để tiếp tục</Text>
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#fff',
+                }}
+            >
+                <Text style={{ fontSize: 17 }}>
+                    Vui lòng đăng nhập để đăng ký tham gia
+                </Text>
+                <TouchableOpacity
+                    style={{ marginTop: 15 }}
+                    onPress={() => navigation.navigate('SignInScreen')}
+                >
+                    <Text
+                        style={{
+                            paddingVertical: 10,
+                            paddingHorizontal: 15,
+                            borderWidth: 1,
+                            borderRadius: 5,
+                            fontSize: 17,
+                        }}
+                    >
+                        Đăng nhập ngay
+                    </Text>
+                </TouchableOpacity>
             </View>
         );
 
     if (!user.email || !user.tel || !user.name)
         return (
-            <View>
-                <Text>Vui lòng cập nhật thông tin liên hệ để tham gia</Text>
-                <TouchableOpacity>
-                    <Text>Cập nhật thông tin</Text>
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#fff',
+                }}
+            >
+                <Text style={{ fontSize: 17 }}>
+                    Vui lòng cập nhật thông tin liên hệ để tham gia
+                </Text>
+                <TouchableOpacity
+                    style={{ marginTop: 15 }}
+                    onPress={() => navigation.navigate('UpdateInfoScreen')}
+                >
+                    <Text
+                        style={{
+                            paddingVertical: 10,
+                            paddingHorizontal: 15,
+                            borderWidth: 1,
+                            borderRadius: 5,
+                            fontSize: 17,
+                        }}
+                    >
+                        Cập nhật thông tin
+                    </Text>
                 </TouchableOpacity>
             </View>
         );

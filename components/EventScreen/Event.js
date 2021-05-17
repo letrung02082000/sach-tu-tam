@@ -47,7 +47,7 @@ function Event({ event }) {
                 <Text
                     style={{ fontSize: 15, fontWeight: 'bold', paddingTop: 5 }}
                 >
-                    {event.joinnumber}/{event.limit} đã đăng ký
+                    {event.joinnumber} người đã đăng ký
                 </Text>
             </View>
             <Text

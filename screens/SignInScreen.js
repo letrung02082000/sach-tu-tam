@@ -21,7 +21,7 @@ import { useTheme } from '@react-navigation/native';
 
 //import redux
 import { useDispatch, useSelector } from 'react-redux';
-import { userActions } from '../redux/actions';
+import { eventActions, userActions } from '../redux/actions';
 
 //import screen
 import LoadingScreen from './LoadingScreen';
@@ -47,6 +47,8 @@ function SignInScreen({ navigation }) {
         if (user.isLoggedIn) {
             dispatch(postActions.refreshingAction());
             dispatch(postActions.getAllPostsAction(1, 10));
+            dispatch(eventActions.refreshingAction());
+            dispatch(eventActions.getAllEventsAction(1, 10));
 
             if (navigation.canGoBack()) {
                 navigation.goBack();
@@ -69,7 +71,8 @@ function SignInScreen({ navigation }) {
     }
 
     const validateEmail = (email) => {
-        var ret = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        var ret =
+            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return ret.test(email);
     };
 

@@ -10,4 +10,6 @@ export const userConstants = {
     LOGIN_INVALID: 'USER_LOGIN_INVALID',
 
     LOGOUT: 'USER_LOGOUT',
+
+    UPDATE_INFO: 'UPDATE_INFO',
 };

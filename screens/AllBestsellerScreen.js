@@ -90,18 +90,24 @@ function AllBestsellerScreen() {
                     width: window.width,
                 }}
             >
-                <ActivityIndicator size='small' color='#0000ff' />
+                <ActivityIndicator size='large' color='#ccc' />
             </View>
         );
     };
 
-    if (fetching) {
+    if (fetching)
         return (
-            <View style={styles.container}>
+            <View
+                style={{
+                    flex: 1,
+                    paddingTop: 25,
+                    alignItems: 'center',
+                    backgroundColor: '#fff',
+                }}
+            >
                 <Text>Đang tải dữ liệu...</Text>
             </View>
         );
-    }
 
     return (
         <View style={styles.container}>

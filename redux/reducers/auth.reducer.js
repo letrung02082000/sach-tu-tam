@@ -49,6 +49,11 @@ export const authReducer = (state = initialState, action) => {
                 studentid: '',
                 username: '',
             };
+        case userConstants.UPDATE_INFO:
+            return {
+                ...state,
+                ...action.payload,
+            };
         default:
             return state;
     }

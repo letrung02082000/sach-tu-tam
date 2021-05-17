@@ -34,7 +34,7 @@ function OrderItem({ order }) {
                 <Text style={{ fontSize: 15 }}>
                     Mã đơn sách: {order.orderId}
                 </Text>
-                <Text style={{ fontSize: 15 }}>{order.total}đ</Text>
+                <Text style={{ fontSize: 15 }}>+{order.point}</Text>
             </View>
             <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                 <Image
