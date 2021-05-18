@@ -28,7 +28,7 @@ const CartItem = ({ book }) => {
     useEffect(() => {
         console.log(book.quantity);
         if (book.quantity <= 0) {
-            setMsg('Sản phẩm hiện đã hết hàng.');
+            setMsg('Sản phẩm hiện đã hết hàng');
             dispatch(cartActions.updateCartAction(book._id, 0));
         }
     }, []);
@@ -47,12 +47,12 @@ const CartItem = ({ book }) => {
         if (quantity == 0) return;
 
         if (quantity >= 5) {
-            setMsg('Số lượng không được vượt quá 5.');
+            setMsg('Số lượng không được vượt quá 5');
             return;
         }
 
         if (quantity >= book.quantity) {
-            setMsg('Đã đạt số lượng còn lại trong kho.');
+            setMsg('Đã đạt số lượng còn lại trong kho');
             return;
         }
 

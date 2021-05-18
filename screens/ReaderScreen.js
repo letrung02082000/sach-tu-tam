@@ -4,6 +4,7 @@ import {
     FlatList,
     RefreshControl,
     ActivityIndicator,
+    Text,
 } from 'react-native';
 import Post from '../components/ReaderScreen/Post';
 import { useSelector, useDispatch } from 'react-redux';
@@ -43,18 +44,35 @@ function ReaderScreen() {
     };
 
     const renderFooter = () => {
-        if (posts.endOfList) return null;
+        if (posts.endOfList)
+            return (
+                <View
+                    style={{
+                        alignItems: 'center',
+                        paddingTop: 15,
+                        paddingBottom: 25,
+                    }}
+                >
+                    <Text>Đã hết bài viết</Text>
+                </View>
+            );
         return (
-            <View>
-                <ActivityIndicator size='small' color='#ccc' />
+            <View
+                style={{
+                    alignItems: 'center',
+                    paddingTop: 15,
+                    paddingBottom: 25,
+                }}
+            >
+                <Text>Đang tải dữ liệu...</Text>
             </View>
         );
     };
 
     if (posts.isFetching) {
         return (
-            <View style={{ marginTop: 15 }}>
-                <ActivityIndicator size='small' color='#ccc' />
+            <View style={{ marginTop: 25, flex: 1, alignItems: 'center' }}>
+                <Text>Đang tải dữ liệu...</Text>
             </View>
         );
     }

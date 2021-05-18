@@ -37,19 +37,25 @@ export default function ScanScreen({ navigation }) {
             .getBookBySku(data.toString())
             .then((response) => {
                 setIsFetching(false);
-                //console.log(response);
+
                 if (response.type == 'Valid') {
                     navigation.navigate('DetailScreen', {
                         book: response.data[0],
                     });
                 } else {
-                    Alert.alert('Không tìm thấy sách trong kho!');
+                    Alert.alert(
+                        'Xin lỗi!',
+                        'Quyển sách bạn tìm hiện chưa có trong kho'
+                    );
                 }
             })
             .catch((error) => {
                 setIsFetching(false);
                 console.log(error);
-                Alert.alert(`${error}`);
+                Alert.alert(
+                    'Xin lỗi!',
+                    'Quyển sách bạn tìm hiện chưa có trong kho'
+                );
             });
     };
 
@@ -62,8 +68,15 @@ export default function ScanScreen({ navigation }) {
     if (hasPermission === null) {
         return (
             <SafeAreaView>
-                <View>
-                    <Text>Requesting for camera permission</Text>
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        paddingTop: 25,
+                    }}
+                >
+                    <Text>Đang yêu cầu mở camera</Text>
                 </View>
             </SafeAreaView>
         );
@@ -71,9 +84,16 @@ export default function ScanScreen({ navigation }) {
 
     if (hasPermission === false) {
         return (
-            <SafeAreaView>
+            <SafeAreaView
+                style={{
+                    flex: 1,
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    paddingTop: 25,
+                }}
+            >
                 <View>
-                    <Text>No access to camera</Text>
+                    <Text>Chưa cấp quyền truy cập camera</Text>
                 </View>
             </SafeAreaView>
         );
@@ -81,7 +101,14 @@ export default function ScanScreen({ navigation }) {
 
     if (isFetching) {
         return (
-            <SafeAreaView>
+            <SafeAreaView
+                style={{
+                    flex: 1,
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    paddingTop: 25,
+                }}
+            >
                 <View>
                     <Text>Đang tìm kiếm! Bạn chờ chút nhé...</Text>
                 </View>

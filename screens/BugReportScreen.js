@@ -25,7 +25,10 @@ function BugReportScreen() {
         if (supported) {
             await Linking.openURL(url);
         } else {
-            Alert.alert('Không thể mở ứng dụng');
+            Alert.alert(
+                'Ứng dụng không được hỗ trợ',
+                'Bạn cần cài đặt ứng dụng Zalo trên thiết bị của bạn'
+            );
         }
     };
 

@@ -1,53 +1,57 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert } from 'react-native';
-import { userApi } from '../api';
-
-import { useSelector } from 'react-redux';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    Linking,
+    Clipboard,
+    Alert,
+    Image,
+} from 'react-native';
 
 function DonateScreen() {
-    const user = useSelector((state) => state.authReducer);
+    const browserUrl = 'https://www.facebook.com/tusachtutam';
+    const facebookUrl = 'fb://page/111296164047565';
+    const messengerUrl = 'fb-messenger://user/111296164047565';
+    const telUrl = 'tel://0877876877';
+    const [copied, setCopied] = useState(false);
 
-    const [tel, setTel] = useState(user.tel);
-    const [address, setAddress] = useState(user.address);
-    const [content, setContent] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(true);
+    const openMessenger = async () => {
+        const supported = await Linking.canOpenURL(messengerUrl);
 
-    const handleTelChange = (val) => {
-        const cleanNumber = val.replace(/[^0-9]/g, '');
-        setTel(cleanNumber);
+        if (supported) {
+            await Linking.openURL(messengerUrl);
+        } else {
+            Alert.alert(
+                'Ứng dụng không được hỗ trợ',
+                'Bạn vui lòng cài đặt ứng dụng Messenger'
+            );
+        }
     };
 
-    const handleAddressChange = (val) => {
-        setAddress(val);
+    const openInBrowser = async () => {
+        const supported = await Linking.canOpenURL(facebookUrl);
+
+        if (supported) {
+            await Linking.openURL(facebookUrl);
+        } else {
+            await Linking.openURL(browserUrl);
+        }
     };
 
-    const handleContentChange = (val) => {
-        setContent(val);
+    const makeCall = async () => {
+        const supported = await Linking.canOpenURL(telUrl);
+
+        if (supported) {
+            await Linking.openURL(telUrl);
+        } else {
+            Alert.alert('Ứng dụng không được hỗ trợ');
+        }
     };
 
-    const confirmDonation = () => {
-        if (!tel) return Alert.alert('Vui lòng nhập số điện thoại!');
-        if (tel.length != 10) return Alert.alert('Số điện thoại không hợp lệ!');
-        if (!address) return Alert.alert('Vui lòng nhập địa chỉ liên hệ!');
-        if (!content) return Alert.alert('Vui lòng nhập nội dung quyên góp!');
-        setLoading(true);
-
-        const donation = {
-            tel,
-            address,
-            content,
-        };
-
-        userApi.postDonation(donation).then((res) => {
-            if (res.type == 'Valid') {
-                setLoading(false);
-                setSuccess(true);
-            } else {
-                Alert.alert('Có lỗi xảy ra! Vui lòng thử lại.');
-                setLoading(false);
-            }
-        });
+    const handleCopy = () => {
+        Clipboard.setString('0877876877');
+        setCopied(true);
     };
 
     return (
@@ -55,43 +59,120 @@ function DonateScreen() {
             style={{
                 flex: 1,
                 backgroundColor: '#fff',
-                paddingHorizontal: 5,
+                paddingHorizontal: 35,
                 paddingVertical: 10,
+                // justifyContent: 'center',
+                alignItems: 'center',
             }}
         >
-            {success ? (
-                <View>
-                    <Text>Gửi yêu cầu thành công</Text>
-                </View>
-            ) : (
-                <View>
-                    <Text>Số điện thoại</Text>
-                    <TextInput
-                        value={tel}
-                        placeholder='Nhập số điện thoại liên hệ của bạn'
-                        onChangeText={(val) => handleTelChange(val)}
-                        keyboardType={
-                            Platform.OS === 'android' ? 'numeric' : 'number-pad'
-                        }
-                    />
-                    <Text>Địa chỉ</Text>
-                    <TextInput
-                        placeholder='Nhập địa chỉ liên hệ của bạn'
-                        onChangeText={handleAddressChange}
-                        value={address}
-                    />
-                    <Text>Nội dung quyên góp</Text>
-                    <TextInput
-                        placeholder='Sách vở, quần áo hay đồ dùng thiết yếu'
-                        onChangeText={handleContentChange}
-                    />
-                    {loading ? (
-                        <Text>Vui lòng chờ...</Text>
-                    ) : (
-                        <Button title='Xác nhận' onPress={confirmDonation} />
-                    )}
-                </View>
-            )}
+            <Text
+                style={{
+                    fontSize: 21,
+                    lineHeight: 25,
+                    fontWeight: 'bold',
+                    color: '#383838',
+                    textAlign: 'center',
+                    marginTop: 15,
+                }}
+            >
+                Bạn vui lòng liên hệ bán sách qua các kênh bên dưới:
+            </Text>
+            <View style={{ flexDirection: 'column', marginTop: 15 }}>
+                <Image
+                    source={require('../assets/fbicon.png')}
+                    style={{ height: 30 }}
+                    resizeMode='contain'
+                />
+                <Text
+                    style={{ fontSize: 17, textAlign: 'center', marginTop: 10 }}
+                >
+                    www.facebook.com/tusachtutam
+                </Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity
+                    onPress={openMessenger}
+                    style={{
+                        paddingVertical: 7,
+                        paddingHorizontal: 15,
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        color: '#383838',
+                        marginTop: 15,
+                    }}
+                >
+                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+                        Gửi tin nhắn
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={openInBrowser}
+                    style={{
+                        paddingVertical: 7,
+                        paddingHorizontal: 15,
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        color: '#383838',
+                        marginTop: 15,
+                        marginLeft: 15,
+                    }}
+                >
+                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+                        Mở Facebook
+                    </Text>
+                </TouchableOpacity>
+            </View>
+            <View style={{ marginTop: 50 }}>
+                <Image
+                    source={require('../assets/callicon.png')}
+                    style={{ height: 30 }}
+                    resizeMode='contain'
+                />
+                <Text
+                    style={{ fontSize: 17, textAlign: 'center', marginTop: 10 }}
+                >
+                    Hotline: 0877.876.877
+                </Text>
+            </View>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <TouchableOpacity
+                    onPress={handleCopy}
+                    style={{
+                        paddingVertical: 7,
+                        paddingHorizontal: 15,
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        color: '#383838',
+                        marginTop: 15,
+                        marginRight: 15,
+                    }}
+                >
+                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+                        {copied ? 'Đã sao chép' : 'Sao chép'}
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={makeCall}
+                    style={{
+                        paddingVertical: 7,
+                        paddingHorizontal: 15,
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        color: '#383838',
+                        marginTop: 15,
+                    }}
+                >
+                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+                        Gọi ngay
+                    </Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }

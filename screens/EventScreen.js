@@ -4,6 +4,7 @@ import {
     ActivityIndicator,
     FlatList,
     RefreshControl,
+    Text,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -37,15 +38,28 @@ function EventScreen() {
     };
 
     const renderFooter = () => {
-        if (events.endOfList) return null;
+        if (events.endOfList)
+            return (
+                <View
+                    style={{
+                        alignItems: 'center',
+                        paddingTop: 15,
+                        paddingBottom: 25,
+                        // backgroundColor: '#fff',
+                    }}
+                >
+                    <Text>Đã hết hoạt động</Text>
+                </View>
+            );
         return (
             <View
                 style={{
-                    height: 150,
-                    width: window.width,
+                    alignItems: 'center',
+                    paddingTop: 15,
+                    paddingBottom: 25,
                 }}
             >
-                <ActivityIndicator size='small' color='#0000ff' />
+                <Text>Đang tải dữ liệu...</Text>
             </View>
         );
     };
@@ -56,8 +70,8 @@ function EventScreen() {
 
     if (events.isFetching) {
         return (
-            <View style={{ marginTop: 15 }}>
-                <ActivityIndicator size='small' color='#ccc' />
+            <View style={{ marginTop: 25, flex: 1, alignItems: 'center' }}>
+                <Text>Đang tải dữ liệu...</Text>
             </View>
         );
     }
@@ -68,7 +82,7 @@ function EventScreen() {
                 data={events.data}
                 keyExtractor={(item) => item._id}
                 renderItem={renderItem}
-                contentContainerStyle={{ paddingBottom: 25 }}
+                // contentContainerStyle={{ paddingBottom: 25 }}
                 onEndReached={handleLoadMore}
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={() => renderFooter()}

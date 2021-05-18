@@ -7,7 +7,10 @@ import {
     TouchableOpacity,
     Platform,
     Linking,
+    Alert,
+    ScrollView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const apiUrl = 'https://sachtutam.herokuapp.com/api';
 
@@ -30,27 +33,50 @@ function StationScreen({ route, navigation }) {
             if (supported) {
                 Linking.openURL(url);
             } else {
-                console.log("Don't know how to open URI: " + url);
+                Alert.alert(
+                    'Ứng dụng không được hỗ trợ',
+                    'Vui lòng cài đặt ứng dụng Google Maps'
+                );
             }
         });
     };
 
     return (
-        <View>
-            <StatusBar />
-            <View style={{ marginTop: 5 }}>
-                <Image
-                    source={{ uri: station.imgurl }}
-                    style={{ width: '100%', height: 170 }}
-                    resizeMode='contain'
-                />
-                <Text>{station.title}</Text>
-                <Text>{station.address}</Text>
-            </View>
-            <TouchableOpacity onPress={openMaps}>
-                <Text>Xem vị trí trên Google Maps</Text>
-            </TouchableOpacity>
-        </View>
+        <SafeAreaView>
+            <ScrollView>
+                <View>
+                    <Image
+                        source={{ uri: station.imgurl }}
+                        style={{ width: '100%', height: 170 }}
+                        resizeMode='contain'
+                    />
+                    <Text
+                        style={{
+                            fontSize: 25,
+                            textAlign: 'center',
+                            fontWeight: 'bold',
+                            margin: 15,
+                            color: '#383838',
+                        }}
+                    >
+                        {station.title}
+                    </Text>
+                    <Text
+                        style={{
+                            fontSize: 15,
+                            textAlign: 'center',
+                            fontWeight: 'bold',
+                            color: '#383838',
+                        }}
+                    >
+                        {station.address}
+                    </Text>
+                    <TouchableOpacity onPress={openMaps}>
+                        <Text>Xem vị trí trên Google Maps</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 

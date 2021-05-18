@@ -8,6 +8,7 @@ function PaymentScreen({ route, navigation }) {
     const [openedMomo, setOpenedMomo] = useState(false);
     const [copied, setCopied] = useState(false);
     const order = route.params;
+    console.log(order);
     const handlePayOrder = () => {
         const url = `https://nhantien.momo.vn/0877876877/${order.total}`;
 
@@ -124,13 +125,14 @@ function PaymentScreen({ route, navigation }) {
                         Thanh toán ngay bằng Momo
                     </Text>
                 </TouchableOpacity>
-                {openedMomo ? (
+                {order.payment ? (
                     <TouchableOpacity
                         style={{
                             backgroundColor: '#009387',
-                            padding: 15,
+                            paddingVertical: 15,
+                            paddingHorizontal: 35,
                             borderRadius: 5,
-                            marginTop: 15,
+                            marginTop: 25,
                         }}
                     >
                         <Text
@@ -144,16 +146,39 @@ function PaymentScreen({ route, navigation }) {
                             Về trang chủ
                         </Text>
                     </TouchableOpacity>
-                ) : null}
+                ) : (
+                    <View>
+                        {openedMomo ? (
+                            <TouchableOpacity
+                                style={{
+                                    backgroundColor: '#009387',
+                                    paddingVertical: 15,
+                                    paddingHorizontal: 35,
+                                    borderRadius: 5,
+                                    marginTop: 25,
+                                }}
+                            >
+                                <Text
+                                    onPress={navigateToHomeScreen}
+                                    style={{
+                                        fontSize: 17,
+                                        fontWeight: 'bold',
+                                        color: '#fff',
+                                    }}
+                                >
+                                    Về trang chủ
+                                </Text>
+                            </TouchableOpacity>
+                        ) : null}
+                    </View>
+                )}
             </View>
-            {openedMomo ? null : (
-                <View style={{ flex: 1, marginHorizontal: 15 }}>
-                    <Text style={{ fontSize: 15 }}>
-                        Lưu ý: Bạn vui lòng chờ một chút sau khi vào màn hình
-                        chính của Momo nhé!
-                    </Text>
-                </View>
-            )}
+            <View style={{ flex: 1, margin: 15 }}>
+                <Text style={{ fontSize: 15, textAlign: 'center' }}>
+                    Lưu ý: Bạn vui lòng chờ một chút sau khi vào màn hình chính
+                    của Momo nhé!
+                </Text>
+            </View>
         </View>
     );
 }

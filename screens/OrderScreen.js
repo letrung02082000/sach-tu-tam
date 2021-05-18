@@ -59,7 +59,7 @@ export default function OrderScreen({ navigation }) {
         const bookList = [];
 
         for (let book of cart) {
-            bookList.push({ bookId: book._id, quantity: book.orderQuantity });
+            bookList.push({ book: book._id, quantity: book.orderQuantity });
         }
 
         if (bookList.length <= 0) {
@@ -84,7 +84,7 @@ export default function OrderScreen({ navigation }) {
                 setConfirmLoading(false);
                 navigation.navigate('PaymentScreen', res.data);
             } else {
-                Alert.alert(res.err);
+                Alert.alert('Có lỗi xảy ra. Vui lòng thử lại');
                 setConfirmLoading(false);
                 console.log(res);
                 return;

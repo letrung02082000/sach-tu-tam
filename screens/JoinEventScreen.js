@@ -186,6 +186,9 @@ function JoinEventScreen({ route, navigation }) {
                                 borderRadius: 5,
                                 marginTop: 15,
                             }}
+                            onPress={() =>
+                                navigation.navigate('UpdateInfoScreen')
+                            }
                         >
                             <Text
                                 style={{

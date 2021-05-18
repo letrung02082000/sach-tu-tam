@@ -12,7 +12,9 @@ function QrCodeScreen({ navigation }) {
     console.log(data);
 
     return (
-        <SafeAreaView>
+        <SafeAreaView
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
             {user.isLoggedIn ? (
                 <View
                     style={{
@@ -21,7 +23,9 @@ function QrCodeScreen({ navigation }) {
                         alignItems: 'center',
                     }}
                 >
-                    <Text style={{ marginBottom: 15 }}>Mã QR của bạn</Text>
+                    <Text style={{ marginBottom: 15, fontSize: 15 }}>
+                        Mã QR của bạn
+                    </Text>
                     <View
                         style={{
                             width: 300,
@@ -36,40 +40,65 @@ function QrCodeScreen({ navigation }) {
                             logoBackgroundColor='transparent'
                         />
                     </View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('ScanScreen')}
+                            style={styles.scanButton}
+                        >
+                            <Text style={styles.btnText}>Quét sách</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             ) : (
-                <View
-                    style={{
-                        height: 500,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Text style={{ marginBottom: 15 }}>
-                        Đăng nhập ngay để nhận mã QR tại đây
-                    </Text>
-                    <TouchableOpacity
-                        style={styles.scanButton}
-                        onPress={() => navigation.navigate('SignInScreen')}
+                <View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderWidth: 1,
+                            borderColor: '#ccc',
+                            paddingVertical: 15,
+                            paddingHorizontal: 25,
+                            marginBottom: 15,
+                            borderRadius: 5,
+                        }}
                     >
-                        <Text style={styles.btnText}>Đăng nhập</Text>
-                    </TouchableOpacity>
+                        <Text style={{ marginBottom: 15, fontSize: 15 }}>
+                            Đăng nhập ngay để nhận mã QR tại đây
+                        </Text>
+                        <TouchableOpacity
+                            style={{
+                                backgroundColor: '#4287f5',
+                                padding: 15,
+                                color: '#fff',
+                                borderRadius: 100,
+                                width: 150,
+                            }}
+                            onPress={() => navigation.navigate('SignInScreen')}
+                        >
+                            <Text style={styles.btnText}>Đăng nhập</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('ScanScreen')}
+                            style={styles.scanButton}
+                        >
+                            <Text style={styles.btnText}>Quét sách</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             )}
-
-            <View
-                style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('ScanScreen')}
-                    style={styles.scanButton}
-                >
-                    <Text style={styles.btnText}>Quét sách</Text>
-                </TouchableOpacity>
-            </View>
         </SafeAreaView>
     );
 }

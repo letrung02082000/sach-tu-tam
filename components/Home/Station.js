@@ -48,11 +48,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 16,
         textAlign: 'center',
-    },
-
-    price: {
-        fontSize: 16,
-        textAlign: 'center',
         fontWeight: 'bold',
+        color: '#383838',
     },
 });
