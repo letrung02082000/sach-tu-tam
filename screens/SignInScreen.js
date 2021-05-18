@@ -26,22 +26,23 @@ import { eventActions, userActions } from '../redux/actions';
 //import screen
 import LoadingScreen from './LoadingScreen';
 import { postActions } from '../redux/actions/post.actions';
+import { userApi } from '../api';
 
 function SignInScreen({ navigation }) {
     const user = useSelector((state) => state.authReducer);
-    console.log(user);
     const dispatch = useDispatch();
-
     const { colors } = useTheme();
 
-    const [data, setData] = useState({
-        username: user.email || '',
-        password: '',
-        secureTextEntry: true,
-        isValidEmail: true,
-        isValidPassword: true,
-        isValidUser: false,
-    });
+    console.log(user);
+
+    const [loading, setLoading] = useState(false);
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [secure, setSecure] = useState(true);
+    const [validEmail, setValidEmail] = useState(false);
+    const [invalidText, setInvalidText] = useState(false);
+    const [validPassword, setValidPassword] = useState(true);
 
     useEffect(() => {
         if (user.isLoggedIn) {
@@ -58,13 +59,9 @@ function SignInScreen({ navigation }) {
         }
     });
 
-    if (user.isFetching) {
-        return <LoadingScreen />;
-    }
-
     if (user.isLoggedIn) {
         return (
-            <View>
+            <View style={{ flex: 1, alignItems: 'center', marginTop: 25 }}>
                 <Text>Đăng nhập thành công</Text>
             </View>
         );
@@ -78,51 +75,63 @@ function SignInScreen({ navigation }) {
 
     const textInputChange = (val) => {
         if (validateEmail(val)) {
-            setData({
-                ...data,
-                username: val,
-                isValidEmail: true,
-                isValidUser: true,
-            });
+            setEmail(val);
+            setValidEmail(true);
+            setInvalidText(false);
         } else {
-            setData({
-                ...data,
-                username: val,
-                isValidEmail: false,
-                isValidUser: false,
-            });
+            setEmail(val);
+            setValidEmail(false);
+            setInvalidText(true);
         }
     };
 
     const handlePasswordChange = (val) => {
         if (val.trim().length >= 8) {
-            setData({
-                ...data,
-                password: val,
-                isValidPassword: true,
-            });
+            setPassword(val);
+            setValidPassword(true);
         } else {
-            setData({
-                ...data,
-                password: val,
-                isValidPassword: false,
-            });
+            setPassword(val);
+            setValidPassword(false);
         }
     };
 
     const updateSecureTextEntry = () => {
-        setData({
-            ...data,
-            secureTextEntry: !data.secureTextEntry,
-        });
+        setSecure(!secure);
     };
 
-    const handleLogin = (email, password) => {
-        if (validateEmail(email) && password.length >= 8) {
-            dispatch(userActions.loginAction(email, password));
-        } else {
-            Alert.alert('Vui lòng điền đầy đủ thông tin.');
+    const handleLogin = () => {
+        if (email.trim().length === 0) {
+            return Alert.alert('Bạn chưa nhập địa chỉ email');
         }
+
+        if (!validateEmail(email))
+            return Alert.alert('Địa chỉ email không hợp lệ');
+
+        if (password.length < 8)
+            return Alert, alert('Mật khẩu phải tối thiểu 8 ký tự');
+
+        setLoading(true);
+
+        userApi.login(email, password).then((res) => {
+            if (res.type == 'Valid') {
+                if (res.status == 'Success') {
+                    setLoading(false);
+                    dispatch(userActions.loginSuccessAction(res.data));
+                } else {
+                    setLoading(false);
+                    Alert.alert(
+                        'Đăng nhập thất bại',
+                        'Email hoặc mật khẩu không đúng'
+                    );
+                }
+            } else {
+                Alert.alert(
+                    'Đăng nhập thất bại',
+                    'Email hoặc mật khẩu không đúng'
+                );
+                setLoading(false);
+            }
+        });
     };
 
     const navigateToHomeTabs = () => {
@@ -182,9 +191,9 @@ function SignInScreen({ navigation }) {
                                 ]}
                                 autoCapitalize='none'
                                 onChangeText={(val) => textInputChange(val)}
-                                value={data.username}
+                                value={email}
                             />
-                            {data.isValidUser ? (
+                            {validEmail ? (
                                 <Animatable.View animation='bounceIn'>
                                     <FontAwesome
                                         name='check-circle'
@@ -194,7 +203,7 @@ function SignInScreen({ navigation }) {
                                 </Animatable.View>
                             ) : null}
                         </View>
-                        {data.isValidEmail ? null : (
+                        {invalidText ? (
                             <Animatable.View
                                 animation='fadeInLeft'
                                 duration={500}
@@ -203,7 +212,7 @@ function SignInScreen({ navigation }) {
                                     Địa chỉ email không hợp lệ
                                 </Text>
                             </Animatable.View>
-                        )}
+                        ) : null}
 
                         <Text
                             style={[
@@ -225,9 +234,7 @@ function SignInScreen({ navigation }) {
                             <TextInput
                                 placeholder='Nhập mật khẩu'
                                 placeholderTextColor='#666666'
-                                secureTextEntry={
-                                    data.secureTextEntry ? true : false
-                                }
+                                secureTextEntry={secure ? true : false}
                                 style={[
                                     styles.textInput,
                                     {
@@ -240,7 +247,7 @@ function SignInScreen({ navigation }) {
                                 }
                             />
                             <TouchableOpacity onPress={updateSecureTextEntry}>
-                                {data.secureTextEntry ? (
+                                {secure ? (
                                     <Feather
                                         name='eye-off'
                                         color='grey'
@@ -255,45 +262,65 @@ function SignInScreen({ navigation }) {
                                 )}
                             </TouchableOpacity>
                         </View>
-                        {data.isValidPassword ? null : (
+                        {validPassword ? null : (
                             <Animatable.View
                                 animation='fadeInLeft'
                                 duration={500}
                             >
                                 <Text style={styles.errorMsg}>
-                                    Mật khẩu phải dài ít nhất 8 ký tự.
+                                    Mật khẩu phải dài ít nhất 8 ký tự
                                 </Text>
                             </Animatable.View>
                         )}
 
-                        <TouchableOpacity>
+                        {/* <TouchableOpacity>
                             <Text style={{ color: '#009387', marginTop: 15 }}>
                                 Khôi phục mật khẩu
                             </Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <View style={styles.button}>
-                            <TouchableOpacity
-                                style={styles.signIn}
-                                onPress={() => {
-                                    handleLogin(data.username, data.password);
-                                }}
-                            >
-                                <LinearGradient
-                                    colors={['#08d4c4', '#01ab9d']}
-                                    style={styles.signIn}
-                                >
-                                    <Text
-                                        style={[
-                                            styles.textSign,
-                                            {
-                                                color: '#fff',
-                                            },
-                                        ]}
+                            {loading ? (
+                                <TouchableOpacity style={styles.signIn}>
+                                    <LinearGradient
+                                        colors={['#08d4c4', '#01ab9d']}
+                                        style={styles.signIn}
                                     >
-                                        Đăng nhập
-                                    </Text>
-                                </LinearGradient>
-                            </TouchableOpacity>
+                                        <Text
+                                            style={[
+                                                styles.textSign,
+                                                {
+                                                    color: '#fff',
+                                                },
+                                            ]}
+                                        >
+                                            Vui lòng chờ...
+                                        </Text>
+                                    </LinearGradient>
+                                </TouchableOpacity>
+                            ) : (
+                                <TouchableOpacity
+                                    style={styles.signIn}
+                                    onPress={() => {
+                                        handleLogin();
+                                    }}
+                                >
+                                    <LinearGradient
+                                        colors={['#08d4c4', '#01ab9d']}
+                                        style={styles.signIn}
+                                    >
+                                        <Text
+                                            style={[
+                                                styles.textSign,
+                                                {
+                                                    color: '#fff',
+                                                },
+                                            ]}
+                                        >
+                                            Đăng nhập
+                                        </Text>
+                                    </LinearGradient>
+                                </TouchableOpacity>
+                            )}
 
                             <TouchableOpacity
                                 onPress={() =>

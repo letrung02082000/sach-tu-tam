@@ -52,7 +52,7 @@ function StationScreen({ route, navigation }) {
                     />
                     <Text
                         style={{
-                            fontSize: 25,
+                            fontSize: 21,
                             textAlign: 'center',
                             fontWeight: 'bold',
                             margin: 15,
@@ -71,9 +71,44 @@ function StationScreen({ route, navigation }) {
                     >
                         {station.address}
                     </Text>
-                    <TouchableOpacity onPress={openMaps}>
-                        <Text>Xem vị trí trên Google Maps</Text>
-                    </TouchableOpacity>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginTop: 15,
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={openMaps}
+                            style={{
+                                borderRadius: 5,
+                                borderWidth: 1,
+                                borderColor: '#009387',
+                                paddingVertical: 10,
+                                paddingHorizontal: 15,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 15,
+                                    fontWeight: 'bold',
+                                    color: '#009387',
+                                }}
+                            >
+                                <Image
+                                    source={require('../assets/mapicon.png')}
+                                    style={{
+                                        width: 17,
+                                        height: 17,
+                                    }}
+                                    resizeMode='contain'
+                                />{' '}
+                                Xem vị trí trên bản đồ
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </ScrollView>
         </SafeAreaView>

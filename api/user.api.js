@@ -35,9 +35,10 @@ async function login(email, password) {
     });
 }
 
-async function register(email, password) {
+async function register(name, email, password) {
     return new Promise((resolve, reject) => {
         const user = {
+            name,
             email,
             password,
         };
@@ -47,7 +48,6 @@ async function register(email, password) {
                 return resolve(response.data);
             },
             (error) => {
-                console.log('loi');
                 return reject(error);
             }
         );

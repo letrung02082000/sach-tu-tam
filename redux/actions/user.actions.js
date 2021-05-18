@@ -1,79 +1,26 @@
 import { userConstants } from '../constants';
 import { userApi } from '../../api';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 export const userActions = {
-    loginAction,
+    loginSuccessAction,
     registerAction,
     registerRefresh,
     logout,
     updateInfo,
 };
 
-function loginAction(email, password) {
-    return async (dispatch) => {
-        dispatch(requestLogin({ email }));
-
-        userApi.login(email, password).then(
-            async (result) => {
-                if (result.type == 'Invalid') {
-                    dispatch(failureLogin({ error: 'login invalid' }));
-                    return;
-                } else {
-                    if (result.status == 'Fail') {
-                        dispatch(failureLogin({ error: 'login failure' }));
-                        return;
-                    } else if (result.status == 'Success') {
-                        try {
-                            await AsyncStorage.setItem(
-                                'user',
-                                JSON.stringify(result.data)
-                            );
-
-                            dispatch(successLogin(result.data));
-                        } catch (error) {
-                            dispatch(failureLogin({ error }));
-                        }
-                        return;
-                    }
-                }
-            },
-            (error) => {
-                console.log(error);
-                dispatch(failureLogin({ error: 'login fail http' }));
-                return;
-            }
-        );
+function loginSuccessAction(user) {
+    return {
+        type: userConstants.LOGIN_SUCCESS,
+        payload: user,
     };
-
-    function requestLogin(user) {
-        return {
-            type: userConstants.LOGIN_REQUEST,
-            payload: user,
-        };
-    }
-
-    function successLogin(user) {
-        return {
-            type: userConstants.LOGIN_SUCCESS,
-            payload: user,
-        };
-    }
-
-    function failureLogin(error) {
-        return {
-            type: userConstants.LOGIN_FAILURE,
-            payload: error,
-        };
-    }
 }
 
-function registerAction(email, password) {
+function registerAction(name, email, password) {
     return (dispatch) => {
         dispatch(requestRegister({ email }));
 
-        userApi.register(email, password).then(
+        userApi.register(name, email, password).then(
             (result) => {
                 if (result.type == 'Invalid') {
                     dispatch(

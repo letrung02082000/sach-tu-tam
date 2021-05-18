@@ -147,7 +147,13 @@ export default function HomeScreen({ navigation }) {
                     }}
                 >
                     <TouchableOpacity
-                        style={{ marginHorizontal: 25 }}
+                        style={{ marginRight: 35 }}
+                        onPress={navigateToScanScreen}
+                    >
+                        <FontAwesome name='qrcode' color='#fff' size={25} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{ marginRight: 25 }}
                         onPress={navigateToCartScreen}
                     >
                         <FontAwesome
@@ -155,12 +161,6 @@ export default function HomeScreen({ navigation }) {
                             color='#fff'
                             size={25}
                         />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{ marginRight: 25 }}
-                        onPress={navigateToScanScreen}
-                    >
-                        <FontAwesome name='qrcode' color='#fff' size={25} />
                     </TouchableOpacity>
                 </View>
             </View>

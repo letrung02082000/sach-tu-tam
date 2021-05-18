@@ -21,17 +21,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '../redux/actions';
 
 function SignUpScreen({ navigation }) {
-    const [data, setData] = useState({
-        username: '',
-        password: '',
-        confirm_password: '',
-        check_textInputChange: true,
-        isValidUser: false,
-        isValidPassword: true,
-        isMatchPassword: true,
-        secureTextEntry: true,
-        confirm_secureTextEntry: true,
-    });
+    const [loading, setLoading] = useState(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [validEmail, setValidEmail] = useState(false);
+    const [invalidText, setInvalidText] = useState(false);
+    const [validPassword, setValidPassword] = useState(true);
+    const [isMatchPassword, setIsMatchPassword] = useState(true);
+    const [secure, setSecure] = useState(true);
+    const [confirmSecure, setConfirmSecure] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -39,100 +39,98 @@ function SignUpScreen({ navigation }) {
 
     useEffect(() => {
         if (user.isFetching) {
-            console.log('isFetching');
+            setLoading(true);
         } else {
             if (user.type == 'Valid') {
                 if (user.status == 'Success') {
                     dispatch(userActions.registerRefresh());
-                    setTimeout(() => {
-                        navigation.navigate('SignInScreen');
-                    }, 3000);
+                    setLoading(false);
+                    Alert.alert(
+                        'Đăng ký thành công',
+                        'Vui lòng đăng nhập để tiếp tục'
+                    );
+                    navigation.navigate('SignInScreen');
                 } else if (user.status == 'Fail') {
-                    console.log('dang ky that bai');
-                } else if (user.status == 'NA') {
-                    console.log('chua dang ky');
+                    setLoading(false);
+                    Alert.alert(
+                        'Địa chỉ email đã tồn tại',
+                        'Bạn có thể khôi phục mật khẩu'
+                    );
                 }
             } else {
-                console.log('thong tin khong hop le');
+                setLoading(false);
+                Alert.alert('Thông tin không hợp lệ');
             }
         }
     });
 
     const validateEmail = (email) => {
-        var ret = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        var ret =
+            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return ret.test(email);
     };
 
-    const textInputChange = (val) => {
+    const handleNameChange = (val) => {
+        const tmp = val.trim();
+        setName(tmp);
+    };
+
+    const handleEmailChange = (val) => {
         if (validateEmail(val)) {
-            setData({
-                ...data,
-                username: val,
-                check_textInputChange: true,
-                isValidUser: true,
-            });
+            setEmail(val);
+            setValidEmail(true);
+            setInvalidText(false);
         } else {
-            setData({
-                ...data,
-                username: val,
-                check_textInputChange: false,
-                isValidUser: false,
-            });
+            setEmail(val);
+            setValidEmail(false);
+            setInvalidText(true);
         }
     };
 
     const handlePasswordChange = (val) => {
         if (val.length >= 8) {
-            setData({
-                ...data,
-                password: val,
-                isValidPassword: true,
-            });
+            setPassword(val);
+            setValidPassword(true);
         } else {
-            setData({
-                ...data,
-                password: val,
-                isValidPassword: false,
-            });
+            setPassword(val);
+            setValidPassword(false);
         }
     };
 
     const handleConfirmPasswordChange = (val) => {
-        if (val === data.password) {
-            setData({
-                ...data,
-                confirm_password: val,
-                isMatchPassword: true,
-            });
+        if (val === password) {
+            setConfirmPassword(val);
+            setIsMatchPassword(true);
         } else {
-            setData({
-                ...data,
-                confirm_password: val,
-                isMatchPassword: false,
-            });
+            setConfirmPassword(val);
+            setIsMatchPassword(false);
         }
     };
 
-    const updateSecureTextEntry = () => {
-        setData({
-            ...data,
-            secureTextEntry: !data.secureTextEntry,
-        });
+    const updateSecure = () => {
+        setSecure(!secure);
     };
 
-    const updateConfirmSecureTextEntry = () => {
-        setData({
-            ...data,
-            confirm_secureTextEntry: !data.confirm_secureTextEntry,
-        });
+    const updateConfirmSecure = () => {
+        setConfirmSecure(!confirmSecure);
     };
 
-    const handleSignupBtn = (email, password) => {
-        if (data.isMatchPassword && password.length >= 8 && data.isValidUser) {
-            dispatch(userActions.registerAction(email, password));
-        } else {
-            Alert.alert('Thông tin không hợp lệ. Vui lòng kiểm tra lại.');
+    const handleSignupBtn = () => {
+        if (name.length <= 0) {
+            return Alert.alert('Vui lòng nhập tên của bạn');
         }
+        if (!validEmail) {
+            return Alert.alert('Địa chỉ email không hợp lệ');
+        }
+
+        if (password.length < 8) {
+            return Alert.alert('Mật khẩu phải tối thiểu 8 kí tự');
+        }
+        if (password !== confirmPassword) {
+            return Alert.alert('Mật khẩu không khớp');
+        }
+
+        dispatch(userActions.registerAction(name, email, password));
     };
 
     const navigateToHomeTabs = () => {
@@ -141,12 +139,8 @@ function SignUpScreen({ navigation }) {
 
     return (
         <SafeAreaView>
-            <ScrollView keyboardShouldPersistTaps={'handled'}>
+            <ScrollView keyboardShouldPersistTaps='always'>
                 <View style={styles.container}>
-                    <StatusBar
-                        backgroundColor='#009387'
-                        barStyle='light-content'
-                    />
                     <View style={styles.header}>
                         <TouchableOpacity
                             onPress={navigateToHomeTabs}
@@ -161,8 +155,29 @@ function SignUpScreen({ navigation }) {
                         style={styles.footer}
                     >
                         <ScrollView>
-                            <Text style={styles.text_footer}>
-                                Tên đăng nhập
+                            <Text style={styles.titleText}>Tên của bạn</Text>
+                            <View style={styles.action}>
+                                <FontAwesome
+                                    name='user-o'
+                                    color='#05375a'
+                                    size={20}
+                                />
+                                <TextInput
+                                    placeholder='Nhập họ tên đầy đủ'
+                                    style={styles.textInput}
+                                    autoCapitalize='words'
+                                    onChangeText={handleNameChange}
+                                />
+                            </View>
+                            <Text
+                                style={[
+                                    styles.titleText,
+                                    {
+                                        marginTop: 25,
+                                    },
+                                ]}
+                            >
+                                Địa chỉ Email
                             </Text>
                             <View style={styles.action}>
                                 <FontAwesome
@@ -174,9 +189,10 @@ function SignUpScreen({ navigation }) {
                                     placeholder='Nhập địa chỉ email'
                                     style={styles.textInput}
                                     autoCapitalize='none'
-                                    onChangeText={textInputChange}
+                                    onChangeText={handleEmailChange}
                                 />
-                                {data.isValidUser ? (
+
+                                {validEmail ? (
                                     <Animatable.View animation='bounceIn'>
                                         <FontAwesome
                                             name='check-circle'
@@ -187,7 +203,7 @@ function SignUpScreen({ navigation }) {
                                 ) : null}
                             </View>
 
-                            {data.check_textInputChange ? null : (
+                            {invalidText ? (
                                 <Animatable.View
                                     animation='fadeInLeft'
                                     duration={500}
@@ -196,11 +212,11 @@ function SignUpScreen({ navigation }) {
                                         Địa chỉ email không hợp lệ
                                     </Text>
                                 </Animatable.View>
-                            )}
+                            ) : null}
 
                             <Text
                                 style={[
-                                    styles.text_footer,
+                                    styles.titleText,
                                     {
                                         marginTop: 25,
                                     },
@@ -216,17 +232,13 @@ function SignUpScreen({ navigation }) {
                                 />
                                 <TextInput
                                     placeholder='Nhập mật khẩu'
-                                    secureTextEntry={
-                                        data.secureTextEntry ? true : false
-                                    }
+                                    secureTextEntry={secure}
                                     style={styles.textInput}
                                     autoCapitalize='none'
                                     onChangeText={handlePasswordChange}
                                 />
-                                <TouchableOpacity
-                                    onPress={updateSecureTextEntry}
-                                >
-                                    {data.secureTextEntry ? (
+                                <TouchableOpacity onPress={updateSecure}>
+                                    {secure ? (
                                         <Feather
                                             name='eye-off'
                                             color='grey'
@@ -242,7 +254,7 @@ function SignUpScreen({ navigation }) {
                                 </TouchableOpacity>
                             </View>
 
-                            {data.isValidPassword ? null : (
+                            {validPassword ? null : (
                                 <Animatable.View
                                     animation='fadeInLeft'
                                     duration={500}
@@ -255,7 +267,7 @@ function SignUpScreen({ navigation }) {
 
                             <Text
                                 style={[
-                                    styles.text_footer,
+                                    styles.titleText,
                                     {
                                         marginTop: 35,
                                     },
@@ -272,9 +284,7 @@ function SignUpScreen({ navigation }) {
                                 <TextInput
                                     placeholder='Nhập lại mật khẩu của bạn'
                                     secureTextEntry={
-                                        data.confirm_secureTextEntry
-                                            ? true
-                                            : false
+                                        confirmSecure ? true : false
                                     }
                                     style={styles.textInput}
                                     autoCapitalize='none'
@@ -282,10 +292,8 @@ function SignUpScreen({ navigation }) {
                                         handleConfirmPasswordChange(val)
                                     }
                                 />
-                                <TouchableOpacity
-                                    onPress={updateConfirmSecureTextEntry}
-                                >
-                                    {data.secureTextEntry ? (
+                                <TouchableOpacity onPress={updateConfirmSecure}>
+                                    {confirmSecure ? (
                                         <Feather
                                             name='eye-off'
                                             color='grey'
@@ -301,7 +309,7 @@ function SignUpScreen({ navigation }) {
                                 </TouchableOpacity>
                             </View>
 
-                            {data.isMatchPassword ? null : (
+                            {isMatchPassword ? null : (
                                 <Animatable.View
                                     animation='fadeInLeft'
                                     duration={500}
@@ -344,31 +352,48 @@ function SignUpScreen({ navigation }) {
                                 </Text>
                             </View>
                             <View style={styles.button}>
-                                <TouchableOpacity
-                                    style={styles.signIn}
-                                    onPress={() => {
-                                        handleSignupBtn(
-                                            data.username,
-                                            data.password
-                                        );
-                                    }}
-                                >
-                                    <LinearGradient
-                                        colors={['#08d4c4', '#01ab9d']}
-                                        style={styles.signIn}
-                                    >
-                                        <Text
-                                            style={[
-                                                styles.textSign,
-                                                {
-                                                    color: '#fff',
-                                                },
-                                            ]}
+                                {loading ? (
+                                    <TouchableOpacity style={styles.signIn}>
+                                        <LinearGradient
+                                            colors={['#08d4c4', '#01ab9d']}
+                                            style={styles.signIn}
                                         >
-                                            Đăng ký
-                                        </Text>
-                                    </LinearGradient>
-                                </TouchableOpacity>
+                                            <Text
+                                                style={[
+                                                    styles.textSign,
+                                                    {
+                                                        color: '#fff',
+                                                    },
+                                                ]}
+                                            >
+                                                Vui lòng chờ...
+                                            </Text>
+                                        </LinearGradient>
+                                    </TouchableOpacity>
+                                ) : (
+                                    <TouchableOpacity
+                                        style={styles.signIn}
+                                        onPress={() => {
+                                            handleSignupBtn();
+                                        }}
+                                    >
+                                        <LinearGradient
+                                            colors={['#08d4c4', '#01ab9d']}
+                                            style={styles.signIn}
+                                        >
+                                            <Text
+                                                style={[
+                                                    styles.textSign,
+                                                    {
+                                                        color: '#fff',
+                                                    },
+                                                ]}
+                                            >
+                                                Đăng ký
+                                            </Text>
+                                        </LinearGradient>
+                                    </TouchableOpacity>
+                                )}
 
                                 <TouchableOpacity
                                     onPress={() => navigation.goBack()}
@@ -433,7 +458,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
     },
 
-    text_footer: {
+    titleText: {
         color: '#05375a',
         fontSize: 18,
     },
