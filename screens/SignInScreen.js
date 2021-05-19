@@ -37,7 +37,7 @@ function SignInScreen({ navigation }) {
 
     const [loading, setLoading] = useState(false);
 
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState(user.email || '');
     const [password, setPassword] = useState('');
     const [secure, setSecure] = useState(true);
     const [validEmail, setValidEmail] = useState(false);

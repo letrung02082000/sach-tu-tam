@@ -44,7 +44,7 @@ export default function ProfileScreen({ navigation }) {
 
                 setEventPoint(point);
             } else {
-                console.log(res.err);
+                setEventPoint(0);
             }
         });
 
@@ -59,6 +59,8 @@ export default function ProfileScreen({ navigation }) {
                 }
 
                 setOrderPoint(point);
+            } else {
+                setEventPoint(0);
             }
         });
 
@@ -73,8 +75,10 @@ export default function ProfileScreen({ navigation }) {
                 }
 
                 setDonationPoint(point);
-                setPointLoading(false);
+            } else {
+                setEventPoint(0);
             }
+            setPointLoading(false);
         });
     }, [user.isLoggedIn]);
 
@@ -93,6 +97,7 @@ export default function ProfileScreen({ navigation }) {
 
                 setEventPoint(point);
             } else {
+                setEventPoint(0);
                 console.log(res.err);
             }
         });
@@ -108,6 +113,8 @@ export default function ProfileScreen({ navigation }) {
                 }
 
                 setOrderPoint(point);
+            } else {
+                setOrderPoint(0);
             }
         });
 
@@ -122,8 +129,10 @@ export default function ProfileScreen({ navigation }) {
                 }
 
                 setDonationPoint(point);
-                setPointLoading(false);
+            } else {
+                setDonationPoint(0);
             }
+            setPointLoading(false);
         });
 
         setRefreshing(false);

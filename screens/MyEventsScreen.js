@@ -111,6 +111,21 @@ function MyEventsScreen({ navigation }) {
             </View>
         );
 
+    if (myEvents.length <= 0) {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    paddingTop: 25,
+                    alignItems: 'center',
+                    backgroundColor: '#fff',
+                }}
+            >
+                <Text>Không có dữ liệu</Text>
+            </View>
+        );
+    }
+
     return (
         <View>
             <FlatList

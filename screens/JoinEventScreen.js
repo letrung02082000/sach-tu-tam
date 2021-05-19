@@ -17,6 +17,7 @@ import convertToDate from '../utils/convertToDate';
 function JoinEventScreen({ route, navigation }) {
     const window = Dimensions.get('window');
     const [event, setEvent] = useState(route.params);
+    const [joining, setJoining] = useState(false);
     const user = useSelector((state) => state.authReducer);
     const dispatch = useDispatch();
 
@@ -60,6 +61,7 @@ function JoinEventScreen({ route, navigation }) {
             //         Alert.alert('Có lỗi xảy ra. Vui lòng thử lại!');
             //     });
         } else {
+            setJoining(true);
             eventApi
                 .joinEvent(event._id)
                 .then((res) => {
@@ -72,25 +74,33 @@ function JoinEventScreen({ route, navigation }) {
                                 }
                             })
                             .catch((error) => console.log(error));
-                        Alert.alert('Đăng ký thành công!');
+                        Alert.alert(
+                            'Đăng ký thành công',
+                            'Chúng mình sẽ liên hệ lại cho bạn sớm nhất'
+                        );
                         dispatch(eventActions.getAllEventsAction(1, 10));
+                        setJoining(false);
                     } else {
                         if (res.err == 'event joined') {
-                            Alert.alert('Bạn đã tham gia hoạt động này.');
+                            Alert.alert('Bạn đã tham gia hoạt động này');
                         } else if (res.err == 'event full') {
                             Alert.alert(
-                                'Hoạt động đã đủ số lượng. Hãy tham gia các hoạt động khác.'
+                                'Hoạt động đã đủ số lượng. Hãy tham gia các hoạt động khác'
                             );
                         } else if (res.err == 'event closed') {
                             Alert.alert(
-                                'Đã hết thời gian mở đăng ký. Hãy tham gia các hoạt động khác.'
+                                'Đã hết thời gian mở đăng ký. Hãy tham gia các hoạt động khác'
                             );
                         } else {
-                            Alert.alert('Có lỗi xảy ra! Vui lòng thử lại sau.');
+                            Alert.alert('Có lỗi xảy ra. Vui lòng thử lại sau');
                         }
+                        setJoining(false);
                     }
                 })
-                .catch((error) => console.log(error));
+                .catch((error) => {
+                    console.log(error);
+                    setJoining(false);
+                });
         }
     };
 
@@ -200,27 +210,48 @@ function JoinEventScreen({ route, navigation }) {
                                 Thay đổi thông tin
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{
-                                backgroundColor: '#32C532',
-                                padding: 10,
-                                borderRadius: 5,
-                                marginTop: 15,
-                            }}
-                            onPress={handleJoinEvent}
-                        >
-                            <Text
+                        {joining ? (
+                            <TouchableOpacity
                                 style={{
-                                    fontSize: 17,
-                                    fontWeight: 'bold',
-                                    color: '#fff',
+                                    backgroundColor: '#32C532',
+                                    padding: 10,
+                                    borderRadius: 5,
+                                    marginTop: 15,
                                 }}
                             >
-                                {event.registered
-                                    ? 'Đã đăng ký'
-                                    : 'Đăng ký tham gia hoạt động'}
-                            </Text>
-                        </TouchableOpacity>
+                                <Text
+                                    style={{
+                                        fontSize: 17,
+                                        fontWeight: 'bold',
+                                        color: '#fff',
+                                    }}
+                                >
+                                    Vui lòng chờ...
+                                </Text>
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity
+                                style={{
+                                    backgroundColor: '#32C532',
+                                    padding: 10,
+                                    borderRadius: 5,
+                                    marginTop: 15,
+                                }}
+                                onPress={handleJoinEvent}
+                            >
+                                <Text
+                                    style={{
+                                        fontSize: 17,
+                                        fontWeight: 'bold',
+                                        color: '#fff',
+                                    }}
+                                >
+                                    {event.registered
+                                        ? 'Đã đăng ký'
+                                        : 'Đăng ký tham gia hoạt động'}
+                                </Text>
+                            </TouchableOpacity>
+                        )}
                     </View>
                 </View>
 
