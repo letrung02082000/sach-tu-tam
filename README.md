@@ -5,6 +5,6 @@ Sach Tu Tam is a book store application designed for Thien Nguyen Sinh Vien volu
 - Cross-platform Framework: React Native
 - State management: Redux
 ## Backend
-- Language: NodeJS
-- Web framework: ExpressJS
+- Language: Javascript
+- Web framework: NodeJS (Express)
 - Database: MongoDB
